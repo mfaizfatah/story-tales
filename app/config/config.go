@@ -21,4 +21,6 @@ func LoadConfig(service string) {
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPort := os.Getenv("REDIS_PORT")
 	adapter.LoadRedis(redisHost, redisPort)
+
+	// utils.Newprometheus(service)
 }

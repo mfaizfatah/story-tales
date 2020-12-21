@@ -7,7 +7,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 /*Curl using for request to other service / other API / API External
@@ -76,4 +78,14 @@ func Curl(ctx context.Context, url, method string, timer time.Duration, header m
 
 	ctx = logger.RecordThridParty(ctx, req, start, res.StatusCode, body)
 	return ctx, body, res.StatusCode, nil
+}
+
+//NewRouterPlus router with health check
+func NewRouterPlus() *chi.Mux {
+
+	router := chi.NewRouter()
+
+	router.Get("/metrics", promhttp.Handler().ServeHTTP)
+
+	return router
 }

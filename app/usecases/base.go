@@ -37,6 +37,7 @@ type Usecases interface {
 	// Authentication for logic auth
 	Registration(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
+	InsertStory(ctx context.Context, req *models.Story) (context.Context, string, int, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)

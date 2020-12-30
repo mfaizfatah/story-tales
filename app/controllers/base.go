@@ -16,6 +16,7 @@ type Controllers interface {
 	// Authentication controllers
 	HandlerRegistration(w http.ResponseWriter, r *http.Request)
 	HandlerLogin(w http.ResponseWriter, r *http.Request)
+	HandlerInsertStory(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

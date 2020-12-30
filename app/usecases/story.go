@@ -32,3 +32,19 @@ func (r *uc) InsertStory(ctx context.Context, req *models.Story) (context.Contex
 
 	return ctx, msg, http.StatusCreated, err
 }
+
+func (r *uc) GetStory(ctx context.Context, storyID int) (context.Context, *models.ResponseStory, string, int, error) {
+	var (
+		res = new(models.ResponseStory)
+		msg string
+		err error
+	)
+
+	err = r.query.FindOne(tableStory, res, "id = ?", "id", storyID)
+	if err == nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, res, msg, http.StatusAccepted, nil
+
+}

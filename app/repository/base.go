@@ -53,6 +53,7 @@ type repo struct {
 type Repo interface {
 	// find
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
+	FindAll(table string) error
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
 

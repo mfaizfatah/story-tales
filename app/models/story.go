@@ -11,3 +11,15 @@ type Story struct {
 	FlagCommment int    `json:"flagComment" gorm:"column:flag_comment"`
 	IDAuthor     int    `json:"idAuthor" gorm:"column:id_author"`
 }
+
+// Response..
+type ResponseStory struct {
+	ID           int    `json:"id"`
+	Title        string `json:"title"`
+	Season       string `json:"season"`
+	Sinopsis     string `json:"sinopsis"`
+	Images       string `json:"images"`
+	FlagOnGoing  int    `json:"flagOnGoing"`
+	FlagCommment int    `json:"flagComment"`
+	IDAuthor     int    `json:"idAuthor"`
+}

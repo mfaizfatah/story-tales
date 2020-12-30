@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-chi/chi"
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/utils"
@@ -22,6 +23,20 @@ func (u *ctrl) HandlerInsertStory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	ctx, msg, st, err := u.uc.InsertStory(ctx, &s)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, msg)
+}
+
+func (u *ctrl) HandlerGetStory(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	storyID := chi.URLParam(r, "storyID")
+
+	ctx, msg, st, err := u.uc.GetStory(ctx, storyID)
 	if err != nil {
 		ctx = logger.Logf(ctx, "Story error() => %v", err)
 		utils.Response(ctx, w, false, st, msg)

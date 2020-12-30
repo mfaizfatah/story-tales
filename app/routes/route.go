@@ -47,7 +47,8 @@ func (c *route) Router(port string) {
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
 		r.Post("/story", c.ctrl.HandlerInsertStory)
-		r.Get("/story/{storyID}", c.ctrl.HandlerInsertStory)
+		r.Get("/story", c.ctrl.HandlerGetAllStory)
+		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
 	})
 
 	// group router if need to check session

@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"log"
 	"net/http"
 
 	"github.com/mfaizfatah/story-tales/app/models"
@@ -33,18 +34,35 @@ func (r *uc) InsertStory(ctx context.Context, req *models.Story) (context.Contex
 	return ctx, msg, http.StatusCreated, err
 }
 
-func (r *uc) GetStory(ctx context.Context, storyID int) (context.Context, *models.ResponseStory, string, int, error) {
+func (r *uc) GetOneStory(ctx context.Context, storyID string) (context.Context, *models.ResponseStory, string, int, error) {
 	var (
 		res = new(models.ResponseStory)
 		msg string
 		err error
 	)
 
-	err = r.query.FindOne(tableStory, res, "id = ?", "id", storyID)
-	if err == nil {
+	err = r.query.FindGetOne(tableStory, res, "id = ?", "id", storyID)
+
+	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
 	return ctx, res, msg, http.StatusAccepted, nil
+
+}
+
+func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.ResponseStory, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+
+	data, err := r.query.FindAll(tableStory)
+	log.Printf("msg: %v", data)
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusAccepted, nil
 
 }

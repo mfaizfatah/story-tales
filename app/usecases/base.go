@@ -38,7 +38,8 @@ type Usecases interface {
 	Registration(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	InsertStory(ctx context.Context, req *models.Story) (context.Context, string, int, error)
-	GetStory(ctx context.Context, storyID int) (context.Context, *models.ResponseStory, string, int, error)
+	GetOneStory(ctx context.Context, storyID string) (context.Context, *models.ResponseStory, string, int, error)
+	GetAllStory(ctx context.Context) (context.Context, []models.ResponseStory, string, int, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)

@@ -17,6 +17,8 @@ type Controllers interface {
 	HandlerRegistration(w http.ResponseWriter, r *http.Request)
 	HandlerLogin(w http.ResponseWriter, r *http.Request)
 	HandlerInsertStory(w http.ResponseWriter, r *http.Request)
+	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
+	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

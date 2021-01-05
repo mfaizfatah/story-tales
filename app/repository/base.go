@@ -54,8 +54,8 @@ type repo struct {
 type Repo interface {
 	// find
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
-	FindGetOne(table string, i, where interface{}, field string, value string) error
-	FindAll(table string) ([]models.ResponseStory, error)
+	FindGetOne(storyid int) (*models.ResponseOneStory, error)
+	FindAll(table string) ([]models.ResponseAllStory, error)
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
 

@@ -12,14 +12,33 @@ type Story struct {
 	IDAuthor     int    `json:"idAuthor" gorm:"column:id_author"`
 }
 
-// Response..
-type ResponseStory struct {
+// Response All..
+type ResponseAllStory struct {
 	ID           int    `json:"id"`
 	Title        string `json:"title"`
 	Season       string `json:"season"`
-	Sinopsis     string `json:"sinopsis"`
 	Images       string `json:"images"`
 	FlagOnGoing  int    `json:"flagOnGoing"`
 	FlagCommment int    `json:"flagComment"`
 	IDAuthor     int    `json:"idAuthor"`
+}
+
+// Response Get One..
+type ResponseOneStory struct {
+	ID           int           `json:"id"`
+	Title        string        `json:"title"`
+	Sinopsis     string        `json:"sinopsis"`
+	Season       string        `json:"season"`
+	Images       string        `json:"images"`
+	FlagOnGoing  int           `json:"flagOnGoing"`
+	FlagCommment int           `json:"flagComment"`
+	IDAuthor     int           `json:"idAuthor"`
+	ListEpisode  []ListEpisode `json:"listEpisode"`
+}
+
+//ListEpisode
+type ListEpisode struct {
+	ID         int    `json:"id"`
+	Eps_Number int    `json:"eps_number"`
+	Eps_Title  string `json:"eps_title"`
 }

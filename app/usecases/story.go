@@ -34,31 +34,30 @@ func (r *uc) InsertStory(ctx context.Context, req *models.Story) (context.Contex
 	return ctx, msg, http.StatusCreated, err
 }
 
-func (r *uc) GetOneStory(ctx context.Context, storyID string) (context.Context, *models.ResponseStory, string, int, error) {
+func (r *uc) GetOneStory(ctx context.Context, storyID int) (context.Context, *models.ResponseOneStory, string, int, error) {
 	var (
-		res = new(models.ResponseStory)
 		msg string
 		err error
 	)
 
-	err = r.query.FindGetOne(tableStory, res, "id = ?", "id", storyID)
-
+	data, err := r.query.FindGetOne(storyID)
+	log.Printf("msg: %v", data)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
-	return ctx, res, msg, http.StatusAccepted, nil
+	return ctx, data, msg, http.StatusAccepted, nil
 
 }
 
-func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.ResponseStory, string, int, error) {
+func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.ResponseAllStory, string, int, error) {
 	var (
 		msg string
 		err error
 	)
 
 	data, err := r.query.FindAll(tableStory)
-	log.Printf("msg: %v", data)
+
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

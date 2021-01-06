@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis"
+	"github.com/mfaizfatah/story-tales/app/models"
 	"gorm.io/gorm"
 )
 
@@ -53,6 +54,8 @@ type repo struct {
 type Repo interface {
 	// find
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
+	FindGetOne(storyid int) (*models.ResponseOneStory, error)
+	FindAll(table string) ([]models.ResponseAllStory, error)
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
 

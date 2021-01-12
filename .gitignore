@@ -1,3 +1,6 @@
 .env
 fcm.json
 configmap.yaml
+*.exe
+story-tales
+deployment/

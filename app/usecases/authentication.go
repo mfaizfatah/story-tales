@@ -73,14 +73,19 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 
 func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error) {
 	var (
-		sha  = sha1.New()
-		res  = new(models.ResponseLogin)
-		user = new(models.User)
-		msg  string
-		err  error
+		sha   = sha1.New()
+		res   = new(models.ResponseLogin)
+		user  = new(models.User)
+		msg   string
+		err   error
+		where string
 	)
 
-	err = r.query.FindOne(tableUser, user, "email = ?", "id, email, password", req.Email)
+	where = req.Email
+	if where == "" {
+		where = req.Username
+	}
+	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password", where)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

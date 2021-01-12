@@ -54,13 +54,14 @@ type repo struct {
 type Repo interface {
 	// find
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
-	FindGetOne(storyid int) (*models.ResponseOneStory, error)
+	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)
 	FindAll(table string) ([]models.ResponseAllStory, error)
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
 
 	// insert
 	Insert(table string, i interface{}) error
+	/* 	InsertStory(table string, story interface{}, episode []models.Episode, episodeDetail []models.Episodes_Detail) error */
 	SetRedis(key string, value interface{}, exp time.Duration) error
 
 	// Update

@@ -13,7 +13,7 @@ const (
 	tableStory = "story"
 )
 
-func (r *uc) InsertStory(ctx context.Context, req *models.Story) (context.Context, string, int, error) {
+func (r *uc) PostStory(ctx context.Context, req *models.Story) (context.Context, string, int, error) {
 	var (
 		story = new(models.Story)
 		msg   string
@@ -25,6 +25,7 @@ func (r *uc) InsertStory(ctx context.Context, req *models.Story) (context.Contex
 	}
 
 	story = req
+	log.Printf("msg: %v", story)
 	err = r.query.Insert(tableStory, story)
 
 	if err != nil {
@@ -40,7 +41,7 @@ func (r *uc) GetOneStory(ctx context.Context, storyID int) (context.Context, *mo
 		err error
 	)
 
-	data, err := r.query.FindGetOne(storyID)
+	data, err := r.query.FindGetOneStory(storyID)
 	log.Printf("msg: %v", data)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound

@@ -46,7 +46,7 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler)
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
-		r.Post("/story", c.ctrl.HandlerInsertStory)
+		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
 		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
 	})

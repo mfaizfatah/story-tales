@@ -15,11 +15,11 @@ func (r *repo) FindOne(table string, i, where interface{}, field string, whereVa
 	return nil
 }
 
-func (r *repo) FindGetOne(storyid int) (*models.ResponseOneStory, error) {
+func (r *repo) FindGetOneStory(storyid int) (*models.ResponseOneStory, error) {
 	var data = new(models.ResponseOneStory)
 	rows, err := r.db.Table("story").
-		Joins("INNER JOIN episodes ON episodes.id_story = story.id ").
-		Select("story.id, story.title, story.sinopsis, story.season, story.images, story.flag_ongoing, story.flag_comment, story.id_author , episodes.id, episodes.eps_number, episodes.eps_title").
+		Joins("LEFT JOIN episodes ON episodes.id_story = story.id ").
+		Select("story.id, story.title, story.sinopsis, story.season, story.images, story.flag_ongoing, story.flag_comment, story.id_author , COALESCE(episodes.id,0), COALESCE(episodes.eps_number,0), COALESCE(episodes.eps_title,'')").
 		Where("story.id = ?", storyid).
 		Rows()
 
@@ -30,7 +30,12 @@ func (r *repo) FindGetOne(storyid int) (*models.ResponseOneStory, error) {
 		if err != nil {
 			log.Panic(err)
 		}
-		data.ListEpisode = append(data.ListEpisode, list)
+		if list.ID != 0 {
+			data.ListEpisode = append(data.ListEpisode, list)
+		} else {
+			data.ListEpisode = nil
+		}
+
 	}
 
 	if err != nil {

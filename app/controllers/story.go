@@ -11,7 +11,7 @@ import (
 	"github.com/mfaizfatah/story-tales/app/utils"
 )
 
-func (u *ctrl) HandlerInsertStory(w http.ResponseWriter, r *http.Request) {
+func (u *ctrl) HandlerPostStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	var s models.Story
@@ -23,7 +23,7 @@ func (u *ctrl) HandlerInsertStory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ctx, msg, st, err := u.uc.InsertStory(ctx, &s)
+	ctx, msg, st, err := u.uc.PostStory(ctx, &s)
 	if err != nil {
 		ctx = logger.Logf(ctx, "Story error() => %v", err)
 		utils.Response(ctx, w, false, st, msg)

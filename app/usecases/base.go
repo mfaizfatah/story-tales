@@ -37,7 +37,7 @@ type Usecases interface {
 	// Authentication for logic auth
 	Registration(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
-	InsertStory(ctx context.Context, req *models.Story) (context.Context, string, int, error)
+	PostStory(ctx context.Context, req *models.Story) (context.Context, string, int, error)
 	GetOneStory(ctx context.Context, storyID int) (context.Context, *models.ResponseOneStory, string, int, error)
 	GetAllStory(ctx context.Context) (context.Context, []models.ResponseAllStory, string, int, error)
 }

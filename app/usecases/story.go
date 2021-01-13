@@ -47,7 +47,7 @@ func (r *uc) GetOneStory(ctx context.Context, storyID int) (context.Context, *mo
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
-	return ctx, data, msg, http.StatusAccepted, nil
+	return ctx, data, msg, http.StatusOK, nil
 
 }
 

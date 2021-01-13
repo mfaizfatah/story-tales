@@ -43,7 +43,7 @@ func (c *route) Router(port string) {
 	router.Use(middleware.RecordMiddleware)
 
 	router.Group(func(r chi.Router) {
-		r.Use(ezpromhttp.InstrumentHandler)
+		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckAPIKey)
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
 		r.Post("/story", c.ctrl.HandlerPostStory)

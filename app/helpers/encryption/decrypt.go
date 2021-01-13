@@ -4,6 +4,9 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"encoding/base64"
+	"encoding/hex"
+
+	_ "github.com/joho/godotenv/autoload" //autoload env
 )
 
 // Decrypt decrypts cipher text string into plain text string
@@ -35,4 +38,21 @@ func Decrypt(encrypted string) ([]byte, error) {
 	}
 
 	return plaintext, nil
+}
+
+// DecryptorTokenForgotPass is a func for decrypt token forgot password
+func DecryptorTokenForgotPass(text string) (string, error) {
+
+	plain, _ := hex.DecodeString(text)
+	keys, _ := hex.DecodeString(HashKeys(`SALT_B`))
+	block, _ := aes.NewCipher(keys)
+	aesgcm, _ := cipher.NewGCM(block)
+	nonce, _ := hex.DecodeString(SaltX())
+
+	plaintext, err := aesgcm.Open(nil, nonce, plain, nil)
+	if err != nil {
+		return string(plaintext), err
+	}
+
+	return string(plaintext), nil
 }

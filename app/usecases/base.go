@@ -2,7 +2,9 @@ package usecases
 
 import (
 	"context"
+	"net/http"
 
+	"github.com/mfaizfatah/story-tales/app/adapter"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/repository"
 )
@@ -30,6 +32,7 @@ const (
 // uc struct with value interface Repository
 type uc struct {
 	query repository.Repo
+	smtp  adapter.MailClient
 }
 
 // Usecases represent the Usecases contract
@@ -40,6 +43,12 @@ type Usecases interface {
 	InsertStory(ctx context.Context, req *models.Story) (context.Context, string, int, error)
 	GetOneStory(ctx context.Context, storyID int) (context.Context, *models.ResponseOneStory, string, int, error)
 	GetAllStory(ctx context.Context) (context.Context, []models.ResponseAllStory, string, int, error)
+
+	// forgot pass
+	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)
+
+	// Process token
+	GetUserFromToken(req *http.Request) (*models.User, string, int, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)
@@ -52,6 +61,6 @@ type Usecases interface {
  * @return
  * uc struct with value interface Repository
  */
-func NewUC(r repository.Repo) Usecases {
-	return &uc{query: r}
+func NewUC(r repository.Repo, m adapter.MailClient) Usecases {
+	return &uc{query: r, smtp: m}
 }

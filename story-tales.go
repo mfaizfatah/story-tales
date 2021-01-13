@@ -21,9 +21,10 @@ func init() {
 func main() {
 	db := adapter.DBSQL()
 	redis := adapter.UseRedis()
+	mail := adapter.NewSMTPClient()
 
 	repo := repository.NewRepo(db, redis)
-	uc := usecases.NewUC(repo)
+	uc := usecases.NewUC(repo, mail)
 	ctrl := controllers.NewCtrl(uc)
 
 	router := routes.NewRouter(ctrl)

@@ -5,16 +5,10 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
-	"os"
+	"encoding/hex"
 
 	_ "github.com/joho/godotenv/autoload" //autoload env
 )
-
-// CipherKey key must be 32 chars long because block size is 16 bytes
-var CipherKey = os.Getenv("SALT_KEY")
-
-// AlgorithmNonceSize length of key
-const AlgorithmNonceSize int = 12
 
 // Encrypt encrypts plain text string into cipher text string
 func Encrypt(plaintext []byte) (string, error) {
@@ -45,4 +39,18 @@ func Encrypt(plaintext []byte) (string, error) {
 	ciphertextAndNonce = append(ciphertextAndNonce, ciphertext...)
 
 	return base64.StdEncoding.EncodeToString(ciphertextAndNonce), nil
+}
+
+// EncryptorTokenForgotPass is a func for encrypt token forgot password
+func EncryptorTokenForgotPass(text string) string {
+
+	plain := []byte(text)
+	keys, _ := hex.DecodeString(HashKeys(`SALT_B`))
+
+	block, _ := aes.NewCipher(keys)
+	nonce, _ := hex.DecodeString(SaltX())
+	aesgcm, _ := cipher.NewGCM(block)
+	ciphertext := aesgcm.Seal(nil, nonce, plain, nil)
+
+	return hex.EncodeToString(ciphertext)
 }

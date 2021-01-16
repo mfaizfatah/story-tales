@@ -16,6 +16,8 @@ type Controllers interface {
 	// Authentication controllers
 	HandlerRegistration(w http.ResponseWriter, r *http.Request)
 	HandlerLogin(w http.ResponseWriter, r *http.Request)
+	HandlerLogout(w http.ResponseWriter, r *http.Request)
+	// Story
 	HandlerPostStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)

@@ -49,11 +49,13 @@ func (c *route) Router(port string) {
 		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
 		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
+		r.Get("/logout", c.ctrl.HandlerLogout)
 	})
 
 	// group router if need to check session
 	router.Group(func(r chi.Router) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckSession)
+
 	})
 
 	router.MethodNotAllowed(middleware.NotAllowed)

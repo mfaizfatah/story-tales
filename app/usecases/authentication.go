@@ -112,3 +112,11 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 
 	return ctx, res, msg, http.StatusAccepted, nil
 }
+
+func (r *uc) Logout(ctx context.Context, token string) (context.Context, interface{}, string, int, error) {
+	result, err := r.query.DeleteRedis(token)
+	if err != nil {
+		return ctx, nil, "Logout Gagal", http.StatusInternalServerError, err
+	}
+	return ctx, result, "Logout Berhasil", http.StatusOK, nil
+}

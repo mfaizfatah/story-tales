@@ -43,6 +43,7 @@ type Usecases interface {
 	PostStory(ctx context.Context, req *models.Story) (context.Context, string, int, error)
 	GetOneStory(ctx context.Context, storyID int) (context.Context, *models.ResponseOneStory, string, int, error)
 	GetAllStory(ctx context.Context) (context.Context, []models.ResponseAllStory, string, int, error)
+	Logout(ctx context.Context, token string) (context.Context, interface{}, string, int, error)
 
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)

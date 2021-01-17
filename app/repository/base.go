@@ -53,6 +53,8 @@ type repo struct {
 // Repo represent the Repository contract
 type Repo interface {
 	// find
+	FindGetBanner(id int) (*models.BannerDetailRs, error)
+	FindAllBanner(table string) ([]models.ListBannerThumbRs, error)
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
 	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)
 	FindAll(table string) ([]models.ResponseAllStory, error)

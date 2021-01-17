@@ -22,6 +22,9 @@ type Controllers interface {
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
 	HandlerCheckSession(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
+	HandlerCreateBanner(w http.ResponseWriter, r *http.Request)
+	HandlerGetBannerDetail(w http.ResponseWriter, r *http.Request)
+	HandlerGetListBannerThumb(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

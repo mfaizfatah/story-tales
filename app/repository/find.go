@@ -7,6 +7,37 @@ import (
 	"github.com/mfaizfatah/story-tales/app/models"
 )
 
+func (r *repo) FindGetBanner(id int) (*models.BannerDetailRs, error) {
+	var data models.BannerDetailRs
+
+	err := r.db.Table("banner").
+		Where("banner.id = ?", id).
+		Find(&data)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+
+	return &data, nil
+}
+
+func (r *repo) FindAllBanner(table string) ([]models.ListBannerThumbRs, error) {
+	var data []models.ListBannerThumbRs
+
+	err := r.db.Table(table).
+		Where("status = ?", 1).
+		Order("sequence").
+		Find(&data)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+
+	return data, nil
+}
+
 func (r *repo) FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error {
 	err := r.db.Table(table).Where(where, whereValue...).Select(field).First(i).Error
 	if err != nil {

@@ -58,6 +58,21 @@ func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+
+func (u *ctrl) HandlerLogout(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	header := r.Header.Get("Authorization")
+	token := strings.Split(header, " ")
+
+	ctx, res, message, st, err := u.uc.Logout(ctx, token[1])
+	if err != nil {
+		utils.Response(ctx, w, false, st, message)
+		return
+	}
+	utils.Response(ctx, w, true, st, res)
+}
+
 func (u *ctrl) HandlerCheckSession(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	header := r.Header.Get("Authorization")

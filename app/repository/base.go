@@ -67,7 +67,7 @@ type Repo interface {
 	SetRedis(key string, value interface{}, exp time.Duration) error
 
 	// Update
-	Update(i interface{}, data map[string]interface{}) error
+	Update(tableName string, i interface{}, data map[string]interface{}) error
 	// delete
 	DeleteRedis(key string) (int64, error)
 }

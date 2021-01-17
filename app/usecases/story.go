@@ -63,6 +63,6 @@ func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.Respons
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
-	return ctx, data, msg, http.StatusAccepted, nil
+	return ctx, data, msg, http.StatusOK, nil
 
 }

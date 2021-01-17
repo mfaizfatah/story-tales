@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"crypto/sha1"
 	"errors"
 	"fmt"
 	"net/http"
@@ -10,6 +11,7 @@ import (
 	"time"
 
 	"github.com/mfaizfatah/story-tales/app/helpers/encryption"
+	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/repository"
 )
@@ -49,7 +51,7 @@ func TokenForgotPass(text, kode string, d time.Duration) string {
 }
 
 //ValidateToken is func to parse token
-func ValidateToken(token, kode string, IsExpired bool) (Tokens, error) {
+func ValidateToken(token, kode string, CheckExpired bool) (Tokens, error) {
 	text, err := encryption.DecryptorTokenForgotPass(token)
 	if err != nil {
 		return nil, err
@@ -60,7 +62,7 @@ func ValidateToken(token, kode string, IsExpired bool) (Tokens, error) {
 	if err != nil {
 		return nil, err
 	}
-	if IsExpired {
+	if CheckExpired {
 		exp := time.Unix(0, int64(raw))
 		if time.Now().After(exp) {
 			return nil, errors.New(`expired token`)
@@ -84,11 +86,15 @@ func (r *uc) SendLinkForgotPass(ctx context.Context, req *models.User) (context.
 		code int
 		err  error
 
-		user models.User
+		user = new(models.User)
 	)
 
-	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", req.Email)
-	if user.Email != "" || err != nil {
+	err = r.query.FindOne(tableUser, user, "email = ?", "id, email, name", req.Email)
+	if err != nil {
+		return ctx, nil, ErrServer, http.StatusInternalServerError, err
+	}
+	ctx = logger.Logf(ctx, "user() => %v", user)
+	if user.Email == "" {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
@@ -101,4 +107,56 @@ func (r *uc) SendLinkForgotPass(ctx context.Context, req *models.User) (context.
 	code = http.StatusOK
 	res = "email sent successfully"
 	return ctx, res, msg, code, nil
+}
+
+func (r *uc) ValidateTokenForgotPass(ctx context.Context, tokenForgotPass string) (context.Context, string, int, error) {
+	var (
+		msg  string
+		code = http.StatusAccepted
+		err  error
+	)
+
+	result, err := ValidateToken(tokenForgotPass, "kode", true)
+	if err != nil {
+		ctx = logger.Logf(ctx, "error reset pass: %v", err)
+		msg = "Expired reset password"
+		return ctx, msg, http.StatusUnauthorized, err
+	}
+
+	msg = "token accepted with email: " + result.Value()
+
+	return ctx, msg, code, nil
+}
+
+func (r *uc) ChangePassword(ctx context.Context, req *models.ForgotPass) (context.Context, string, int, error) {
+	var (
+		msg  string
+		code = http.StatusOK
+		err  error
+
+		user = new(models.User)
+		sha  = sha1.New()
+	)
+
+	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", req.Email)
+	if err != nil {
+		msg = "email not found"
+		return ctx, msg, http.StatusNotFound, err
+	}
+
+	if req.Password != req.RepeatPassword {
+		msg = "password not match"
+		return ctx, msg, http.StatusForbidden, errors.New("password not match")
+	}
+
+	sha.Write([]byte(req.Password))
+	encrypted := sha.Sum(nil)
+
+	data := make(map[string]interface{})
+	data["password"] = fmt.Sprintf("%x", encrypted)
+
+	go r.query.Update(tableUser, user, data)
+
+	msg = "success change password => email: " + user.Email
+	return ctx, msg, code, err
 }

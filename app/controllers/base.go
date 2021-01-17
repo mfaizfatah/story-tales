@@ -17,11 +17,19 @@ type Controllers interface {
 	HandlerRegistration(w http.ResponseWriter, r *http.Request)
 	HandlerLogin(w http.ResponseWriter, r *http.Request)
 	HandlerLogout(w http.ResponseWriter, r *http.Request)
+  
 	// Story
 	HandlerPostStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
 	HandlerCheckSession(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
+
+	// Forgot-Pass
+	HandlerSendEmailForgotPass(w http.ResponseWriter, r *http.Request)
+	HandlerValidateTokenForgotPass(w http.ResponseWriter, r *http.Request)
+	HandlerChangePassword(w http.ResponseWriter, r *http.Request)
+
+  // Banner
 	HandlerCreateBanner(w http.ResponseWriter, r *http.Request)
 	HandlerGetBannerDetail(w http.ResponseWriter, r *http.Request)
 	HandlerGetListBannerThumb(w http.ResponseWriter, r *http.Request)

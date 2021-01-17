@@ -2,7 +2,7 @@ package models
 
 // User is model for user data
 type User struct {
-	ID          int         `json:"id" gorm:"column:id"`
+	ID          int         `json:"id_user" gorm:"column:id"`
 	Username    string      `json:"username" gorm:"column:username"`
 	Email       string      `json:"email" gorm:"column:email"`
 	Password    string      `json:"password" gorm:"column:password"`

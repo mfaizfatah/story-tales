@@ -20,6 +20,7 @@ type Controllers interface {
 	// Story
 	HandlerPostStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
+	HandlerCheckSession(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
 }
 

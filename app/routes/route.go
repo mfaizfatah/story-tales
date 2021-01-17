@@ -55,7 +55,7 @@ func (c *route) Router(port string) {
 	// group router if need to check session
 	router.Group(func(r chi.Router) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckSession)
-
+		r.Get("/user/check", c.ctrl.HandlerCheckSession)
 	})
 
 	router.MethodNotAllowed(middleware.NotAllowed)

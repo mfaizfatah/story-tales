@@ -46,9 +46,10 @@ type Usecases interface {
 	Logout(ctx context.Context, token string) (context.Context, interface{}, string, int, error)
 	CheckSession(ctx context.Context, req *models.User, token string) (context.Context, interface{}, string, int, error)
 
-
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)
+	ValidateTokenForgotPass(ctx context.Context, tokenForgotPass string) (context.Context, string, int, error)
+	ChangePassword(ctx context.Context, req *models.ForgotPass) (context.Context, string, int, error)
 
 	// Process token
 	GetUserFromToken(req *http.Request) (*models.User, string, int, error)

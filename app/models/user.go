@@ -11,3 +11,10 @@ type User struct {
 	DateOfBirth interface{} `json:"dateOfBirth" gorm:"column:date_of_birth"`
 	IDRole      int         `json:"idRole" gorm:"column:id_role"`
 }
+
+// ForgotPass is mode for request forgot pass
+type ForgotPass struct {
+	Email          string `json:"email"`
+	Password       string `json:"password"`
+	RepeatPassword string `json:"repeatPassword"`
+}

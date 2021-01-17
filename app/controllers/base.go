@@ -22,6 +22,10 @@ type Controllers interface {
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
 	HandlerCheckSession(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
+	// Forgot-Pass
+	HandlerSendEmailForgotPass(w http.ResponseWriter, r *http.Request)
+	HandlerValidateTokenForgotPass(w http.ResponseWriter, r *http.Request)
+	HandlerChangePassword(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

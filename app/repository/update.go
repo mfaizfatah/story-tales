@@ -8,8 +8,8 @@ package repository
  * uint - id after insert into database
  * error
  */
-func (r *repo) Update(i interface{}, data map[string]interface{}) error {
-	query := r.db.Model(i).Updates(data)
+func (r *repo) Update(tableName string, i interface{}, data map[string]interface{}) error {
+	query := r.db.Table(tableName).Model(i).Updates(data)
 	if query.Error != nil {
 		return query.Error
 	}

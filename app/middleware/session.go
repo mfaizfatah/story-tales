@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"encoding/base64"
-	"log"
 	"net/http"
 	"strings"
 
@@ -30,7 +29,7 @@ func CheckSession(next http.Handler) http.Handler {
 			Response(ctx, w, http.StatusForbidden, "Bearer Token Format Error")
 			return
 		}
-		log.Printf("LOG DEBUG :: VALUE REDIS() => %v", valueRedis)
+
 		decryptData, err := base64.StdEncoding.DecodeString(valueRedis)
 		if err != nil {
 			ctx = logger.Logf(ctx, "Error while decrypt header => %v", err)

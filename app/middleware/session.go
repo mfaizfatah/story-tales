@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"encoding/base64"
+	"log"
 	"net/http"
 	"strings"
 
@@ -16,7 +17,6 @@ func CheckSession(next http.Handler) http.Handler {
 		ctx := r.Context()
 
 		header := r.Header.Get("Authorization")
-
 		auth := strings.Split(header, " ")
 
 		// valueRedis, err := adapter.GetClientRedis().Get(auth[1]).Result()
@@ -26,12 +26,12 @@ func CheckSession(next http.Handler) http.Handler {
 			return
 		}
 
-		if auth[0] != "bearer" {
+		if strings.ToLower(auth[0]) != "bearer" {
 			Response(ctx, w, http.StatusForbidden, "Bearer Token Format Error")
 			return
 		}
-
-		decryptData, err := base64.RawStdEncoding.DecodeString(valueRedis)
+		log.Printf("LOG DEBUG :: VALUE REDIS() => %v", valueRedis)
+		decryptData, err := base64.StdEncoding.DecodeString(valueRedis)
 		if err != nil {
 			ctx = logger.Logf(ctx, "Error while decrypt header => %v", err)
 			Response(ctx, w, http.StatusUnauthorized, "Wrong Authorization")

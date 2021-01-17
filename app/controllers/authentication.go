@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
@@ -54,5 +55,40 @@ func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	utils.Response(ctx, w, true, st, res)
+}
+
+
+func (u *ctrl) HandlerLogout(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	header := r.Header.Get("Authorization")
+	token := strings.Split(header, " ")
+
+	ctx, res, message, st, err := u.uc.Logout(ctx, token[1])
+	if err != nil {
+		utils.Response(ctx, w, false, st, message)
+		return
+	}
+	utils.Response(ctx, w, true, st, res)
+}
+
+func (u *ctrl) HandlerCheckSession(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	header := r.Header.Get("Authorization")
+	auth := strings.Split(header, " ")
+
+	user, msg, code, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Error on get request() => %v", err)
+		utils.Response(ctx, w, false, code, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.CheckSession(ctx, user, auth[1])
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
 	utils.Response(ctx, w, true, st, res)
 }

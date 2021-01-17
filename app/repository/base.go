@@ -68,6 +68,8 @@ type Repo interface {
 
 	// Update
 	Update(i interface{}, data map[string]interface{}) error
+	// delete
+	DeleteRedis(key string) (int64, error)
 }
 
 /*NewRepo will create an object that represent the Repository interface (Repo)

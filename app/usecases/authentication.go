@@ -73,19 +73,14 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 
 func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error) {
 	var (
-		sha   = sha1.New()
-		res   = new(models.ResponseLogin)
-		user  = new(models.User)
-		msg   string
-		err   error
-		where string
+		sha  = sha1.New()
+		res  = new(models.ResponseLogin)
+		user = new(models.User)
+		msg  string
+		err  error
 	)
 
-	where = req.Email
-	if where == "" {
-		where = req.Username
-	}
-	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password", where)
+	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password", req.Email, req.Username)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
@@ -111,4 +106,32 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 	res.Message = "Login Success"
 
 	return ctx, res, msg, http.StatusAccepted, nil
+}
+
+func (r *uc) CheckSession(ctx context.Context, req *models.User, token string) (context.Context, interface{}, string, int, error) {
+	var (
+		res  models.TokenResponse
+		msg  string
+		code = http.StatusOK
+		err  error
+	)
+
+	result, err := r.query.FindToken(token)
+	if err != nil {
+		msg = "token expired or not exist"
+		return ctx, nil, msg, http.StatusNotFound, err
+	}
+	ctx = logger.Logf(ctx, "token value() => %v", result)
+
+	ttl, err := r.query.GetTTLRedis(token)
+	if err != nil {
+		msg = "token expired or not exist"
+		return ctx, nil, msg, http.StatusNotFound, err
+	}
+
+	res.Key = token
+	res.Value = fmt.Sprintf("idUser = %v", req.ID)
+	res.ExpiredIn = fmt.Sprintf("%d", ttl)
+
+	return ctx, res, msg, code, nil
 }

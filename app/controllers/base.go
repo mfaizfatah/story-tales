@@ -18,6 +18,7 @@ type Controllers interface {
 	HandlerLogin(w http.ResponseWriter, r *http.Request)
 	HandlerInsertStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
+	HandlerCheckSession(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
 }
 

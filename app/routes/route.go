@@ -49,7 +49,13 @@ func (c *route) Router(port string) {
 		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
 		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
+
+		r.Post("/banner", c.ctrl.HandlerCreateBanner)
+		r.Get("/bannerDetail/{id}", c.ctrl.HandlerGetBannerDetail)
+		r.Get("/listBannerThumb", c.ctrl.HandlerGetListBannerThumb)
+
 		r.Get("/logout", c.ctrl.HandlerLogout)
+
 		r.Post("/forgot-pass", c.ctrl.HandlerSendEmailForgotPass)
 		r.Get("/forgot-pass/{token}", c.ctrl.HandlerValidateTokenForgotPass)
 		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)

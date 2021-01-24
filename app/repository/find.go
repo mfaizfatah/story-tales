@@ -77,6 +77,38 @@ func (r *repo) FindGetOneStory(storyid int) (*models.ResponseOneStory, error) {
 	return data, nil
 }
 
+func (r *repo) FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDetailEpisode, error) {
+	var data = new(models.ResponseDetailEpisode)
+	rows, err := r.db.Table("episodes").
+		Joins("LEFT JOIN episodes_details ON episodes_details.id_episodes = episodes.id ").
+		Select("episodes.id, episodes.eps_number, episodes.eps_title, COALESCE(episodes_details.id,0), COALESCE(episodes_details.page,0), COALESCE(episodes_details.schedule,''), COALESCE(episodes_details.images,'')").
+		Where("episodes.id_story = ?", storyid).
+		Where("episodes.id = ?", episodeid).
+		Rows()
+
+	defer rows.Close()
+	for rows.Next() {
+		var detail models.Detail
+		err = rows.Scan(&data.ID, &data.Eps_Number, &data.Eps_Title, &detail.ID, &detail.Page, &detail.Schedule, &detail.Images)
+		if err != nil {
+			log.Panic(err)
+		}
+		if detail.ID != 0 {
+			data.Detail = append(data.Detail, detail)
+		} else {
+			data.Detail = nil
+		}
+
+	}
+
+	if err != nil {
+		log.Panic(err)
+		return data, err
+	}
+
+	return data, nil
+}
+
 func (r *repo) FindAll(table string) ([]models.ResponseAllStory, error) {
 	var data []models.ResponseAllStory
 	err := r.db.Table(table).Scan(&data)

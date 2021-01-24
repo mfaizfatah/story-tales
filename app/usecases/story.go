@@ -13,7 +13,7 @@ const (
 	tableStory = "story"
 )
 
-func (r *uc) PostStory(ctx context.Context, req *models.Story) (context.Context, string, int, error) {
+func (r *uc) PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error) {
 	var (
 		story = new(models.Story)
 		msg   string
@@ -25,7 +25,7 @@ func (r *uc) PostStory(ctx context.Context, req *models.Story) (context.Context,
 	}
 
 	story = req
-	log.Printf("msg: %v", story)
+	story.IDAuthor = userid
 	err = r.query.Insert(tableStory, story)
 
 	if err != nil {
@@ -43,6 +43,22 @@ func (r *uc) GetOneStory(ctx context.Context, storyID int) (context.Context, *mo
 
 	data, err := r.query.FindGetOneStory(storyID)
 	log.Printf("msg: %v", data)
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusOK, nil
+
+}
+
+func (r *uc) GetDetailEpisode(ctx context.Context, storyID, episodeID int) (context.Context, *models.ResponseDetailEpisode, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+
+	data, err := r.query.FindGetDetailEpisode(storyID, episodeID)
+
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

@@ -60,3 +60,18 @@ type ListEpisode struct {
 	Eps_Number int    `json:"eps_number"`
 	Eps_Title  string `json:"eps_title"`
 }
+
+//GetDetail
+type ResponseDetailEpisode struct {
+	ID         int      `json:"id"`
+	Eps_Number int      `json:"eps_number"`
+	Eps_Title  string   `json:"eps_title"`
+	Detail     []Detail `json:"detail"`
+}
+
+type Detail struct {
+	ID       int    `json:"id"`
+	Page     int    `json:"page"`
+	Schedule string `json:"schedule"`
+	Images   string `json:"images"`
+}

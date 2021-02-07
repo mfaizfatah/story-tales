@@ -43,7 +43,7 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 	}
 
 	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", req.Email)
-	if user.Email != "" {
+	if user.Email != "" || user.Username != "" {
 		return ctx, nil, ErrAlreadyEmail, http.StatusConflict, repository.ErrConflict
 	}
 

@@ -89,6 +89,10 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
+	if user.EmailVerification != 1 {
+		return ctx, nil, "You must verify your email!", http.StatusNotAcceptable, repository.ErrRecordNotFound
+	}
+
 	sha.Write([]byte(req.Password))
 	encrypted := sha.Sum(nil)
 
@@ -149,7 +153,7 @@ func (r *uc) CheckSession(ctx context.Context, req *models.User, token string) (
 
 // segment verification email
 func (r *uc) SendLinkVerification(email string) error {
-	url := "url"
+	url := "https://api-storytales.digisoul.id/verify"
 	token := TokenForgotPass(email, "kode", 15*time.Minute)
 	link := fmt.Sprintf("%v/%v", url, token)
 

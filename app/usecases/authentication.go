@@ -4,8 +4,10 @@ import (
 	"context"
 	"crypto/sha1"
 	"fmt"
+	"log"
 	"net/http"
 	"regexp"
+	"time"
 
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
@@ -68,6 +70,8 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 	res.Token.ExpiredIn = fmt.Sprintf("%v", duration)
 	res.Message = "Registration Success"
 
+	go r.SendLinkVerification(user.Email)
+
 	return ctx, res, msg, http.StatusCreated, err
 }
 
@@ -108,7 +112,6 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 	return ctx, res, msg, http.StatusAccepted, nil
 }
 
-
 func (r *uc) Logout(ctx context.Context, token string) (context.Context, interface{}, string, int, error) {
 	result, err := r.query.DeleteRedis(token)
 	if err != nil {
@@ -143,3 +146,47 @@ func (r *uc) CheckSession(ctx context.Context, req *models.User, token string) (
 
 	return ctx, res, msg, code, nil
 }
+
+// segment verification email
+func (r *uc) SendLinkVerification(email string) error {
+	url := "url"
+	token := TokenForgotPass(email, "kode", 15*time.Minute)
+	link := fmt.Sprintf("%v/%v", url, token)
+
+	err := r.smtp.EmailVerification(link).SendEmail(email)
+	if err != nil {
+		log.Printf("failed send email to user() => %v :: error() => %v", email, err)
+		return err
+	}
+	return nil
+}
+
+func (r *uc) EmailVerification(ctx context.Context, token string) (context.Context, interface{}, int, error) {
+	var (
+		res  interface{}
+		code = http.StatusAccepted
+		err  error
+		user = new(models.User)
+	)
+	result, err := ValidateToken(token, "kode", false)
+	if err != nil {
+		res = "invalid link verification"
+		return ctx, res, http.StatusUnauthorized, err
+	}
+
+	user.Email = result.Value()
+
+	data := make(map[string]interface{})
+	data["email_verify"] = 1
+
+	err = r.query.Update(tableUser, user, data)
+	if err != nil {
+		res = "error while update data"
+		return ctx, res, http.StatusInternalServerError, err
+	}
+
+	res = "update email verification success"
+	return ctx, res, code, nil
+}
+
+// end segment

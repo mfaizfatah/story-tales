@@ -174,7 +174,12 @@ func (r *uc) EmailVerification(ctx context.Context, token string) (context.Conte
 		return ctx, res, http.StatusUnauthorized, err
 	}
 
-	user.Email = result.Value()
+	email := result.Value()
+	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", email)
+	if err != nil {
+		res = "email not found"
+		return ctx, res, http.StatusNotFound, err
+	}
 
 	data := make(map[string]interface{})
 	data["email_verify"] = 1

@@ -18,6 +18,7 @@ type Controllers interface {
 	HandlerLogin(w http.ResponseWriter, r *http.Request)
 	HandlerLogout(w http.ResponseWriter, r *http.Request)
 	HandlerCheckSession(w http.ResponseWriter, r *http.Request)
+	HandlerEmailVerification(w http.ResponseWriter, r *http.Request)
 
 	// Story
 	HandlerPostStory(w http.ResponseWriter, r *http.Request)

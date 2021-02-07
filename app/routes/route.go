@@ -46,6 +46,7 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckAPIKey)
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
+		r.Get("/verify/{token}", c.ctrl.HandlerEmailVerification)
 
 		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story", c.ctrl.HandlerGetAllStory)

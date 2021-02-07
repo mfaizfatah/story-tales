@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/go-chi/chi"
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/utils"
@@ -58,7 +59,6 @@ func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
-
 func (u *ctrl) HandlerLogout(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -91,4 +91,18 @@ func (u *ctrl) HandlerCheckSession(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	utils.Response(ctx, w, true, st, res)
+}
+
+func (u *ctrl) HandlerEmailVerification(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	token := chi.URLParam(r, "token")
+
+	ctx, msg, code, err := u.uc.EmailVerification(ctx, token)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Error on verify email() => %v", err)
+		utils.Response(ctx, w, false, code, msg)
+		return
+	}
+	utils.Response(ctx, w, true, code, msg)
 }

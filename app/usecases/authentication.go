@@ -176,14 +176,14 @@ func (r *uc) EmailVerification(ctx context.Context, token string) (context.Conte
 	)
 	result, err := ValidateToken(token, "kode", false)
 	if err != nil {
-		res = "invalid link verification"
+		res = `<!DOCTYPE html><html><body><h1>invalid link verification</h1></body></html>`
 		return ctx, res, http.StatusUnauthorized, err
 	}
 
 	email := result.Value()
 	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", email)
 	if err != nil {
-		res = "email not found"
+		res = `<!DOCTYPE html><html><body><h1>email not found</h1></body></html>`
 		return ctx, res, http.StatusNotFound, err
 	}
 
@@ -192,11 +192,11 @@ func (r *uc) EmailVerification(ctx context.Context, token string) (context.Conte
 
 	err = r.query.Update(tableUser, user, data)
 	if err != nil {
-		res = "error while update data"
+		res = `<!DOCTYPE html><html><body><h1>error while update data</h1></body></html>`
 		return ctx, res, http.StatusInternalServerError, err
 	}
 
-	res = "update email verification success"
+	res = `<!DOCTYPE html><html><body><h1>Your Email is Verified</h1></body></html>`
 	return ctx, res, code, nil
 }
 

@@ -101,8 +101,8 @@ func (u *ctrl) HandlerEmailVerification(w http.ResponseWriter, r *http.Request) 
 	ctx, msg, code, err := u.uc.EmailVerification(ctx, token)
 	if err != nil {
 		ctx = logger.Logf(ctx, "Error on verify email() => %v", err)
-		utils.Response(ctx, w, false, code, msg)
+		utils.HTMLResponse(w, code, msg.(string))
 		return
 	}
-	utils.Response(ctx, w, true, code, msg)
+	utils.HTMLResponse(w, code, msg.(string))
 }

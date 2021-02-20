@@ -7,5 +7,6 @@ This repository using for Backend Service of story-tales-apps
 On this Project, we have feature :
 
 - [x] Authentication
+- [ ] Story
 
 Ps: You need run Redis on your local machine. Download Redis --> (https://redis.io/download)

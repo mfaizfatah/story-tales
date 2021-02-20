@@ -56,3 +56,11 @@ func Response(ctx context.Context, w http.ResponseWriter, status bool, statuscod
 	w.WriteHeader(statuscode)
 	fmt.Fprintf(w, string(datares))
 }
+
+// HTMLResponse for response html
+func HTMLResponse(w http.ResponseWriter, statuscode int, AddForm string) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(statuscode)
+	fmt.Fprint(w, AddForm)
+	return
+}

@@ -1,33 +1,113 @@
 package models
 
-// Story model data
+// Story defines the structure for an API Story
+// swagger:model Story
 type Story struct {
-	ID              int               `json:"id" gorm:"column:id"`
-	Title           string            `json:"title" gorm:"column:title"`
-	Season          string            `json:"season" gorm:"column:season"`
-	Sinopsis        string            `json:"sinopsis" gorm:"column:sinopsis"`
-	Images          string            `json:"images" gorm:"column:images"`
-	FlagOnGoing     int               `json:"flagOnGoing" gorm:"column:flag_ongoing"`
-	FlagCommment    int               `json:"flagComment" gorm:"column:flag_comment"`
-	IDAuthor        int               `json:"idAuthor" gorm:"column:id_author"`
+	// the id for the product
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	ID int `json:"id" gorm:"column:id"` // Unique identifier for story
+
+	// the name for this story
+	//
+	// required: true
+	// max length: 255
+	Title string `json:"title" gorm:"column:title"`
+	// season for story
+	//
+	// required: true
+	// max length: 255
+	Season string `json:"season" gorm:"column:season"`
+	// Sinopsis Story
+	//
+	// required: true
+	// max length:10000
+	Sinopsis string `json:"sinopsis" gorm:"column:sinopsis"`
+	// images Story
+	//
+	// required: true
+	// max length:10000
+	Images string `json:"images" gorm:"column:images"`
+	// images Story
+	//
+	// required: true
+	// max length:1
+	FlagOnGoing int `json:"flagOnGoing" gorm:"column:flag_ongoing"`
+	// images Story
+	//
+	// required: true
+	// max length:1
+	FlagCommment int `json:"flagComment" gorm:"column:flag_comment"`
+	// the id for the author
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	IDAuthor        int               `json:"idAuthor" gorm:"column:id_author"` // Unique identifier for author
 	Episode         []Episode         `json:"episode" gorm:"foreignKey:id_story;references:ID"`
 	Episodes_Detail []Episodes_Detail `json:"episodeDetail"gorm:"foreignKey:id_story;references:ID"`
 }
 
 type Episode struct {
-	ID         int    `json:"id" gorm:"column:id"`
-	ID_Story   int    `json:"idStory" gorm:"column:id_story"`
-	Eps_Number int    `json:"epsNumber" gorm:"column:eps_number"`
-	Eps_Title  string `json:"epsTitle" gorm:"column:eps_title"`
+	// the id for episode
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	ID int `json:"id" gorm:"column:id"`
+	// the id for story
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	ID_Story int `json:"idStory" gorm:"column:id_story"`
+	// number episode
+	//
+	// required: true
+	// min: 1
+	Eps_Number int `json:"epsNumber" gorm:"column:eps_number"`
+	// title of episode
+	//
+	// required: true
+	// max length: 255
+	Eps_Title string `json:"epsTitle" gorm:"column:eps_title"`
 }
 
 type Episodes_Detail struct {
-	ID         int    `json:"id" gorm:"column:id"`
-	ID_Story   int    `json:"idStory" gorm:"column:id_story"`
-	ID_Episode int    `json:"idEpisode" gorm:"column:id_episodes"`
-	Page       int    `json:"page" gorm:"column:page"`
-	Schedule   string `json:"schedule" gorm:"column:schedule"`
-	Images     string `json:"images" gorm:"column:images"`
+	// the id for episodeDetail
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	ID int `json:"id" gorm:"column:id"`
+	// the id for story
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	ID_Story int `json:"idStory" gorm:"column:id_story"`
+	// the id for story
+	//
+	// required: true
+	// min: 1
+	ID_Episode int `json:"idEpisode" gorm:"column:id_episodes"`
+	// page nubmer episode
+	//
+	// required: true
+	// min: 1
+	Page int `json:"page" gorm:"column:page"`
+	// schedule release date
+	//
+	// required: true
+	// min: 1
+	Schedule string `json:"schedule" gorm:"column:schedule"`
+	// images episode
+	//
+	// required: true
+	// min: 1
+	Images string `json:"images" gorm:"column:images"`
 }
 
 // Response All..

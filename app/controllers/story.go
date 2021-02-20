@@ -11,6 +11,12 @@ import (
 	"github.com/mfaizfatah/story-tales/app/utils"
 )
 
+// swagger:route POST /story story createStory
+// Return a list of story from the database
+// responses:
+//	200: postResponse
+
+// ListOne handles GET requests and returns one story
 func (u *ctrl) HandlerPostStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -39,6 +45,12 @@ func (u *ctrl) HandlerPostStory(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, msg)
 }
 
+// swagger:route GET /story/{storyID} story oneStory
+// Return a list of story from the database
+// responses:
+//	200: oneStoryResponse
+
+// ListOne handles GET requests and returns one story
 func (u *ctrl) HandlerGetOneStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	storyID, err := strconv.Atoi(chi.URLParam(r, "storyID"))
@@ -53,6 +65,12 @@ func (u *ctrl) HandlerGetOneStory(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+// swagger:route GET /story/{storyID}/{episodeID} story detailEpisode
+// Return a list of story from the database
+// responses:
+//	200: detailEpisodeResponse
+
+// ListAll handles GET requests and returns all Story
 func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -66,6 +84,12 @@ func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+// swagger:route GET /story story allStory
+// Return a list of story from the database
+// responses:
+//	200: allStoryResponse
+
+// ListAll handles GET requests and returns all Story
 func (u *ctrl) HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	storyID, err := strconv.Atoi(chi.URLParam(r, "storyID"))

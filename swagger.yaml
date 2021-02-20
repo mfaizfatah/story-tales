@@ -1,0 +1,375 @@
+basePath: /
+consumes:
+- application/json
+- multipart/form-data
+definitions:
+  Detail:
+    properties:
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      images:
+        type: string
+        x-go-name: Images
+      page:
+        format: int64
+        type: integer
+        x-go-name: Page
+      schedule:
+        type: string
+        x-go-name: Schedule
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  Episode:
+    properties:
+      epsNumber:
+        description: number episode
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: Eps_Number
+      epsTitle:
+        description: title of episode
+        maxLength: 255
+        type: string
+        x-go-name: Eps_Title
+      id:
+        description: the id for episode
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID
+      idStory:
+        description: the id for story
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID_Story
+    required:
+    - epsNumber
+    - epsTitle
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  Episodes_Detail:
+    properties:
+      id:
+        description: the id for episodeDetail
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID
+      idEpisode:
+        description: the id for story
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: ID_Episode
+      idStory:
+        description: the id for story
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID_Story
+      images:
+        description: images episode
+        minimum: 1
+        type: string
+        x-go-name: Images
+      page:
+        description: page nubmer episode
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: Page
+      schedule:
+        description: schedule release date
+        minimum: 1
+        type: string
+        x-go-name: Schedule
+    required:
+    - idEpisode
+    - page
+    - schedule
+    - images
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  ListEpisode:
+    description: ListEpisode
+    properties:
+      eps_number:
+        format: int64
+        type: integer
+        x-go-name: Eps_Number
+      eps_title:
+        type: string
+        x-go-name: Eps_Title
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  ResponseAllStory:
+    properties:
+      flagComment:
+        format: int64
+        type: integer
+        x-go-name: FlagCommment
+      flagOnGoing:
+        format: int64
+        type: integer
+        x-go-name: FlagOnGoing
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      idAuthor:
+        format: int64
+        type: integer
+        x-go-name: IDAuthor
+      images:
+        type: string
+        x-go-name: Images
+      season:
+        type: string
+        x-go-name: Season
+      title:
+        type: string
+        x-go-name: Title
+    title: Response All..
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  ResponseDetailEpisode:
+    description: GetDetail
+    properties:
+      detail:
+        items:
+          $ref: '#/definitions/Detail'
+        type: array
+        x-go-name: Detail
+      eps_number:
+        format: int64
+        type: integer
+        x-go-name: Eps_Number
+      eps_title:
+        type: string
+        x-go-name: Eps_Title
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  ResponseOneStory:
+    properties:
+      flagComment:
+        format: int64
+        type: integer
+        x-go-name: FlagCommment
+      flagOnGoing:
+        format: int64
+        type: integer
+        x-go-name: FlagOnGoing
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      idAuthor:
+        format: int64
+        type: integer
+        x-go-name: IDAuthor
+      images:
+        type: string
+        x-go-name: Images
+      listEpisode:
+        items:
+          $ref: '#/definitions/ListEpisode'
+        type: array
+        x-go-name: ListEpisode
+      season:
+        type: string
+        x-go-name: Season
+      sinopsis:
+        type: string
+        x-go-name: Sinopsis
+      title:
+        type: string
+        x-go-name: Title
+    title: Response Get One..
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  Story:
+    description: Story defines the structure for an API Story
+    properties:
+      episode:
+        items:
+          $ref: '#/definitions/Episode'
+        type: array
+        x-go-name: Episode
+      episodeDetail:
+        items:
+          $ref: '#/definitions/Episodes_Detail'
+        type: array
+        x-go-name: Episodes_Detail
+      flagComment:
+        description: images Story
+        format: int64
+        maxLength: 1
+        type: integer
+        x-go-name: FlagCommment
+      flagOnGoing:
+        description: images Story
+        format: int64
+        maxLength: 1
+        type: integer
+        x-go-name: FlagOnGoing
+      id:
+        description: the id for the product
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID
+      idAuthor:
+        description: the id for the author
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: IDAuthor
+      images:
+        description: images Story
+        maxLength: 10000
+        type: string
+        x-go-name: Images
+      season:
+        description: season for story
+        maxLength: 255
+        type: string
+        x-go-name: Season
+      sinopsis:
+        description: Sinopsis Story
+        maxLength: 10000
+        type: string
+        x-go-name: Sinopsis
+      title:
+        description: the name for this story
+        maxLength: 255
+        type: string
+        x-go-name: Title
+    required:
+    - title
+    - season
+    - sinopsis
+    - images
+    - flagOnGoing
+    - flagComment
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+host: localhost:8080
+info:
+  description: |-
+    the purpose of this application is to provide an application
+    that is using plain go code to define an API
+
+    This should demonstrate all the possible comment annotations
+    that are available to turn go code into a fully compliant swagger 2.0 spec
+  title: Story Tales API.
+  version: 0.0.1
+paths:
+  /story:
+    get:
+      description: Return a list of story from the database
+      operationId: allStory
+      responses:
+        "200":
+          $ref: '#/responses/allStoryResponse'
+      tags:
+      - story
+    post:
+      description: Return a list of story from the database
+      operationId: createStory
+      parameters:
+      - description: The id of the product for which the operation relates
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/Story'
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
+      tags:
+      - story
+  /story/{storyID}:
+    get:
+      description: Return a list of story from the database
+      operationId: oneStory
+      parameters:
+      - format: int64
+        in: path
+        name: storyID
+        type: integer
+        x-go-name: StoryID
+      responses:
+        "200":
+          $ref: '#/responses/oneStoryResponse'
+      tags:
+      - story
+  /story/{storyID}/{episodeID}:
+    get:
+      description: Return a list of story from the database
+      operationId: detailEpisode
+      parameters:
+      - format: int64
+        in: path
+        name: storyID
+        type: integer
+        x-go-name: StoryID
+      - format: int64
+        in: path
+        name: episodeID
+        type: integer
+        x-go-name: EpisodeID
+      responses:
+        "200":
+          $ref: '#/responses/detailEpisodeResponse'
+      tags:
+      - story
+produces:
+- application/json
+responses:
+  getAllStoryResponse:
+    description: Data structure representing all story
+    schema:
+      $ref: '#/definitions/ResponseAllStory'
+  getDetailEpisodeResponse:
+    description: Data structure representing all story
+    schema:
+      $ref: '#/definitions/ResponseDetailEpisode'
+  getOneStoryResponse:
+    description: Data structure representing a single story
+    schema:
+      $ref: '#/definitions/ResponseOneStory'
+  postResponse:
+    description: Data structure representing a single story
+    schema:
+      properties:
+        data:
+          type: object
+          x-go-name: Data
+        error_message:
+          type: string
+          x-go-name: ErrorMessage
+        status:
+          type: string
+          x-go-name: Status
+      type: object
+schemes:
+- http
+swagger: "2.0"

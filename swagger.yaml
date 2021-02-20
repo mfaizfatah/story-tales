@@ -271,7 +271,6 @@ definitions:
     - flagComment
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models
-host: localhost:8080
 info:
   description: |-
     the purpose of this application is to provide an application
@@ -289,6 +288,8 @@ paths:
       responses:
         "200":
           $ref: '#/responses/getAllStoryResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
       tags:
       - story
     post:
@@ -339,6 +340,8 @@ paths:
       responses:
         "200":
           $ref: '#/responses/getDetailEpisodeResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
       tags:
       - story
 produces:

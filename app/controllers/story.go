@@ -67,9 +67,11 @@ func (u *ctrl) HandlerGetOneStory(w http.ResponseWriter, r *http.Request) {
 
 // swagger:route GET /story/{storyID}/{episodeID} story detailEpisode
 // Return a list of story from the database
+//
 // responses:
 //	200: getDetailEpisodeResponse
-
+//	404: errorResponse
+//
 // ListAll handles GET requests and returns all Story
 func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
@@ -86,9 +88,11 @@ func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
 
 // swagger:route GET /story story allStory
 // Return a list of story from the database
+//
 // responses:
 //	200: getAllStoryResponse
-
+//	404: errorResponse
+//
 // ListAll handles GET requests and returns all Story
 func (u *ctrl) HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()

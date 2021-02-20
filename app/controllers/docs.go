@@ -7,7 +7,6 @@
 // that are available to turn go code into a fully compliant swagger 2.0 spec
 //
 //     Schemes: http
-//     Host: localhost:8080
 //     BasePath: /
 //     Version: 0.0.1
 //
@@ -18,6 +17,7 @@
 //     Produces:
 //     - application/json
 // swagger:meta
+
 package controllers
 
 import (
@@ -27,6 +27,15 @@ import (
 // Data structure representing a single story
 // swagger:response postResponse
 type postResponseWrapper struct {
+	// in: body
+	response struct {
+		Status       string      `json:"status"`
+		ErrorMessage string      `json:"error_message"`
+		Data         interface{} `json:"data"`
+	}
+}
+
+type errorResponseWrapper struct {
 	// in: body
 	response struct {
 		Status       string      `json:"status"`
@@ -85,7 +94,9 @@ type episodeIDparamsWrapper struct {
 type storyIDParamsWrapper struct {
 	/*
 		The id of the product for which the operation relates
-		in: path
+
+		In: path
+
 		required: true
 	*/
 

@@ -2,7 +2,7 @@ package usecases
 
 import (
 	"context"
-	"crypto/sha1"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -31,7 +31,7 @@ func isEmailValid(e string) bool {
 
 func (r *uc) Registration(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error) {
 	var (
-		sha  = sha1.New()
+		// sha  = sha1.New()
 		res  = new(models.ResponseLogin)
 		user = new(models.User)
 		msg  string
@@ -48,27 +48,29 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 	}
 
 	user = req
+	/*
+		sha.Write([]byte(user.Password))
+		encrypted := sha.Sum(nil)
 
-	sha.Write([]byte(user.Password))
-	encrypted := sha.Sum(nil)
-
-	user.Password = fmt.Sprintf("%x", encrypted)
+	user.Password = fmt.Sprintf("%x", encrypted)*/
+	user.Password = req.Password
 	user.DateOfBirth = req.DateOfBirth
 
 	err = r.query.Insert(tableUser, user)
 	if err != nil {
 		return ctx, nil, ErrCreated, http.StatusInternalServerError, err
 	}
+	/*
+		ctx, token, duration, err := r.GenerateToken(ctx, user)
+		if err != nil {
+			return ctx, nil, ErrCreated, http.StatusInternalServerError, err
+		}
 
-	ctx, token, duration, err := r.GenerateToken(ctx, user)
-	if err != nil {
-		return ctx, nil, ErrCreated, http.StatusInternalServerError, err
-	}
-
-	res.Token.Key = "bearer"
-	res.Token.Value = token
-	res.Token.ExpiredIn = fmt.Sprintf("%v", duration)
-	res.Message = "Registration Success"
+		res.Token.Key = "bearer"
+		res.Token.Value = token
+		res.Token.ExpiredIn = fmt.Sprintf("%v", duration)
+	*/
+	res.Message = "Silahkan verifikasi email atau cek email anda, Terima Kasih!"
 
 	go r.SendLinkVerification(user.Email)
 
@@ -77,27 +79,27 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 
 func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error) {
 	var (
-		sha  = sha1.New()
+		// sha  = sha1.New()
 		res  = new(models.ResponseLogin)
 		user = new(models.User)
 		msg  string
 		err  error
 	)
 
-	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password", req.Email, req.Username)
+	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password, email_verify", req.Email, req.Username)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
 	if user.EmailVerification != 1 {
-		return ctx, nil, "You must verify your email!", http.StatusNotAcceptable, repository.ErrRecordNotFound
+		return ctx, nil, "You must verify your email!", http.StatusNotAcceptable, errors.New("email_not_verified")
 	}
+	/*
+		sha.Write([]byte(req.Password))
+		encrypted := sha.Sum(nil)
 
-	sha.Write([]byte(req.Password))
-	encrypted := sha.Sum(nil)
-
-	req.Password = fmt.Sprintf("%x", encrypted)
-
+		req.Password = fmt.Sprintf("%x", encrypted)
+	*/
 	if req.Password != user.Password {
 		return ctx, nil, ErrNotMatch, http.StatusUnauthorized, repository.ErrUnouthorized
 	}

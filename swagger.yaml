@@ -288,7 +288,7 @@ paths:
       operationId: allStory
       responses:
         "200":
-          $ref: '#/responses/allStoryResponse'
+          $ref: '#/responses/getAllStoryResponse'
       tags:
       - story
     post:
@@ -318,7 +318,7 @@ paths:
         x-go-name: StoryID
       responses:
         "200":
-          $ref: '#/responses/oneStoryResponse'
+          $ref: '#/responses/getOneStoryResponse'
       tags:
       - story
   /story/{storyID}/{episodeID}:
@@ -338,7 +338,7 @@ paths:
         x-go-name: EpisodeID
       responses:
         "200":
-          $ref: '#/responses/detailEpisodeResponse'
+          $ref: '#/responses/getDetailEpisodeResponse'
       tags:
       - story
 produces:

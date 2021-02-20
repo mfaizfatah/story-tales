@@ -48,7 +48,7 @@ func (u *ctrl) HandlerPostStory(w http.ResponseWriter, r *http.Request) {
 // swagger:route GET /story/{storyID} story oneStory
 // Return a list of story from the database
 // responses:
-//	200: oneStoryResponse
+//	200: getOneStoryResponse
 
 // ListOne handles GET requests and returns one story
 func (u *ctrl) HandlerGetOneStory(w http.ResponseWriter, r *http.Request) {
@@ -68,7 +68,7 @@ func (u *ctrl) HandlerGetOneStory(w http.ResponseWriter, r *http.Request) {
 // swagger:route GET /story/{storyID}/{episodeID} story detailEpisode
 // Return a list of story from the database
 // responses:
-//	200: detailEpisodeResponse
+//	200: getDetailEpisodeResponse
 
 // ListAll handles GET requests and returns all Story
 func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
@@ -87,7 +87,7 @@ func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
 // swagger:route GET /story story allStory
 // Return a list of story from the database
 // responses:
-//	200: allStoryResponse
+//	200: getAllStoryResponse
 
 // ListAll handles GET requests and returns all Story
 func (u *ctrl) HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request) {

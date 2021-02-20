@@ -76,8 +76,12 @@ func (c *route) Router(port string) {
 
 	router.MethodNotAllowed(middleware.NotAllowed)
 	router.NotFound(middleware.NotFound)
+	opts := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	sh := middleware.Redoc(opts, nil)
 
+	router.Handle("/docs", sh)
 	router.Handle("/metrics", promhttp.Handler())
+	router.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	logrus.Infof("Server running on port : %s", port)
 	logrus.Fatalln(http.ListenAndServe(fmt.Sprintf(":%s", port), cors.AllowAll().Handler(router)))

@@ -320,6 +320,8 @@ paths:
       responses:
         "200":
           $ref: '#/responses/getOneStoryResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
       tags:
       - story
   /story/{storyID}/{episodeID}:
@@ -347,6 +349,20 @@ paths:
 produces:
 - application/json
 responses:
+  errorResponse:
+    description: Data structure representing error
+    schema:
+      properties:
+        data:
+          type: object
+          x-go-name: Data
+        error_message:
+          type: string
+          x-go-name: ErrorMessage
+        status:
+          type: string
+          x-go-name: Status
+      type: object
   getAllStoryResponse:
     description: Data structure representing all story
     schema:
@@ -360,7 +376,7 @@ responses:
     schema:
       $ref: '#/definitions/ResponseOneStory'
   postResponse:
-    description: Data structure representing a single story
+    description: Data structure representing error
     schema:
       properties:
         data:
@@ -375,4 +391,12 @@ responses:
       type: object
 schemes:
 - http
+- https
+security:
+- api_key: []
+securityDefinitions:
+  api_key:
+    in: header
+    name: x-api-key
+    type: apiKey
 swagger: "2.0"

@@ -1,30 +1,10 @@
-// Package classification Story Tales API.
-//
-// the purpose of this application is to provide an application
-// that is using plain go code to define an API
-//
-// This should demonstrate all the possible comment annotations
-// that are available to turn go code into a fully compliant swagger 2.0 spec
-//
-//     Schemes: http
-//     BasePath: /
-//     Version: 0.0.1
-//
-//     Consumes:
-//     - application/json
-//     - multipart/form-data
-//
-//     Produces:
-//     - application/json
-// swagger:meta
-
 package controllers
 
 import (
 	"github.com/mfaizfatah/story-tales/app/models"
 )
 
-// Data structure representing a single story
+// Data structure representing error
 // swagger:response postResponse
 type postResponseWrapper struct {
 	// in: body
@@ -35,6 +15,8 @@ type postResponseWrapper struct {
 	}
 }
 
+// Data structure representing error
+// swagger:response errorResponse
 type errorResponseWrapper struct {
 	// in: body
 	response struct {

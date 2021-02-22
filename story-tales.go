@@ -1,3 +1,32 @@
+// Package classification Story Tales API.
+//
+// the purpose of this application is to provide an application
+// that is using plain go code to define an API
+//
+// This should demonstrate all the possible comment annotations
+// that are available to turn go code into a fully compliant swagger 2.0 spec
+//
+//     Schemes: http, https
+//     BasePath: /
+//     Version: 0.0.1
+//
+//     Consumes:
+//     - application/json
+//     - multipart/form-data
+//
+//     Produces:
+//     - application/json
+//
+//     Security:
+//     - api_key:
+//
+//     SecurityDefinitions:
+//     api_key:
+//          type: apiKey
+//          name: x-api-key
+//          in: header
+//
+// swagger:meta
 package main
 
 import (

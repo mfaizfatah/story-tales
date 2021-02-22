@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/mfaizfatah/story-tales/app/helpers/encryption"
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
@@ -98,11 +99,19 @@ func (r *uc) SendLinkForgotPass(ctx context.Context, req *models.User) (context.
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
-	url := "url"
-	token := TokenForgotPass(user.Email, "kode", 5*time.Minute)
-	link := fmt.Sprintf("%v/%v", url, token)
+	randString := uuid.New().String()
+	rand := strings.Split(randString, "-")
+	newPass := rand[4]
 
-	go r.smtp.ForgotPassword(user.Name, link).SendEmail(user.Email)
+	data := make(map[string]interface{})
+	data["password"] = newPass
+
+	err = r.query.Update(tableUser, user, data)
+	if err != nil {
+		return ctx, nil, ErrServer, http.StatusInternalServerError, err
+	}
+
+	go r.smtp.ForgotPassword(user.Name, newPass).SendEmail(user.Email)
 
 	code = http.StatusOK
 	res = "email sent successfully"

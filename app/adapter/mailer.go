@@ -39,8 +39,14 @@ func (e *email) SendEmail(to ...string) error {
 	m.SetHeader("To", to...)
 	m.SetHeader("Subject", e.subject)
 
-	body := e.template.Compose()
-	m.SetBody("text/html", body)
+	switch e.subject {
+	case mailer.ForgotPasswordTitle:
+		body := e.template.ComposeForgotPass()
+		m.SetBody("text/html", body)
+	default:
+		body := e.template.Compose()
+		m.SetBody("text/html", body)
+	}
 
 	log.Printf("from: %v\nto: %v\nsub:  %v\nasset: %v\nclient: %v\n",
 		configEmail, to, e.subject, e.template, e.dial)
@@ -48,9 +54,9 @@ func (e *email) SendEmail(to ...string) error {
 	return e.dial.DialAndSend(m)
 }
 
-func (e *email) ForgotPassword(nama, link string) Messenger {
+func (e *email) ForgotPassword(nama, newPass string) Messenger {
 	e.subject = mailer.ForgotPasswordTitle
-	e.template = mailer.NewforgotPassword(nama, link)
+	e.template = mailer.NewforgotPassword(nama, newPass)
 	return e
 }
 

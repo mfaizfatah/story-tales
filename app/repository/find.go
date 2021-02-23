@@ -109,15 +109,33 @@ func (r *repo) FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDet
 	return data, nil
 }
 
-func (r *repo) FindAll(table string) ([]models.ResponseAllStory, error) {
+func (r *repo) FindAllStory(table string) ([]models.ResponseAllStory, error) {
 	var data []models.ResponseAllStory
-	err := r.db.Table(table).Scan(&data)
+	err := r.db.Table(table).
+		Scan(&data)
 	log.Printf("msg: %v", data)
 	if err != nil {
 		return data, nil
 	}
 
-	return nil, nil
+	return data, nil
+}
+
+func (r *repo) FindRekomendasiStory(table string) ([]models.ResponseRekomenStory, error) {
+	var data []models.ResponseRekomenStory
+	err := r.db.Table(table).
+		Select("story.id, story.title, story.images, genre.genre, author.name AS author").
+		Joins("LEFT JOIN story_genre ON story.id = story_genre.id_story").
+		Joins("LEFT JOIN genre ON genre.id = story_genre.id_genre").
+		Joins("LEFT JOIN author ON author.id = story.id_author").
+		Limit(10).
+		Scan(&data)
+	log.Printf("msg: %v", data)
+	if err != nil {
+		return data, nil
+	}
+
+	return data, nil
 }
 
 func (r *repo) GetTTLRedis(key string) (int64, error) {

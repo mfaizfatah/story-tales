@@ -110,6 +110,15 @@ type Episodes_Detail struct {
 	Images string `json:"images" gorm:"column:images"`
 }
 
+// Response RekomendasiStory..
+type ResponseRekomenStory struct {
+	ID     int    `json:"id"`
+	Title  string `json:"title"`
+	Images string `json:"images"`
+	Author string `json:"author"`
+	Genre  string `json:"genre"`
+}
+
 // Response All..
 type ResponseAllStory struct {
 	ID           int    `json:"id"`

@@ -58,7 +58,8 @@ type Repo interface {
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
 	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)
 	FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDetailEpisode, error)
-	FindAll(table string) ([]models.ResponseAllStory, error)
+	FindAllStory(table string) ([]models.ResponseAllStory, error)
+	FindRekomendasiStory(table string) ([]models.ResponseRekomenStory, error)
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
 

@@ -49,6 +49,7 @@ type Usecases interface {
 	GetAllStory(ctx context.Context) (context.Context, []models.ResponseAllStory, string, int, error)
 	GetDetailEpisode(ctx context.Context, storyID, episodeID int) (context.Context, *models.ResponseDetailEpisode, string, int, error)
 	PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error)
+	GetRekomendasiStory(ctx context.Context) (context.Context, []models.ResponseRekomenStory, string, int, error)
 
 	//Banner
 	CreateBanner(ctx context.Context, req *models.Banner) (context.Context, string, int, error)

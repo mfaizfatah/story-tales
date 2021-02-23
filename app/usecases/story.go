@@ -73,7 +73,23 @@ func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.Respons
 		err error
 	)
 
-	data, err := r.query.FindAll(tableStory)
+	data, err := r.query.FindAllStory(tableStory)
+
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusOK, nil
+
+}
+
+func (r *uc) GetRekomendasiStory(ctx context.Context) (context.Context, []models.ResponseRekomenStory, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+
+	data, err := r.query.FindRekomendasiStory(tableStory)
 
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound

@@ -87,6 +87,27 @@ func (u *ctrl) HandlerGetAllStory(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+// swagger:route GET /story/rekomendasi story detailRekomen
+// Return a list of story from the database
+//
+// responses:
+//	200: getRekomenStoryResponse
+//	404: errorResponse
+//
+// ListAll handles GET requests and returns recommend story
+func (u *ctrl) HandlerGetRekomenStory(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	ctx, res, msg, st, err := u.uc.GetRekomendasiStory(ctx)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, res)
+}
+
 // swagger:route GET /story story allStory
 // Return a list of story from the database
 //

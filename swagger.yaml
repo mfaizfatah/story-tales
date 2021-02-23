@@ -203,6 +203,27 @@ definitions:
     title: Response Get One..
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models
+  ResponseRekomenStory:
+    properties:
+      author:
+        type: string
+        x-go-name: Author
+      genre:
+        type: string
+        x-go-name: Genre
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      images:
+        type: string
+        x-go-name: Images
+      title:
+        type: string
+        x-go-name: Title
+    title: Response RekomendasiStory..
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
   Story:
     description: Story defines the structure for an API Story
     properties:
@@ -346,6 +367,17 @@ paths:
           $ref: '#/responses/errorResponse'
       tags:
       - story
+  /story/rekomendasi:
+    get:
+      description: Return a list of story from the database
+      operationId: detailRekomen
+      responses:
+        "200":
+          $ref: '#/responses/getRekomenStoryResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
 produces:
 - application/json
 responses:
@@ -375,6 +407,10 @@ responses:
     description: Data structure representing a single story
     schema:
       $ref: '#/definitions/ResponseOneStory'
+  getRekomenStoryResponse:
+    description: Data structure representing Rekomendasi story
+    schema:
+      $ref: '#/definitions/ResponseRekomenStory'
   postResponse:
     description: Data structure representing error
     schema:

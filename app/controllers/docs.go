@@ -34,6 +34,14 @@ type getOneStoryResponseWrapper struct {
 	Body models.ResponseOneStory
 }
 
+// Data structure representing Rekomendasi story
+// swagger:response getRekomenStoryResponse
+type getRekomenStoryResponseWrapper struct {
+	//Get Rekomen
+	// in: body
+	Body models.ResponseRekomenStory
+}
+
 // Data structure representing all story
 // swagger:response getAllStoryResponse
 type getAllStoryResponseWrapper struct {

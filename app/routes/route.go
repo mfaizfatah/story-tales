@@ -54,6 +54,7 @@ func (c *route) Router(port string) {
 
 		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
+		r.Get("/story/rekomendasi", c.ctrl.HandlerGetRekomenStory)
 		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
 		r.Get("/story/{storyID}/{episodeID}", c.ctrl.HandlerGetDetailEpisode)
 

@@ -31,4 +31,5 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 	gorm.io/driver/mysql v1.0.3
 	gorm.io/gorm v1.20.8
+	github.com/jlaffaye/ftp v0.0.0-20200812143550-39e3779af0db
 )

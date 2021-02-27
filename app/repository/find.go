@@ -4,8 +4,39 @@ import (
 	"log"
 	"time"
 
+	"github.com/go-shadow/moment"
 	"github.com/mfaizfatah/story-tales/app/models"
 )
+
+func (r *repo) FindGetCountFollower(id int) (*models.UserCountFollower, error) {
+	var data models.UserCountFollower
+
+	err := r.db.Table("user_follow").
+		Where("user_follow.userfollowing_id = ?", id).
+		Count(&data.Count)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+
+	return &data, nil
+}
+
+func (r *repo) FindGetCountFollowing(id int) (*models.UserCountFollowing, error) {
+	var data models.UserCountFollowing
+
+	err := r.db.Table("user_follow").
+		Where("user_follow.userfollow_id = ?", id).
+		Count(&data.Count)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+
+	return &data, nil
+}
 
 func (r *repo) FindGetBanner(id int) (*models.BannerDetailRs, error) {
 	var data models.BannerDetailRs
@@ -24,9 +55,11 @@ func (r *repo) FindGetBanner(id int) (*models.BannerDetailRs, error) {
 
 func (r *repo) FindAllBanner(table string) ([]models.ListBannerThumbRs, error) {
 	var data []models.ListBannerThumbRs
+	currentDate := moment.New().Now().GetTime()
 
 	err := r.db.Table(table).
 		Where("status = ?", 1).
+		Where("validUntil >= ?", currentDate).
 		Order("sequence").
 		Find(&data)
 

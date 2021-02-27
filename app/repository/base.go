@@ -62,6 +62,8 @@ type Repo interface {
 	FindRekomendasiStory(table string) ([]models.ResponseRekomenStory, error)
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
+	FindGetCountFollower(id int) (*models.UserCountFollower, error)
+	FindGetCountFollowing(id int) (*models.UserCountFollowing, error)
 
 	// insert
 	Insert(table string, i interface{}) error

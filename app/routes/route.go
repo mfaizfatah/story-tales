@@ -62,6 +62,9 @@ func (c *route) Router(port string) {
 		r.Get("/bannerDetail/{id}", c.ctrl.HandlerGetBannerDetail)
 		r.Get("/listBannerThumb", c.ctrl.HandlerGetListBannerThumb)
 
+		r.Get("/countFollower/{id}", c.ctrl.HandlerGetCountFollower)
+		r.Get("/countFollowing/{id}", c.ctrl.HandlerGetCountFollowing)
+
 		r.Get("/logout", c.ctrl.HandlerLogout)
 
 		r.Post("/forgot-pass", c.ctrl.HandlerSendEmailForgotPass)

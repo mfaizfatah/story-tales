@@ -161,7 +161,7 @@ func (r *uc) ChangePassword(ctx context.Context, idUser int, req *models.ForgotP
 	// encrypted := sha.Sum(nil)
 
 	data := make(map[string]interface{})
-	data["password"] = fmt.Sprintf("%x", req.Password)
+	data["password"] = fmt.Sprintf("%s", req.Password)
 
 	go r.query.Update(tableUser, user, data)
 

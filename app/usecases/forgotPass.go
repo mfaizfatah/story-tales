@@ -2,7 +2,6 @@ package usecases
 
 import (
 	"context"
-	"crypto/sha1"
 	"errors"
 	"fmt"
 	"net/http"
@@ -137,17 +136,17 @@ func (r *uc) ValidateTokenForgotPass(ctx context.Context, tokenForgotPass string
 	return ctx, msg, code, nil
 }
 
-func (r *uc) ChangePassword(ctx context.Context, req *models.ForgotPass) (context.Context, string, int, error) {
+func (r *uc) ChangePassword(ctx context.Context, idUser int, req *models.ForgotPass) (context.Context, string, int, error) {
 	var (
 		msg  string
 		code = http.StatusOK
 		err  error
 
 		user = new(models.User)
-		sha  = sha1.New()
+		// sha  = sha1.New()
 	)
 
-	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", req.Email)
+	err = r.query.FindOne(tableUser, user, "id = ?", "id, email", idUser)
 	if err != nil {
 		msg = "email not found"
 		return ctx, msg, http.StatusNotFound, err
@@ -158,11 +157,11 @@ func (r *uc) ChangePassword(ctx context.Context, req *models.ForgotPass) (contex
 		return ctx, msg, http.StatusForbidden, errors.New("password not match")
 	}
 
-	sha.Write([]byte(req.Password))
-	encrypted := sha.Sum(nil)
+	// sha.Write([]byte(req.Password))
+	// encrypted := sha.Sum(nil)
 
 	data := make(map[string]interface{})
-	data["password"] = fmt.Sprintf("%x", encrypted)
+	data["password"] = fmt.Sprintf("%x", req.Password)
 
 	go r.query.Update(tableUser, user, data)
 

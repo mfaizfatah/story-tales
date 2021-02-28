@@ -66,13 +66,13 @@ func (c *route) Router(port string) {
 
 		r.Post("/forgot-pass", c.ctrl.HandlerSendEmailForgotPass)
 		r.Get("/forgot-pass/{token}", c.ctrl.HandlerValidateTokenForgotPass)
-		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)
 	})
 
 	// group router if need to check session
 	router.Group(func(r chi.Router) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckSession)
 		r.Get("/user/check", c.ctrl.HandlerCheckSession)
+		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)
 	})
 
 	router.MethodNotAllowed(middleware.NotAllowed)

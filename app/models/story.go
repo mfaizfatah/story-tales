@@ -139,13 +139,17 @@ type ResponseOneStory struct {
 	Images       string        `json:"images"`
 	FlagOnGoing  int           `json:"flagOnGoing"`
 	FlagCommment int           `json:"flagComment"`
-	IDAuthor     int           `json:"idAuthor"`
+	Author       string        `json:"author"`
+	Genre        string        `json:"genre"`
+	TotalLike    int           `json:"totalLike"`
 	ListEpisode  []ListEpisode `json:"listEpisode"`
 }
 
 //ListEpisode
 type ListEpisode struct {
 	ID         int    `json:"id"`
+	Like       int    `json:"like"`
+	Images_Eps string `json:"images_eps"`
 	Eps_Number int    `json:"eps_number"`
 	Eps_Title  string `json:"eps_title"`
 }

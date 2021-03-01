@@ -50,14 +50,27 @@ func (r *repo) FindGetOneStory(storyid int) (*models.ResponseOneStory, error) {
 	var data = new(models.ResponseOneStory)
 	rows, err := r.db.Table("story").
 		Joins("LEFT JOIN episodes ON episodes.id_story = story.id ").
-		Select("story.id, story.title, story.sinopsis, story.season, story.images, story.flag_ongoing, story.flag_comment, story.id_author , COALESCE(episodes.id,0), COALESCE(episodes.eps_number,0), COALESCE(episodes.eps_title,'')").
+		Joins("LEFT JOIN likes ON likes.id_story = story.id  AND  likes.id_episodes = episodes.id ").
+		Joins("LEFT JOIN story_genre ON story.id = story_genre.id_story").
+		Joins("LEFT JOIN genre ON genre.id = story_genre.id_genre").
+		Joins("LEFT JOIN author ON author.id = story.id_author").
+		Select(`story.id, story.title, story.sinopsis, story.season, story.images, story.flag_ongoing, story.flag_comment,
+					COALESCE(genre.genre,''),
+					COALESCE(author.name,'') AS author,
+		 			COALESCE(episodes.id,0), COALESCE(episodes.eps_number,0), COALESCE(episodes.eps_title,''), COALESCE(episodes.images_eps,''),  
+					COALESCE(likes.like,0)
+					`).
 		Where("story.id = ?", storyid).
 		Rows()
 
 	defer rows.Close()
 	for rows.Next() {
 		var list models.ListEpisode
-		err = rows.Scan(&data.ID, &data.Title, &data.Sinopsis, &data.Season, &data.Images, &data.FlagOnGoing, &data.FlagCommment, &data.IDAuthor, &list.ID, &list.Eps_Number, &list.Eps_Title)
+		err = rows.Scan(
+			&data.ID, &data.Title, &data.Sinopsis, &data.Season, &data.Images, &data.FlagOnGoing, &data.FlagCommment,
+			&data.Genre, &data.Author,
+			&list.ID, &list.Eps_Number, &list.Eps_Title, &list.Images_Eps, &list.Like)
+
 		if err != nil {
 			log.Panic(err)
 		}

@@ -112,6 +112,13 @@ definitions:
         format: int64
         type: integer
         x-go-name: ID
+      images_eps:
+        type: string
+        x-go-name: Images_Eps
+      like:
+        format: int64
+        type: integer
+        x-go-name: Like
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models
   ResponseAllStory:
@@ -167,6 +174,9 @@ definitions:
     x-go-package: github.com/mfaizfatah/story-tales/app/models
   ResponseOneStory:
     properties:
+      author:
+        type: string
+        x-go-name: Author
       flagComment:
         format: int64
         type: integer
@@ -175,14 +185,13 @@ definitions:
         format: int64
         type: integer
         x-go-name: FlagOnGoing
+      genre:
+        type: string
+        x-go-name: Genre
       id:
         format: int64
         type: integer
         x-go-name: ID
-      idAuthor:
-        format: int64
-        type: integer
-        x-go-name: IDAuthor
       images:
         type: string
         x-go-name: Images
@@ -200,6 +209,10 @@ definitions:
       title:
         type: string
         x-go-name: Title
+      totalLike:
+        format: int64
+        type: integer
+        x-go-name: TotalLike
     title: Response Get One..
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models

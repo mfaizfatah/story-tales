@@ -37,12 +37,20 @@ func (r *uc) PostStory(ctx context.Context, req *models.Story, userid int) (cont
 
 func (r *uc) GetOneStory(ctx context.Context, storyID int) (context.Context, *models.ResponseOneStory, string, int, error) {
 	var (
-		msg string
-		err error
+		msg       string
+		err       error
+		totalLike int
 	)
 
 	data, err := r.query.FindGetOneStory(storyID)
+
+	for i := 0; i < len(data.ListEpisode); i++ {
+		totalLike += data.ListEpisode[i].Like
+	}
+	data.TotalLike = totalLike
+
 	log.Printf("msg: %v", data)
+
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
@@ -74,7 +82,6 @@ func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.Respons
 	)
 
 	data, err := r.query.FindAllStory(tableStory)
-
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

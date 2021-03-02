@@ -38,8 +38,11 @@ type Controllers interface {
 	HandlerGetListBannerThumb(w http.ResponseWriter, r *http.Request)
 
 	// UserFollow
+	HandlerPostFollow(w http.ResponseWriter, r *http.Request)
 	HandlerGetCountFollower(w http.ResponseWriter, r *http.Request)
 	HandlerGetCountFollowing(w http.ResponseWriter, r *http.Request)
+	HandlerGetListFollower(w http.ResponseWriter, r *http.Request)
+	HandlerGetListFollowing(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

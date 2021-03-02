@@ -1,13 +1,47 @@
 package repository
 
 import (
+	"log"
 	"time"
+
+	"github.com/mfaizfatah/story-tales/app/models"
 )
 
 func (r *repo) Insert(table string, i interface{}) error {
 	query := r.db.Table(table).Create(i)
 	if query.Error != nil {
 		return query.Error
+	}
+
+	return nil
+}
+
+func (r *repo) InsertFollow(*models.UserFollow) error {
+	var data models.UserFollow
+
+	err := r.db.Table("user_follow").
+		Where("user_follow.userfollow_id = ? AND user_follow.userfollowing_id = ?", data.UserFollowID, data.UserFollowingID).
+		Find(&data)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return err.Error
+	}
+	var countModel = 1
+
+	if countModel == 0 {
+		query := r.db.Table("user_follow").Create(&data)
+		if query.Error != nil {
+			return query.Error
+		}
+		return nil
+	}
+	if countModel > 0 {
+		query := r.db.Table("user_follow").Delete(&data)
+		if query.Error != nil {
+			return query.Error
+		}
+		return nil
 	}
 
 	return nil

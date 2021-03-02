@@ -8,6 +8,38 @@ import (
 	"github.com/mfaizfatah/story-tales/app/models"
 )
 
+func (r *repo) FindListFollower(id int) ([]models.ListFollower, error) {
+	var data []models.ListFollower
+
+	err := r.db.Table("followerView").
+		Where("followerView.userfollowing_id = ?", id).
+		Order("date_updated desc").
+		Find(&data)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+
+	return data, nil
+}
+
+func (r *repo) FindListFollowing(id int) ([]models.ListFollowing, error) {
+	var data []models.ListFollowing
+
+	err := r.db.Table("followingView").
+		Where("followingView.userfollow_id = ?", id).
+		Order("date_updated desc").
+		Find(&data)
+
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+
+	return data, nil
+}
+
 func (r *repo) FindGetCountFollower(id int) (*models.UserCountFollower, error) {
 	var data models.UserCountFollower
 
@@ -60,7 +92,7 @@ func (r *repo) FindAllBanner(table string) ([]models.ListBannerThumbRs, error) {
 	err := r.db.Table(table).
 		Where("status = ?", 1).
 		Where("validUntil >= ?", currentDate).
-		Order("sequence").
+		Order("sequence desc").
 		Find(&data)
 
 	if err.Error != nil {

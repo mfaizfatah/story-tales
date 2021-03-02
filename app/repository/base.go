@@ -64,9 +64,12 @@ type Repo interface {
 	FindToken(key string) (string, error)
 	FindGetCountFollower(id int) (*models.UserCountFollower, error)
 	FindGetCountFollowing(id int) (*models.UserCountFollowing, error)
+	FindListFollower(id int) ([]models.ListFollower, error)
+	FindListFollowing(id int) ([]models.ListFollowing, error)
 
 	// insert
 	Insert(table string, i interface{}) error
+	InsertFollow(*models.UserFollow) error
 	/* 	InsertStory(table string, story interface{}, episode []models.Episode, episodeDetail []models.Episodes_Detail) error */
 	SetRedis(key string, value interface{}, exp time.Duration) error
 

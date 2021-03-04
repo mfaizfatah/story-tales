@@ -142,6 +142,7 @@ type ResponseOneStory struct {
 	Author       string        `json:"author"`
 	Genre        string        `json:"genre"`
 	TotalLike    int           `json:"totalLike"`
+	Rating       float64       `json:"rating"`
 	ListEpisode  []ListEpisode `json:"listEpisode"`
 }
 

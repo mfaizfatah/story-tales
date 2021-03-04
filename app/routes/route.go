@@ -52,12 +52,10 @@ func (c *route) Router(port string) {
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
 
-		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
 		r.Get("/story/rekomendasi", c.ctrl.HandlerGetRekomenStory)
 		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
 		r.Get("/story/{storyID}/{episodeID}", c.ctrl.HandlerGetDetailEpisode)
-
 		r.Post("/banner", c.ctrl.HandlerCreateBanner)
 		r.Get("/bannerDetail/{id}", c.ctrl.HandlerGetBannerDetail)
 		r.Get("/listBannerThumb", c.ctrl.HandlerGetListBannerThumb)
@@ -73,6 +71,16 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckSession)
 		r.Get("/user/check", c.ctrl.HandlerCheckSession)
 		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)
+
+		r.Post("/story", c.ctrl.HandlerPostStory)
+		r.Get("/story/favorite", c.ctrl.HandlerGetFavoriteStory)
+		r.Post("/story/favorite", c.ctrl.HandlerPostFavoriteStory)
+		r.Delete("/story/favorite/{storyID}", c.ctrl.HandlerDeleteFavoriteStory)
+		r.Post("/story/rating", c.ctrl.HandlerPostRating)
+		r.Delete("/story/rating/{storyID}/{episodeID}", c.ctrl.HandlerDeleteRating)
+		r.Post("/story/likes", c.ctrl.HandlerPostLikes)
+		r.Delete("/story/likes/{storyID}/{episodeID}", c.ctrl.HandlerDeleteLikes)
+
 	})
 
 	router.MethodNotAllowed(middleware.NotAllowed)

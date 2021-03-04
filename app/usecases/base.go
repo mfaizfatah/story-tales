@@ -50,6 +50,17 @@ type Usecases interface {
 	GetDetailEpisode(ctx context.Context, storyID, episodeID int) (context.Context, *models.ResponseDetailEpisode, string, int, error)
 	PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error)
 	GetRekomendasiStory(ctx context.Context) (context.Context, []models.ResponseRekomenStory, string, int, error)
+	GetFavoriteStory(ctx context.Context, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error)
+	PostFavoriteStory(ctx context.Context, req *models.PostFavoriteStory, userid int) (context.Context, string, int, error)
+	DeleteFavoriteStory(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
+
+	//Likes
+	PostLikes(ctx context.Context, req *models.Likes, userid int) (context.Context, string, int, error)
+	DeleteLikes(ctx context.Context, storyid, episodeid, userid int) (context.Context, string, int, error)
+
+	//Rating
+	PostRating(ctx context.Context, req *models.Rating, userid int) (context.Context, string, int, error)
+	DeleteRating(ctx context.Context, storyid, episodeid, userid int) (context.Context, string, int, error)
 
 	//Banner
 	CreateBanner(ctx context.Context, req *models.Banner) (context.Context, string, int, error)

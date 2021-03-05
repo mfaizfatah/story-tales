@@ -58,6 +58,66 @@ type getdDetailEpisodeWrapper struct {
 	Body models.ResponseDetailEpisode
 }
 
+// Data structure representing favorite story
+// swagger:response getFavoriteResponse
+type getFavoriteResponseWrapper struct {
+	//Get Favorite Story
+	// in: body
+	Body models.ResponseFavoriteStory
+}
+
+// swagger:parameters postFavorite
+type postFavoriteWrapper struct {
+	/*
+		The id of the product for which the operation relates
+		in: body
+		required: true
+	*/
+	Body models.PostFavoriteStory
+}
+
+// swagger:parameters deleteFavorite
+type favoriteIDparamsWrapper struct {
+	/*
+		The id of the product for which the operation relates
+		in: path
+		required: true
+	*/
+
+	StoryID int `json:"storyID"`
+}
+
+// swagger:parameters postRating
+type postRatingWrapper struct {
+	/*
+		The id of the product for which the operation relates
+		in: body
+		required: true
+	*/
+	Body models.Rating
+}
+
+// swagger:parameters deleteRating
+type ratingIDparamsWrapper struct {
+	/*
+		The id of the product for which the operation relates
+		in: path
+		required: true
+	*/
+
+	StoryID int `json:"storyID"`
+}
+
+// swagger:parameters postLikes
+type postLikesWrapper struct {
+	/*
+		The id of the product for which the operation relates
+		in: body
+		required: true
+	*/
+	Body models.Likes
+}
+
 // swagger:parameters createStory
 type postStorysWrapper struct {
 	/*
@@ -66,6 +126,16 @@ type postStorysWrapper struct {
 		required: true
 	*/
 	Body models.Story
+}
+
+// swagger:parameters favoriteStory
+type getFavoriteWrapper struct {
+	/*
+		The id of the product for which the operation relates
+		in: body
+		required: true
+	*/
+	Body models.ResponseFavoriteStory
 }
 
 // swagger:parameters detailEpisode

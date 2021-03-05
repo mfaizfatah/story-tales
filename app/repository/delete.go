@@ -26,11 +26,10 @@ func (r *repo) DeleteLikes(storyid, episodeid, userid int) error {
 	return nil
 }
 
-func (r *repo) DeleteRating(storyid, episodeid, userid int) error {
+func (r *repo) DeleteRating(storyid, userid int) error {
 	var data = new(models.Rating)
 	result := r.db.
 		Where("id_story = ?", storyid).
-		Where("id_episodes = ?", episodeid).
 		Where("id_users = ?", userid).
 		Delete(&data)
 

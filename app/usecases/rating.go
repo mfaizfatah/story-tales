@@ -34,13 +34,13 @@ func (r *uc) PostRating(ctx context.Context, req *models.Rating, userid int) (co
 	return ctx, msg, http.StatusCreated, err
 }
 
-func (r *uc) DeleteRating(ctx context.Context, storyid, episodeid, userid int) (context.Context, string, int, error) {
+func (r *uc) DeleteRating(ctx context.Context, storyid, userid int) (context.Context, string, int, error) {
 	var (
 		msg string
 		err error
 	)
 
-	err = r.query.DeleteRating(storyid, episodeid, userid)
+	err = r.query.DeleteRating(storyid, userid)
 
 	if err != nil {
 		return ctx, ErrServer, http.StatusInternalServerError, err

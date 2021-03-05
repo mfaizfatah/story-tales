@@ -26,6 +26,17 @@ type Controllers interface {
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request)
 	HandlerGetRekomenStory(w http.ResponseWriter, r *http.Request)
+	HandlerGetFavoriteStory(w http.ResponseWriter, r *http.Request)
+	HandlerPostFavoriteStory(w http.ResponseWriter, r *http.Request)
+	HandlerDeleteFavoriteStory(w http.ResponseWriter, r *http.Request)
+
+	// Likes
+	HandlerPostLikes(w http.ResponseWriter, r *http.Request)
+	HandlerDeleteLikes(w http.ResponseWriter, r *http.Request)
+
+	// Rating
+	HandlerPostRating(w http.ResponseWriter, r *http.Request)
+	HandlerDeleteRating(w http.ResponseWriter, r *http.Request)
 
 	// Forgot-Pass
 	HandlerSendEmailForgotPass(w http.ResponseWriter, r *http.Request)

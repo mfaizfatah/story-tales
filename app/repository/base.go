@@ -56,10 +56,14 @@ type Repo interface {
 	FindGetBanner(id int) (*models.BannerDetailRs, error)
 	FindAllBanner(table string) ([]models.ListBannerThumbRs, error)
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
+
+	//find Story
 	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)
 	FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDetailEpisode, error)
 	FindAllStory(table string) ([]models.ResponseAllStory, error)
 	FindRekomendasiStory(table string) ([]models.ResponseRekomenStory, error)
+	FindFavoriteStory(table string, userid int) ([]models.ResponseFavoriteStory, error)
+
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
 	FindGetCountFollower(id int) (*models.UserCountFollower, error)
@@ -75,8 +79,12 @@ type Repo interface {
 
 	// Update
 	Update(tableName string, i interface{}, data map[string]interface{}) error
+
 	// delete
 	DeleteRedis(key string) (int64, error)
+	DeleteFavorite(storyid, userid int) error
+	DeleteLikes(storyid, episodeid, userid int) error
+	DeleteRating(storyid, userid int) error
 }
 
 /*NewRepo will create an object that represent the Repository interface (Repo)

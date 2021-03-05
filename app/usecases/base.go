@@ -50,6 +50,17 @@ type Usecases interface {
 	GetDetailEpisode(ctx context.Context, storyID, episodeID int) (context.Context, *models.ResponseDetailEpisode, string, int, error)
 	PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error)
 	GetRekomendasiStory(ctx context.Context) (context.Context, []models.ResponseRekomenStory, string, int, error)
+	GetFavoriteStory(ctx context.Context, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error)
+	PostFavoriteStory(ctx context.Context, req *models.PostFavoriteStory, userid int) (context.Context, string, int, error)
+	DeleteFavoriteStory(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
+
+	//Likes
+	PostLikes(ctx context.Context, req *models.Likes, userid int) (context.Context, string, int, error)
+	DeleteLikes(ctx context.Context, storyid, episodeid, userid int) (context.Context, string, int, error)
+
+	//Rating
+	PostRating(ctx context.Context, req *models.Rating, userid int) (context.Context, string, int, error)
+	DeleteRating(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 
 	//Banner
 	CreateBanner(ctx context.Context, req *models.BannerReq) (context.Context, string, int, error)
@@ -66,7 +77,7 @@ type Usecases interface {
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)
 	ValidateTokenForgotPass(ctx context.Context, tokenForgotPass string) (context.Context, string, int, error)
-	ChangePassword(ctx context.Context, req *models.ForgotPass) (context.Context, string, int, error)
+	ChangePassword(ctx context.Context, idUser int, req *models.ForgotPass) (context.Context, string, int, error)
 
 	// Process token
 	GetUserFromToken(req *http.Request) (*models.User, string, int, error)

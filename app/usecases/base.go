@@ -63,9 +63,16 @@ type Usecases interface {
 	DeleteRating(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 
 	//Banner
-	CreateBanner(ctx context.Context, req *models.Banner) (context.Context, string, int, error)
+	CreateBanner(ctx context.Context, req *models.BannerReq) (context.Context, string, int, error)
 	GetBannerDtl(ctx context.Context, id int) (context.Context, *models.BannerDetailRs, string, int, error)
 	GetListBannerThumb(ctx context.Context) (context.Context, []models.ListBannerThumbRs, string, int, error)
+
+	//UserFollow
+	PostFollow(ctx context.Context, id int) (context.Context, string, int, error)
+	GetCountFollowing(ctx context.Context, id int) (context.Context, *models.UserCountFollowing, string, int, error)
+	GetCountFollower(ctx context.Context, id int) (context.Context, *models.UserCountFollower, string, int, error)
+	GetListFollower(ctx context.Context, id int) (context.Context, []models.ListFollower, string, int, error)
+	GetListFollowing(ctx context.Context, id int) (context.Context, []models.ListFollowing, string, int, error)
 
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)

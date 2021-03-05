@@ -1,10 +1,26 @@
 package models
 
 import (
+	"mime/multipart"
 	"time"
 )
 
 // Story model data
+type BannerReq struct {
+	Category     string                `json:"category"`
+	Title        string                `json:"title"`
+	Content      string                `json:"content"`
+	URL          string                `json:"url"`
+	Status       int                   `json:"status"`
+	DaysValid    int                   `json:"daysValid"`
+	Sequence     int                   `json:"sequence"`
+	DeepLink     bool                  `json:"deepLink"`
+	DetailStatus bool                  `json:"detailStatus"`
+	ServiceID    string                `json:"serviceId"`
+	ImgFile      *multipart.FileHeader `form:"imgFile" binding:"required"`
+	ThumbFile    *multipart.FileHeader `form:"thumbFile" binding:"required"`
+}
+
 type Banner struct {
 	ID           int       `json:"id"`
 	Category     string    `json:"category"`
@@ -14,7 +30,8 @@ type Banner struct {
 	Image        string    `json:"image"`
 	Thumb        string    `json:"thumb"`
 	Status       int       `json:"status"`
-	CreateAt     time.Time `json:"createAt" gorm:"column:createAt"`
+	CreatedAt    time.Time `json:"createdAt" gorm:"column:created_at"`
+	UpdatedAt    time.Time `json:"updatedAt" gorm:"column:updated_at"`
 	ValidUntil   time.Time `json:"validUntil" gorm:"column:validUntil"`
 	Sequence     int       `json:"sequence"`
 	DeepLink     bool      `json:"deepLink" gorm:"column:deepLink"`
@@ -31,7 +48,8 @@ type BannerRs struct {
 	Image          string    `json:"image"`
 	Thumb          string    `json:"thumb"`
 	Status         int       `json:"status"`
-	CreateAt       time.Time `json:"createAt" gorm:"column:createAt"`
+	CreatedAt      time.Time `json:"createdAt" gorm:"column:created_at"`
+	UpdatedAt      time.Time `json:"updatedAt" gorm:"column:updated_at"`
 	ValidUntil     time.Time `json:"validUntil" gorm:"column:validUntil"`
 	Sequence       int       `json:"sequence"`
 	DeepLink       bool      `json:"deepLink" gorm:"column:deepLink"`
@@ -47,7 +65,8 @@ type BannerDetailRs struct {
 	Content      string    `json:"content"`
 	Url          string    `json:"url"`
 	Image        string    `json:"image"`
-	CreateAt     time.Time `json:"createAt" gorm:"column:createAt"`
+	CreatedAt    time.Time `json:"createdAt" gorm:"column:created_at"`
+	UpdatedAt    time.Time `json:"updatedAt" gorm:"column:updated_at"`
 	ValidUntil   time.Time `json:"validUntil" gorm:"column:validUntil"`
 	DeepLink     bool      `json:"deepLink" gorm:"column:deepLink"`
 	DetailStatus bool      `json:"detailStatus" gorm:"column:detailStatus"`

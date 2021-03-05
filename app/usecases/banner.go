@@ -1,11 +1,14 @@
 package usecases
 
 import (
-	"context"
 	"log"
+	"os"
+
+	"context"
 	"net/http"
 
 	"github.com/go-shadow/moment"
+	"github.com/jlaffaye/ftp"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/repository"
 )
@@ -14,7 +17,7 @@ const (
 	tableBanner = "banner"
 )
 
-func (r *uc) CreateBanner(ctx context.Context, req *models.Banner) (context.Context, string, int, error) {
+func (r *uc) CreateBanner(ctx context.Context, req *models.BannerReq) (context.Context, string, int, error) {
 	var (
 		banner = new(models.Banner)
 		msg    string
@@ -25,14 +28,74 @@ func (r *uc) CreateBanner(ctx context.Context, req *models.Banner) (context.Cont
 		return ctx, ErrBadRequest, http.StatusBadRequest, repository.ErrBadRequest
 	}
 
-	m := moment.New()
-	currentDate := m.Now()
-	createAt := currentDate.GetTime()
-	validUntil := currentDate.Add("days", 1).GetTime()
+	currentDate := moment.New().Now()
+	validUntil := currentDate.AddDays(req.DaysValid).GetTime()
+	banner.Category = req.Category
+	banner.Content = req.Content
+	banner.Title = req.Title
+	banner.DetailStatus = req.DetailStatus
+	banner.DeepLink = req.DeepLink
+	banner.URL = req.URL
+	banner.Sequence = req.Sequence
+	banner.ServiceID = req.ServiceID
+	banner.Status = req.Status
+	banner.ValidUntil = validUntil
 
-	banner = req
-	req.CreateAt = createAt
-	req.ValidUntil = validUntil
+	var imgLoc = "http://digisoul.id/images/"
+	banner.Thumb = imgLoc + req.ThumbFile.Filename
+	banner.Image = imgLoc + req.ImgFile.Filename
+
+	log.Printf("WOOOOOOOYY: %v", banner.Thumb)
+	log.Printf("ANNJAJAAY: %v", banner.Image)
+
+	// Dial FTP
+	conn, err := ftp.Dial(os.Getenv("FTP_ADDR"))
+	if err != nil {
+		log.Print(err)
+		log.Fatal(err.Error())
+	}
+
+	// LOGIN FTP
+	err = conn.Login(os.Getenv("FTP_USERNAME"), os.Getenv("FTP_USERNAME"))
+	if err != nil {
+		log.Print(err)
+		log.Fatal(err.Error())
+	}
+
+	// Upload File to FTP
+	sourceImg := req.ImgFile
+	f, err := os.Open(sourceImg.Filename)
+	if err != nil {
+		log.Print(err)
+		log.Fatal(err.Error())
+	}
+
+	//destinationFile := "./images/story-tales/haniplogo.jpg"
+	destinationFile := "./Attachment/Luckman/" + sourceImg.Filename
+	err = conn.Stor(destinationFile, f)
+	if err != nil {
+		log.Print(err)
+		log.Fatal(err.Error())
+	}
+	f.Close()
+
+	// Upload File to FTP
+	sourceThumb := req.ThumbFile
+	t, err := os.Open(sourceThumb.Filename)
+	if err != nil {
+		log.Print(err)
+		log.Fatal(err.Error())
+	}
+
+	//destinationFile := "./images/story-tales/haniplogo.jpg"
+	destinationThumb := "./Attachment/Luckman/" + sourceThumb.Filename
+	err = conn.Stor(destinationThumb, t)
+	if err != nil {
+		log.Print(err)
+		log.Fatal(err.Error())
+	}
+	t.Close()
+
 	log.Printf("msg: %v", banner)
 	err = r.query.Insert(tableBanner, banner)
 

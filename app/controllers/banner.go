@@ -14,7 +14,7 @@ import (
 func (u *ctrl) HandlerCreateBanner(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	var s models.Banner
+	var s models.BannerReq
 
 	err := json.NewDecoder(r.Body).Decode(&s)
 
@@ -25,7 +25,7 @@ func (u *ctrl) HandlerCreateBanner(w http.ResponseWriter, r *http.Request) {
 
 	ctx, msg, st, err := u.uc.CreateBanner(ctx, &s)
 	if err != nil {
-		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		ctx = logger.Logf(ctx, "Banner error() => %v", err)
 		utils.Response(ctx, w, false, st, msg)
 		return
 	}

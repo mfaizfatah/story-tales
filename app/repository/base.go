@@ -79,7 +79,7 @@ type Repo interface {
 	DeleteRedis(key string) (int64, error)
 	DeleteFavorite(storyid, userid int) error
 	DeleteLikes(storyid, episodeid, userid int) error
-	DeleteRating(storyid, episodeid, userid int) error
+	DeleteRating(storyid, userid int) error
 }
 
 /*NewRepo will create an object that represent the Repository interface (Repo)

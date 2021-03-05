@@ -15,7 +15,8 @@ import (
 // Return a list of story from the database
 // responses:
 //	200: postResponse
-
+//	404: errorResponse
+//
 // ListOne handles GET requests and returns one story
 func (u *ctrl) HandlerPostStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()

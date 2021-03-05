@@ -60,7 +60,7 @@ type Usecases interface {
 
 	//Rating
 	PostRating(ctx context.Context, req *models.Rating, userid int) (context.Context, string, int, error)
-	DeleteRating(ctx context.Context, storyid, episodeid, userid int) (context.Context, string, int, error)
+	DeleteRating(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 
 	//Banner
 	CreateBanner(ctx context.Context, req *models.Banner) (context.Context, string, int, error)

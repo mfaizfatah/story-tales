@@ -77,7 +77,7 @@ func (c *route) Router(port string) {
 		r.Post("/story/favorite", c.ctrl.HandlerPostFavoriteStory)
 		r.Delete("/story/favorite/{storyID}", c.ctrl.HandlerDeleteFavoriteStory)
 		r.Post("/story/rating", c.ctrl.HandlerPostRating)
-		r.Delete("/story/rating/{storyID}/{episodeID}", c.ctrl.HandlerDeleteRating)
+		r.Delete("/story/rating/{storyID}", c.ctrl.HandlerDeleteRating)
 		r.Post("/story/likes", c.ctrl.HandlerPostLikes)
 		r.Delete("/story/likes/{storyID}/{episodeID}", c.ctrl.HandlerDeleteLikes)
 
@@ -86,13 +86,13 @@ func (c *route) Router(port string) {
 	router.MethodNotAllowed(middleware.NotAllowed)
 	router.NotFound(middleware.NotFound)
 
-	/* 	optsDoc := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
-	   	docs := middleware.Redoc(optsDoc, nil)
-	   	router.Handle("/docs", docs)
-	*/
-	optsUI := middleware.SwaggerUIOpts{SpecURL: "/swagger.yaml"}
-	ui := middleware.SwaggerUI(optsUI, nil)
-	router.Handle("/docs", ui)
+	optsDoc := middleware.RedocOpts{SpecURL: "/swagger.yaml"}
+	docs := middleware.Redoc(optsDoc, nil)
+	router.Handle("/docs", docs)
+
+	/* 	optsUI := middleware.SwaggerUIOpts{SpecURL: "/swagger.yaml"}
+	   	ui := middleware.SwaggerUI(optsUI, nil)
+	   	router.Handle("/docs", ui) */
 
 	router.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 

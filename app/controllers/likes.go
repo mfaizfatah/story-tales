@@ -11,6 +11,14 @@ import (
 	"github.com/mfaizfatah/story-tales/app/utils"
 )
 
+// swagger:route POST /story/likes story postLikes
+// Return a list of story from the database REQUIRED AUTH
+//
+// responses:
+//	200: postResponse
+//	404: errorResponse
+//
+// ListAll handles POST requests and returns likes Story REQUIRED AUTH
 func (u *ctrl) HandlerPostLikes(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -39,6 +47,14 @@ func (u *ctrl) HandlerPostLikes(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, msg)
 }
 
+// swagger:route DELETE /story/likes/{storyID}/{episodeID} story deleteLikes
+// Return a list of story from the database REQUIRED AUTH
+//
+// responses:
+//	200: postResponse
+//	404: errorResponse
+//
+// ListID handles DELETE requests and returns likes Story REQUIRED AUTH
 func (u *ctrl) HandlerDeleteLikes(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	storyID, _ := strconv.Atoi(chi.URLParam(r, "storyID"))

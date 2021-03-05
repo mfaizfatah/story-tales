@@ -98,6 +98,46 @@ definitions:
     - images
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models
+  Likes:
+    properties:
+      id:
+        description: the id for idLikes
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID
+      id_episodes:
+        description: the id for episode
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: IDEpisodes
+      id_story:
+        description: the id for story
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: IDStory
+      id_users:
+        description: the id for idUsers
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: IDUser
+      like:
+        description: Like for story
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: Like
+    required:
+    - like
+    - id_story
+    - id_episodes
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
   ListEpisode:
     description: ListEpisode
     properties:
@@ -119,6 +159,66 @@ definitions:
         format: int64
         type: integer
         x-go-name: Like
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  PostFavoriteStory:
+    properties:
+      favorite_story:
+        description: the id for story
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: IDStory
+      id:
+        description: the id for favoriteStory
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID
+      id_users:
+        description: the id for idUser
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: IDUsers
+    required:
+    - favorite_story
+    title: Response ResponseFavoriteStory..
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
+  Rating:
+    properties:
+      id:
+        description: the id for idRating
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: ID
+      id_story:
+        description: the id for story
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: IDStory
+      id_users:
+        description: the id for idUser
+        format: int64
+        minimum: 1
+        readOnly: true
+        type: integer
+        x-go-name: IDUser
+      rating:
+        description: rating for story
+        format: int64
+        minimum: 1
+        type: integer
+        x-go-name: Rating
+    required:
+    - rating
+    - id_story
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models
   ResponseAllStory:
@@ -172,6 +272,27 @@ definitions:
         x-go-name: ID
     type: object
     x-go-package: github.com/mfaizfatah/story-tales/app/models
+  ResponseFavoriteStory:
+    properties:
+      author:
+        type: string
+        x-go-name: Author
+      genre:
+        type: string
+        x-go-name: Genre
+      id:
+        format: int64
+        type: integer
+        x-go-name: ID
+      images:
+        type: string
+        x-go-name: Images
+      title:
+        type: string
+        x-go-name: Title
+    title: Response ResponseFavoriteStory..
+    type: object
+    x-go-package: github.com/mfaizfatah/story-tales/app/models
   ResponseOneStory:
     properties:
       author:
@@ -200,6 +321,10 @@ definitions:
           $ref: '#/definitions/ListEpisode'
         type: array
         x-go-name: ListEpisode
+      rating:
+        format: double
+        type: number
+        x-go-name: Rating
       season:
         type: string
         x-go-name: Season
@@ -339,6 +464,8 @@ paths:
       responses:
         "200":
           $ref: '#/responses/postResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
       tags:
       - story
   /story/{storyID}:
@@ -347,7 +474,7 @@ paths:
       operationId: oneStory
       parameters:
       - format: int64
-        in: path
+        in: query
         name: storyID
         type: integer
         x-go-name: StoryID
@@ -364,18 +491,127 @@ paths:
       operationId: detailEpisode
       parameters:
       - format: int64
-        in: path
+        in: query
         name: storyID
         type: integer
         x-go-name: StoryID
       - format: int64
-        in: path
+        in: query
         name: episodeID
         type: integer
         x-go-name: EpisodeID
       responses:
         "200":
           $ref: '#/responses/getDetailEpisodeResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+  /story/favorite:
+    get:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: getFavorite
+      responses:
+        "200":
+          $ref: '#/responses/getFavoriteResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+    post:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: postFavorite
+      parameters:
+      - description: The id of the product for which the operation relates
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/PostFavoriteStory'
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+  /story/favorite/{storyID}:
+    delete:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: deleteFavorite
+      parameters:
+      - format: int64
+        in: query
+        name: storyID
+        type: integer
+        x-go-name: StoryID
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+  /story/likes:
+    post:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: postLikes
+      parameters:
+      - description: The id of the product for which the operation relates
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/Likes'
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+  /story/likes/{storyID}/{episodeID}:
+    delete:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: deleteLikes
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+  /story/rating:
+    post:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: postRating
+      parameters:
+      - description: The id of the product for which the operation relates
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/Rating'
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
+        "404":
+          $ref: '#/responses/errorResponse'
+      tags:
+      - story
+  /story/rating/{storyID}:
+    delete:
+      description: Return a list of story from the database REQUIRED AUTH
+      operationId: deleteRating
+      parameters:
+      - format: int64
+        in: query
+        name: storyID
+        type: integer
+        x-go-name: StoryID
+      responses:
+        "200":
+          $ref: '#/responses/postResponse'
         "404":
           $ref: '#/responses/errorResponse'
       tags:
@@ -416,6 +652,10 @@ responses:
     description: Data structure representing all story
     schema:
       $ref: '#/definitions/ResponseDetailEpisode'
+  getFavoriteResponse:
+    description: Data structure representing favorite story
+    schema:
+      $ref: '#/definitions/ResponseFavoriteStory'
   getOneStoryResponse:
     description: Data structure representing a single story
     schema:

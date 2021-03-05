@@ -11,8 +11,22 @@ type ResponseFavoriteStory struct {
 
 // Response ResponseFavoriteStory..
 type PostFavoriteStory struct {
-	ID      int `json:"id" gorm:"column:id"`
+	// the id for favoriteStory
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
+	ID int `json:"id" gorm:"column:id"`
+	// the id for story
+	//
+	// required: true
+	// min: 1
 	IDStory int `json:"favorite_story" gorm:"column:favorite_story"`
+	// the id for idUser
+	//
+	// readOnly: true
+	// required: false
+	// min: 1
 	IDUsers int `json:"id_users" gorm:"column:id_users"`
 }
 

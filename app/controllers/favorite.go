@@ -11,14 +11,14 @@ import (
 	"github.com/mfaizfatah/story-tales/app/utils"
 )
 
-// swagger:route GET /story/favorite story favorite
-// Return a list of story from the database
+// swagger:route GET /story/favorite story getFavorite
+// Return a list of story from the database REQUIRED AUTH
 //
 // responses:
-//	200: getRekomenStoryResponse
+//	200: getFavoriteResponse
 //	404: errorResponse
 //
-// ListAll handles GET requests and returns recommend story
+// ListAll handles GET requests and returns favorite Story REQUIRED AUTH
 func (u *ctrl) HandlerGetFavoriteStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	user, msg, st, err := u.uc.GetUserFromToken(r)
@@ -33,6 +33,14 @@ func (u *ctrl) HandlerGetFavoriteStory(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+// swagger:route POST /story/favorite story postFavorite
+// Return a list of story from the database REQUIRED AUTH
+//
+// responses:
+//	200: postResponse
+//	404: errorResponse
+//
+// ListAll handles POST requests and returns favorite Story REQUIRED AUTH
 func (u *ctrl) HandlerPostFavoriteStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -56,6 +64,14 @@ func (u *ctrl) HandlerPostFavoriteStory(w http.ResponseWriter, r *http.Request) 
 	utils.Response(ctx, w, true, st, msg)
 }
 
+// swagger:route DELETE /story/favorite/{storyID} story deleteFavorite
+// Return a list of story from the database REQUIRED AUTH
+//
+// responses:
+//	200: postResponse
+//	404: errorResponse
+//
+// ListAll handles DELETE requests and returns favorite Story REQUIRED AUTH
 func (u *ctrl) HandlerDeleteFavoriteStory(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	storyID, _ := strconv.Atoi(chi.URLParam(r, "storyID"))

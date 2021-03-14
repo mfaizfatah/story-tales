@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-redis/redis"
 	"github.com/mfaizfatah/story-tales/app/models"
+	"go.mongodb.org/mongo-driver/mongo"
 	"gorm.io/gorm"
 )
 
@@ -48,6 +49,7 @@ var (
 type repo struct {
 	db    *gorm.DB
 	redis *redis.Client
+	mongo *mongo.Database
 }
 
 // Repo represent the Repository contract
@@ -97,6 +99,6 @@ type Repo interface {
  * @return
  * repo struct with value db (mysql database connection)
  */
-func NewRepo(db *gorm.DB, redis *redis.Client) Repo {
-	return &repo{db: db, redis: redis}
+func NewRepo(db *gorm.DB, redis *redis.Client, mongo *mongo.Database) Repo {
+	return &repo{db: db, redis: redis, mongo: mongo}
 }

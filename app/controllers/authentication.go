@@ -108,7 +108,7 @@ func (u *ctrl) HandlerEmailVerification(w http.ResponseWriter, r *http.Request) 
 }
 
 func (u *ctrl) HandlerTestJenkins(w http.ResponseWriter, r *http.Request) {
-	msg := "HAI JENKINS!!"
+	msg := "HAI 2 JENKINS!!"
 
 	utils.HTMLResponse(w, http.StatusOK, msg)
 }

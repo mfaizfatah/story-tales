@@ -201,17 +201,37 @@ func (r *repo) FindRekomendasiStory(table string) ([]models.ResponseRekomenStory
 	return data, nil
 }
 
-func (r *repo) FindFavoriteStory(table string, userid int) ([]models.ResponseFavoriteStory, error) {
+func (r *repo) FindFavoriteStory(table string, limit, storyid, userid int) ([]models.ResponseFavoriteStory, error) {
 	var data []models.ResponseFavoriteStory
-	err := r.db.Table("favoriteView").
-		Where("id_users = ?", userid).
-		Scan(&data)
+
+	if storyid != 0 && limit != 0 {
+		err := r.db.Table("favoriteView").
+			Where("id_users = ?", userid).
+			Where("id > ?", storyid).
+			Limit(limit).
+			Scan(&data)
+		if err != nil {
+			return data, nil
+		}
+	} else if storyid != 0 && limit == 0 {
+		err := r.db.Table("favoriteView").
+			Where("id_users = ?", userid).
+			Where("id = ?", storyid).
+			Scan(&data)
+		if err != nil {
+			return data, nil
+		}
+	} else {
+		err := r.db.Table("favoriteView").
+			Where("id_users = ?", userid).
+			Limit(limit).
+			Scan(&data)
+		if err != nil {
+			return data, nil
+		}
+	}
 
 	log.Printf("msg: %v", data)
-
-	if err != nil {
-		return data, nil
-	}
 
 	return data, nil
 }

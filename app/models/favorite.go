@@ -9,6 +9,10 @@ type ResponseFavoriteStory struct {
 	Genre  string `json:"genre"`
 }
 
+type ResponseCheckFavorite struct {
+	CheckFavorite bool `json:"checkFavorite"`
+}
+
 // Response ResponseFavoriteStory..
 type PostFavoriteStory struct {
 	// the id for favoriteStory

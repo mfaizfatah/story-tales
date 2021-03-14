@@ -45,6 +45,7 @@ func (c *route) Router(port string) {
 	router.Group(func(r chi.Router) {
 		r.Use(ezpromhttp.InstrumentHandler)
 		r.Get("/verify/{token}", c.ctrl.HandlerEmailVerification)
+		r.Get("/test-jenkins", c.ctrl.HandlerTestJenkins)
 	})
 
 	router.Group(func(r chi.Router) {

@@ -106,3 +106,9 @@ func (u *ctrl) HandlerEmailVerification(w http.ResponseWriter, r *http.Request) 
 	}
 	utils.HTMLResponse(w, code, msg.(string))
 }
+
+func (u *ctrl) HandlerTestJenkins(w http.ResponseWriter, r *http.Request) {
+	msg := "HAI JENKINS!!"
+
+	utils.HTMLResponse(w, http.StatusOK, msg)
+}

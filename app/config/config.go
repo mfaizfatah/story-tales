@@ -4,6 +4,7 @@ import (
 	"os"
 	"strings"
 
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/mfaizfatah/story-tales/app/adapter"
 )
 
@@ -21,6 +22,8 @@ func LoadConfig(service string) {
 	redisHost := os.Getenv("REDIS_HOST")
 	redisPort := os.Getenv("REDIS_PORT")
 	adapter.LoadRedis(redisHost, redisPort)
+
+	adapter.LoadMongoDB(os.Getenv("MONGO_URI"))
 
 	// utils.Newprometheus(service)
 }

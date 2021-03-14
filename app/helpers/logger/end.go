@@ -4,6 +4,8 @@ import (
 	"context"
 	"time"
 
+	_ "github.com/joho/godotenv/autoload"
+	"github.com/mfaizfatah/story-tales/app/adapter"
 	"github.com/sirupsen/logrus"
 )
 
@@ -44,4 +46,6 @@ func Output(out *Data, level string) {
 	} else if level == "WARN" {
 		logrus.WithField("data", out).Warn("apps")
 	}
+
+	go adapter.MongoDatabase().Collection("logs").InsertOne(context.Background(), out)
 }

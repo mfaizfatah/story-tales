@@ -8,14 +8,57 @@ import (
 	"github.com/mfaizfatah/story-tales/app/repository"
 )
 
-func (r *uc) GetFavoriteStory(ctx context.Context, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error) {
+func (r *uc) GetFavoriteStory(ctx context.Context, limit, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error) {
+
+	var (
+		msg     string
+		err     error
+		storyid int
+	)
+
+	data, err := r.query.FindFavoriteStory(tableStory, limit, storyid, userid)
+
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusOK, nil
+
+}
+
+func (r *uc) GetLoadFavoriteStory(ctx context.Context, limit, storyid, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error) {
 
 	var (
 		msg string
 		err error
 	)
 
-	data, err := r.query.FindFavoriteStory(tableStory, userid)
+	storyid = storyid * limit
+
+	data, err := r.query.FindFavoriteStory(tableStory, limit, storyid, userid)
+
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusOK, nil
+}
+
+func (r *uc) GetCheckFavoriteStory(ctx context.Context, storyid, userid int) (context.Context, *models.ResponseCheckFavorite, string, int, error) {
+
+	var (
+		data  = new(models.ResponseCheckFavorite)
+		msg   string
+		err   error
+		limit int
+	)
+
+	check, err := r.query.FindFavoriteStory(tableStory, limit, storyid, userid)
+	data.CheckFavorite = false
+
+	if check != nil {
+		data.CheckFavorite = true
+	}
 
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound

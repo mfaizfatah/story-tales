@@ -50,7 +50,9 @@ type Usecases interface {
 	GetDetailEpisode(ctx context.Context, storyID, episodeID int) (context.Context, *models.ResponseDetailEpisode, string, int, error)
 	PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error)
 	GetRekomendasiStory(ctx context.Context) (context.Context, []models.ResponseRekomenStory, string, int, error)
-	GetFavoriteStory(ctx context.Context, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error)
+	GetFavoriteStory(ctx context.Context, limit, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error)
+	GetCheckFavoriteStory(ctx context.Context, storyid, userid int) (context.Context, *models.ResponseCheckFavorite, string, int, error)
+	GetLoadFavoriteStory(ctx context.Context, limit, storyid, userid int) (context.Context, []models.ResponseFavoriteStory, string, int, error)
 	PostFavoriteStory(ctx context.Context, req *models.PostFavoriteStory, userid int) (context.Context, string, int, error)
 	DeleteFavoriteStory(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 

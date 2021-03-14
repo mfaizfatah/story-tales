@@ -62,7 +62,7 @@ type Repo interface {
 	FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDetailEpisode, error)
 	FindAllStory(table string) ([]models.ResponseAllStory, error)
 	FindRekomendasiStory(table string) ([]models.ResponseRekomenStory, error)
-	FindFavoriteStory(table string, userid int) ([]models.ResponseFavoriteStory, error)
+	FindFavoriteStory(table string, limit, storyid, userid int) ([]models.ResponseFavoriteStory, error)
 
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)

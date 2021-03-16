@@ -52,8 +52,9 @@ func main() {
 	db := adapter.DBSQL()
 	redis := adapter.UseRedis()
 	mail := adapter.NewSMTPClient()
+	mongodb := adapter.MongoDatabase()
 
-	repo := repository.NewRepo(db, redis)
+	repo := repository.NewRepo(db, redis, mongodb)
 	uc := usecases.NewUC(repo, mail)
 	ctrl := controllers.NewCtrl(uc)
 

@@ -54,6 +54,9 @@ type Controllers interface {
 	HandlerGetCountFollowing(w http.ResponseWriter, r *http.Request)
 	HandlerGetListFollower(w http.ResponseWriter, r *http.Request)
 	HandlerGetListFollowing(w http.ResponseWriter, r *http.Request)
+
+	// test jenkins
+	HandlerTestJenkins(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

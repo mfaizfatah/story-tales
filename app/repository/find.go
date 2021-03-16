@@ -116,15 +116,15 @@ func (r *repo) FindGetOneStory(storyid int) (*models.ResponseOneStory, error) {
 	rows, err := r.db.Table("detailStoryOneView").
 		Where("id = ?", storyid).
 		Rows()
-
 	defer rows.Close()
 	for rows.Next() {
 		var list models.ListEpisode
 		err = rows.Scan(
 			&data.ID, &data.Title, &data.Sinopsis, &data.Season, &data.Images, &data.FlagOnGoing, &data.FlagCommment,
+			&data.Publish_Date,
 			&data.Rating,
 			&data.Genre, &data.Author,
-			&list.ID, &list.Eps_Number, &list.Eps_Title, &list.Images_Eps, &list.Like)
+			&list.ID, &list.Publish_Status, &list.Publish_Date, &list.Eps_Number, &list.Eps_Title, &list.Images_Eps, &list.Like)
 
 		if err != nil {
 			log.Panic(err)

@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 // Story defines the structure for an API Story
 // swagger:model Story
 type Story struct {
@@ -143,16 +145,19 @@ type ResponseOneStory struct {
 	Genre        string        `json:"genre"`
 	TotalLike    int           `json:"totalLike"`
 	Rating       float64       `json:"rating"`
+	Publish_Date time.Time     `json:"publish_story_date"`
 	ListEpisode  []ListEpisode `json:"listEpisode"`
 }
 
 //ListEpisode
 type ListEpisode struct {
-	ID         int    `json:"id"`
-	Like       int    `json:"like"`
-	Images_Eps string `json:"images_eps"`
-	Eps_Number int    `json:"eps_number"`
-	Eps_Title  string `json:"eps_title"`
+	ID             int       `json:"id"`
+	Like           int       `json:"like"`
+	Images_Eps     string    `json:"images_eps"`
+	Eps_Number     int       `json:"eps_number"`
+	Eps_Title      string    `json:"eps_title"`
+	Publish_Status int       `json:"publish_episode_status"`
+	Publish_Date   time.Time `json:"publish_episode_date"`
 }
 
 //GetDetail

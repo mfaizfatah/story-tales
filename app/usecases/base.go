@@ -83,6 +83,9 @@ type Usecases interface {
 
 	// Process token
 	GetUserFromToken(req *http.Request) (*models.User, string, int, error)
+
+	// Searching
+	Searching(ctx context.Context, query string) (context.Context, interface{}, string, int, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)

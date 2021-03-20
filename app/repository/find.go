@@ -1,11 +1,14 @@
 package repository
 
 import (
+	"context"
 	"log"
 	"time"
 
 	"github.com/go-shadow/moment"
 	"github.com/mfaizfatah/story-tales/app/models"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (r *repo) FindListFollower(id int) ([]models.ListFollower, error) {
@@ -252,5 +255,13 @@ func (r *repo) FindToken(key string) (string, error) {
 		return "", err
 	}
 
+	return result, nil
+}
+
+func (r *repo) MongoFindAll(where interface{}, tablename string, opt *options.FindOptions) (*mongo.Cursor, error) {
+	result, err := r.mongo.Collection(tablename).Find(context.TODO(), where, opt)
+	if err != nil {
+		return nil, err
+	}
 	return result, nil
 }

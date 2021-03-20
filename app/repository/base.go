@@ -7,6 +7,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"gorm.io/gorm"
 )
 
@@ -87,6 +88,9 @@ type Repo interface {
 	DeleteFavorite(storyid, userid int) error
 	DeleteLikes(storyid, episodeid, userid int) error
 	DeleteRating(storyid, userid int) error
+
+	// mongo
+	MongoFindAll(where interface{}, tablename string, opt *options.FindOptions) (*mongo.Cursor, error)
 }
 
 /*NewRepo will create an object that represent the Repository interface (Repo)

@@ -72,6 +72,8 @@ func (c *route) Router(port string) {
 
 		r.Post("/forgot-pass", c.ctrl.HandlerSendEmailForgotPass)
 		r.Get("/forgot-pass/{token}", c.ctrl.HandlerValidateTokenForgotPass)
+
+		r.Get("/search", c.ctrl.HandlerSearching)
 	})
 
 	// group router if need to check session

@@ -1,10 +1,13 @@
 package repository
 
 import (
+	"context"
 	"log"
 	"time"
 
 	"github.com/mfaizfatah/story-tales/app/models"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (r *repo) Insert(table string, i interface{}) error {
@@ -75,4 +78,12 @@ func (r *repo) SetRedis(key string, value interface{}, exp time.Duration) error 
 	}
 
 	return nil
+}
+
+func (r *repo) MongoBulkInsert(tablename string, doc []interface{}, opt *options.InsertManyOptions) (*mongo.InsertManyResult, error) {
+	result, err := r.mongo.Collection(tablename).InsertMany(context.Background(), doc, opt)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }

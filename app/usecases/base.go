@@ -86,6 +86,7 @@ type Usecases interface {
 
 	// Searching
 	Searching(ctx context.Context, query string) (context.Context, interface{}, string, int, error)
+	GenerateDocument(ctx context.Context) (context.Context, interface{}, string, int, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)

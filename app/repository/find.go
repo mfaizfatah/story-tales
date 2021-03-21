@@ -265,3 +265,12 @@ func (r *repo) MongoFindAll(where interface{}, tablename string, opt *options.Fi
 	}
 	return result, nil
 }
+
+func (r *repo) DBFindAll(table string, i, where interface{}, field string, whereValue ...interface{}) error {
+	err := r.db.Table(table).Where(where, whereValue...).Select(field).Find(i).Error
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

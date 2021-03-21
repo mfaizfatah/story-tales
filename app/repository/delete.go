@@ -1,7 +1,11 @@
 package repository
 
 import (
+	"context"
+
 	"github.com/mfaizfatah/story-tales/app/models"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func (r *repo) DeleteRedis(key string) (int64, error) {
@@ -50,4 +54,12 @@ func (r *repo) DeleteFavorite(storyid, userid int) error {
 		return result.Error
 	}
 	return nil
+}
+
+func (r *repo) MongoDeleteAll(tablename string, where interface{}, opt *options.DeleteOptions) (*mongo.DeleteResult, error) {
+	result, err := r.mongo.Collection(tablename).DeleteMany(context.TODO(), where, opt)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
 }

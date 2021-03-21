@@ -18,3 +18,15 @@ func (u *ctrl) HandlerSearching(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.Response(ctx, w, true, st, res)
 }
+
+func (u *ctrl) HandlerGenerateDoc(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	ctx, res, msg, st, err := u.uc.GenerateDocument(ctx)
+	if err != nil || st >= 400 {
+		ctx = logger.Logf(ctx, "error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+	utils.Response(ctx, w, true, st, res)
+}

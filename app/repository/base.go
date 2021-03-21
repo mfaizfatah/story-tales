@@ -59,6 +59,7 @@ type Repo interface {
 	FindGetBanner(id int) (*models.BannerDetailRs, error)
 	FindAllBanner(table string) ([]models.ListBannerThumbRs, error)
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
+	DBFindAll(table string, i, where interface{}, field string, whereValue ...interface{}) error
 
 	//find Story
 	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)
@@ -89,8 +90,14 @@ type Repo interface {
 	DeleteLikes(storyid, episodeid, userid int) error
 	DeleteRating(storyid, userid int) error
 
-	// mongo
+	// mongo find
 	MongoFindAll(where interface{}, tablename string, opt *options.FindOptions) (*mongo.Cursor, error)
+
+	// mongo insert
+	MongoBulkInsert(tablename string, doc []interface{}, opt *options.InsertManyOptions) (*mongo.InsertManyResult, error)
+
+	// mongo delete
+	MongoDeleteAll(tablename string, where interface{}, opt *options.DeleteOptions) (*mongo.DeleteResult, error)
 }
 
 /*NewRepo will create an object that represent the Repository interface (Repo)

@@ -60,6 +60,7 @@ type Controllers interface {
 
 	// Searching
 	HandlerSearching(w http.ResponseWriter, r *http.Request)
+	HandlerGenerateDoc(w http.ResponseWriter, r *http.Request)
 }
 
 /*NewCtrl will create an object that represent the Controllers interface (Controllers)

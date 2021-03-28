@@ -180,6 +180,7 @@ type StoryGenreView struct {
 	IDStory int    `json:"id_story"`
 	Genre   string `json:"genre,omitempty"`
 	Title   string `json:"title"`
+	Images  string `json:"images"`
 }
 
 type ResponseStoryGenre struct {

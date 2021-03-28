@@ -42,7 +42,7 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 		return ctx, nil, ErrBadRequest, http.StatusBadRequest, repository.ErrBadRequest
 	}
 
-	err = r.query.FindOne(tableUser, user, "email = ?", "id, email", req.Email)
+	err = r.query.FindOne(tableUser, user, "email = ?", "id, email, username, telp", req.Email)
 	if user.Email != "" || user.Username != "" {
 		return ctx, nil, ErrAlreadyEmail, http.StatusConflict, repository.ErrConflict
 	}
@@ -85,6 +85,13 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 		msg  string
 		err  error
 	)
+
+	isEmail := isEmailValid(req.User)
+	if isEmail {
+		req.Email = req.User
+	} else {
+		req.Username = req.User
+	}
 
 	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password, email_verify", req.Email, req.Username)
 	if err != nil {

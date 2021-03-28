@@ -59,5 +59,5 @@ func (t *template) Compose() string {
 		t.title,
 		t.logo, t.foreword, t.content,
 		t.buttonLink, t.buttonLabel, t.footer,
-		t.logoI, t.mailLink, t.mailLabel)
+		t.logoI, t.buttonLink, t.mailLabel)
 }

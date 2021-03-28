@@ -100,7 +100,7 @@ func (r *uc) SendLinkForgotPass(ctx context.Context, req *models.User) (context.
 
 	randString := uuid.New().String()
 	rand := strings.Split(randString, "-")
-	newPass := rand[4]
+	newPass := rand[0]
 
 	data := make(map[string]interface{})
 	data["password"] = newPass

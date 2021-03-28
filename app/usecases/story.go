@@ -10,7 +10,8 @@ import (
 )
 
 const (
-	tableStory = "story"
+	tableStory     = "story"
+	StoryGenreView = "storyGenreView"
 )
 
 func (r *uc) PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error) {
@@ -104,4 +105,41 @@ func (r *uc) GetRekomendasiStory(ctx context.Context) (context.Context, []models
 
 	return ctx, data, msg, http.StatusOK, nil
 
+}
+
+func (r *uc) GetStoryGenre(ctx context.Context) (context.Context, []models.ResponseStoryGenre, string, int, error) {
+	var (
+		res        []models.ResponseStoryGenre
+		msg        string
+		code       = http.StatusOK
+		storyGenre []models.StoryGenreView
+	)
+
+	err := r.query.DBFindAll(StoryGenreView, &storyGenre, "deleted = ?", "id_story, genre, title", 0)
+	if err != nil {
+		return ctx, nil, "data_not_found", http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	idStory := make(map[string][]int)
+	title := make(map[string][]string)
+	for _, vals := range storyGenre {
+		idStory[vals.Genre] = append(idStory[vals.Genre], vals.IDStory)
+		title[vals.Genre] = append(title[vals.Genre], vals.Title)
+	}
+
+	for i, j := range idStory {
+		result := models.ResponseStoryGenre{}
+		result.Genre = i
+
+		for k, l := range j {
+			storyView := models.StoryGenreView{}
+			storyView.IDStory = l
+			storyView.Title = title[i][k]
+
+			result.Story = append(result.Story, storyView)
+		}
+		res = append(res, result)
+	}
+
+	return ctx, res, msg, code, nil
 }

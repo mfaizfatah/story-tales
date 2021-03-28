@@ -123,7 +123,7 @@ func (r *repo) FindGetOneStory(storyid int) (*models.ResponseOneStory, error) {
 	for rows.Next() {
 		var list models.ListEpisode
 		err = rows.Scan(
-			&data.ID, &data.Title, &data.Sinopsis, &data.Season, &data.Images, &data.FlagOnGoing, &data.FlagCommment,
+			&data.ID, &data.ID_Author, &data.Title, &data.Sinopsis, &data.Season, &data.Images, &data.FlagOnGoing, &data.FlagCommment,
 			&data.Publish_Date,
 			&data.Rating,
 			&data.Genre, &data.Author,

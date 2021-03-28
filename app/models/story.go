@@ -141,6 +141,7 @@ type ResponseOneStory struct {
 	Images       string        `json:"images"`
 	FlagOnGoing  int           `json:"flagOnGoing"`
 	FlagCommment int           `json:"flagComment"`
+	ID_Author    int           `json:"id_author"`
 	Author       string        `json:"author"`
 	Genre        string        `json:"genre"`
 	TotalLike    int           `json:"totalLike"`

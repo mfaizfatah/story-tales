@@ -174,3 +174,14 @@ type Detail struct {
 	Schedule string `json:"schedule"`
 	Images   string `json:"images"`
 }
+
+type StoryGenreView struct {
+	IDStory int    `json:"id_story"`
+	Genre   string `json:"genre,omitempty"`
+	Title   string `json:"title"`
+}
+
+type ResponseStoryGenre struct {
+	Genre string           `json:"Genre"`
+	Story []StoryGenreView `json:"story"`
+}

@@ -130,3 +130,16 @@ func (u *ctrl) HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request) {
 
 	utils.Response(ctx, w, true, st, res)
 }
+
+func (u *ctrl) HandlerGetStoryGenre(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	ctx, res, msg, st, err := u.uc.GetStoryGenre(ctx)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, res)
+}

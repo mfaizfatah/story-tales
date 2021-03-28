@@ -29,6 +29,7 @@ type Controllers interface {
 	HandlerGetFavoriteStory(w http.ResponseWriter, r *http.Request)
 	HandlerPostFavoriteStory(w http.ResponseWriter, r *http.Request)
 	HandlerDeleteFavoriteStory(w http.ResponseWriter, r *http.Request)
+	HandlerGetStoryGenre(w http.ResponseWriter, r *http.Request)
 
 	// Likes
 	HandlerPostLikes(w http.ResponseWriter, r *http.Request)

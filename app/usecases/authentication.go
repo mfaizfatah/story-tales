@@ -42,9 +42,14 @@ func (r *uc) Registration(ctx context.Context, req *models.User) (context.Contex
 		return ctx, nil, ErrBadRequest, http.StatusBadRequest, repository.ErrBadRequest
 	}
 
-	err = r.query.FindOne(tableUser, user, "email = ?", "id, email, username, telp", req.Email)
-	if user.Email != "" || user.Username != "" {
+	err = r.query.FindOne(tableUser, user, "email = ? OR username = ? OR telp = ?", "id, email, username, telp", req.Email, req.Username, req.Telp)
+	ctx = logger.Logf(ctx, "user from DB() => %v", user)
+	if req.Email == user.Email {
 		return ctx, nil, ErrAlreadyEmail, http.StatusConflict, repository.ErrConflict
+	} else if req.Username == user.Username {
+		return ctx, nil, ErrAlreadyUsername, http.StatusConflict, repository.ErrConflict
+	} else if req.Telp == user.Telp {
+		return ctx, nil, ErrAlreadyPhone, http.StatusConflict, repository.ErrConflict
 	}
 
 	user = req

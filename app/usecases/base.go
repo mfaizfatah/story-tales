@@ -12,18 +12,19 @@ import (
 // all variable const
 const (
 	// all variable for error
-	ErrServer        = "Something wrong with our Server. Please try again later. Thank you"
-	ErrNotFound      = "User not found"
-	ErrCreated       = "Error when create a new User. Please try again later. Thank you"
-	ErrAlreadyEmail  = "Email already created. Please use another e-mail. Thank you"
-	ErrAlreadyPhone  = "Phone number already created. Please use another Phone Number. Thank you"
-	ErrNotVerified   = "Your e-mail is not Verified"
-	ErrBadRequest    = "Your Request is Invalid. Please check the payload"
-	ErrNotMatch      = "Email or Password not match"
-	ErrInvalidHeader = "Invalid Header"
-	ErrTimezones     = "Timezone for Asia/Jakarta not found in our Server. Please try again later. Thank you"
-	ErrEncryption    = "Encryption failed"
-	ErrCreateToken   = "Error when create a token"
+	ErrServer          = "Something wrong with our Server. Please try again later. Thank you"
+	ErrNotFound        = "User not found"
+	ErrCreated         = "Error when create a new User. Please try again later. Thank you"
+	ErrAlreadyEmail    = "Email already created. Please use another e-mail. Thank you"
+	ErrAlreadyUsername = "Username already created. Please use another username. Thank you"
+	ErrAlreadyPhone    = "Phone number already created. Please use another Phone Number. Thank you"
+	ErrNotVerified     = "Your e-mail is not Verified"
+	ErrBadRequest      = "Your Request is Invalid. Please check the payload"
+	ErrNotMatch        = "Email or Password not match"
+	ErrInvalidHeader   = "Invalid Header"
+	ErrTimezones       = "Timezone for Asia/Jakarta not found in our Server. Please try again later. Thank you"
+	ErrEncryption      = "Encryption failed"
+	ErrCreateToken     = "Error when create a token"
 
 	// layout date
 	LayoutDate = "2006-01-02 15:04:05"

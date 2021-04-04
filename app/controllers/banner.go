@@ -17,11 +17,16 @@ func (u *ctrl) HandlerCreateBanner(w http.ResponseWriter, r *http.Request) {
 	var s models.BannerReq
 
 	err := json.NewDecoder(r.Body).Decode(&s)
-
 	if err != nil {
 		utils.Response(ctx, w, false, http.StatusBadRequest, err)
 		return
 	}
+	// file, msg, st, err := u.uc.UploadFileSftp(r)
+	// if err != nil {
+	// 	ctx = logger.Logf(ctx, "Error on get request() => %v", err)
+	// 	utils.Response(ctx, w, false, st, msg)
+	// 	return
+	// }
 
 	ctx, msg, st, err := u.uc.CreateBanner(ctx, &s)
 	if err != nil {

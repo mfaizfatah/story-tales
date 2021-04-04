@@ -13,11 +13,43 @@ func (u *ctrl) HandlerPostFollow(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 
-	ctx, msg, st, err := u.uc.PostFollow(ctx, id)
+	user, msg, code, err := u.uc.GetUserFromToken(r)
 	if err != nil {
-		ctx = logger.Logf(ctx, "Do Follow error() => %v", err)
+		ctx = logger.Logf(ctx, "Error on get request() => %v", err)
+		utils.Response(ctx, w, false, code, msg)
+		return
+	}
+
+	followSt, msg, st, err := u.uc.GetFollowStatus(ctx, user.ID, id)
+	if err != nil {
 		utils.Response(ctx, w, false, st, msg)
 		return
+	}
+
+	if (followSt != nil) && (followSt.UserFollowID == 0) {
+		//log.Printf("WOOOOOOOYY: %v", followSt)
+		ctx, msg, st, err = u.uc.PostFollow(ctx, user.ID, id)
+		if err != nil {
+			ctx = logger.Logf(ctx, "Do Follow error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+	} else if followSt.Deleted == 1 {
+		ctx, msg, st, err = u.uc.PostRefollow(ctx, user.ID, id)
+		//log.Printf("WOOOOOOOYY: %v", followSt)
+		if err != nil {
+			ctx = logger.Logf(ctx, "Do ReFollow error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+	} else {
+		ctx, msg, st, err = u.uc.PostUnfollow(ctx, user.ID, id)
+		//log.Printf("WOOOOOOOYY: %v", followSt)
+		if err != nil {
+			ctx = logger.Logf(ctx, "Do Unfollow error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
 	}
 
 	utils.Response(ctx, w, true, st, msg)
@@ -55,7 +87,14 @@ func (u *ctrl) HandlerGetListFollower(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 
-	ctx, res, msg, st, err := u.uc.GetListFollower(ctx, id)
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Error on get request() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.GetListFollower(ctx, user.ID, id)
 	if err != nil {
 		ctx = logger.Logf(ctx, "List Follower error() => %v", err)
 		utils.Response(ctx, w, false, st, msg)
@@ -69,12 +108,18 @@ func (u *ctrl) HandlerGetListFollowing(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	id, err := strconv.Atoi(chi.URLParam(r, "id"))
 
-	ctx, res, msg, st, err := u.uc.GetListFollower(ctx, id)
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Error on get request() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.GetListFollowing(ctx, user.ID, id)
 	if err != nil {
 		ctx = logger.Logf(ctx, "List Following error() => %v", err)
 		utils.Response(ctx, w, false, st, msg)
 		return
 	}
-
 	utils.Response(ctx, w, true, st, res)
 }

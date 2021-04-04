@@ -131,6 +131,18 @@ func (u *ctrl) HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+func (u *ctrl) HandlerGetAuthorStory(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	authorID, err := strconv.Atoi(chi.URLParam(r, "authorID"))
+	ctx, res, msg, st, err := u.uc.GetAuthorStory(ctx, authorID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+	utils.Response(ctx, w, true, st, res)
+}
+
 func (u *ctrl) HandlerGetStoryGenre(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

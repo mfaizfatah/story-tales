@@ -24,6 +24,7 @@ type Controllers interface {
 	HandlerPostStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
+	HandlerGetAuthorStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request)
 	HandlerGetRekomenStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetFavoriteStory(w http.ResponseWriter, r *http.Request)
@@ -34,6 +35,11 @@ type Controllers interface {
 	// Likes
 	HandlerPostLikes(w http.ResponseWriter, r *http.Request)
 	HandlerDeleteLikes(w http.ResponseWriter, r *http.Request)
+
+	// Comment
+	HandlerGetComment(w http.ResponseWriter, r *http.Request)
+	HandlerPostComment(w http.ResponseWriter, r *http.Request)
+	HandlerDeleteComment(w http.ResponseWriter, r *http.Request)
 
 	// Rating
 	HandlerPostRating(w http.ResponseWriter, r *http.Request)
@@ -55,6 +61,11 @@ type Controllers interface {
 	HandlerGetCountFollowing(w http.ResponseWriter, r *http.Request)
 	HandlerGetListFollower(w http.ResponseWriter, r *http.Request)
 	HandlerGetListFollowing(w http.ResponseWriter, r *http.Request)
+
+	// User
+	HandlerGetExistAuthor(w http.ResponseWriter, r *http.Request)
+	HandlerGetAuthorProfile(w http.ResponseWriter, r *http.Request)
+	HandlerUpdateAuthor(w http.ResponseWriter, r *http.Request)
 
 	// test jenkins
 	HandlerTestJenkins(w http.ResponseWriter, r *http.Request)

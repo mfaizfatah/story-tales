@@ -58,16 +58,19 @@ func (c *route) Router(port string) {
 		r.Get("/story/{storyID}", c.ctrl.HandlerGetOneStory)
 		r.Get("/story/{storyID}/{episodeID}", c.ctrl.HandlerGetDetailEpisode)
 		r.Get("/story/genre", c.ctrl.HandlerGetStoryGenre)
+		r.Get("/story/author/{authorID}", c.ctrl.HandlerGetAuthorStory)
 
 		r.Post("/banner", c.ctrl.HandlerCreateBanner)
 		r.Get("/banner/{id}", c.ctrl.HandlerGetBannerDetail)
 		r.Get("/banner", c.ctrl.HandlerGetListBannerThumb)
 		r.Get("/author/story", c.ctrl.HandlerGetListBannerThumb)
-		r.Post("/follow/{id}", c.ctrl.HandlerGetCountFollower)
 		r.Get("/follower/count/{id}", c.ctrl.HandlerGetCountFollower)
 		r.Get("/following/count/{id}", c.ctrl.HandlerGetCountFollowing)
-		r.Get("/following/list{id}", c.ctrl.HandlerGetListFollowing)
-		r.Get("/follower/list{id}", c.ctrl.HandlerGetListFollower)
+
+		r.Get("/story/comment/{storyID}/{episodeID}", c.ctrl.HandlerGetComment)
+
+		r.Get("/author/checkuser", c.ctrl.HandlerGetExistAuthor)
+		r.Get("/author/{authorID}", c.ctrl.HandlerGetAuthorProfile)
 
 		r.Get("/logout", c.ctrl.HandlerLogout)
 
@@ -84,6 +87,7 @@ func (c *route) Router(port string) {
 		r.Get("/user/check", c.ctrl.HandlerCheckSession)
 		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)
 
+		r.Post("/author/update", c.ctrl.HandlerUpdateAuthor)
 		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story/favorite", c.ctrl.HandlerGetFavoriteStory)
 		r.Post("/story/favorite", c.ctrl.HandlerPostFavoriteStory)
@@ -92,6 +96,12 @@ func (c *route) Router(port string) {
 		r.Delete("/story/rating/{storyID}", c.ctrl.HandlerDeleteRating)
 		r.Post("/story/likes", c.ctrl.HandlerPostLikes)
 		r.Delete("/story/likes/{storyID}/{episodeID}", c.ctrl.HandlerDeleteLikes)
+
+		r.Post("/follow/{id}", c.ctrl.HandlerPostFollow)
+		r.Get("/following/list/{id}", c.ctrl.HandlerGetListFollowing)
+		r.Get("/follower/list/{id}", c.ctrl.HandlerGetListFollower)
+		r.Post("/story/comment", c.ctrl.HandlerPostComment)
+		r.Delete("/story/comment/{commentID}", c.ctrl.HandlerDeleteComment)
 
 	})
 

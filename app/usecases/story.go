@@ -146,3 +146,15 @@ func (r *uc) GetStoryGenre(ctx context.Context) (context.Context, []models.Respo
 
 	return ctx, res, msg, code, nil
 }
+
+func (r *uc) GetAuthorStory(ctx context.Context, authorID int) (context.Context, []models.ResponseAllStory, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+	data, err := r.query.FindAuthorStory(tableStory, authorID)
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+	return ctx, data, msg, http.StatusOK, nil
+}

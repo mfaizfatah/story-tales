@@ -56,6 +56,7 @@ type repo struct {
 // Repo represent the Repository contract
 type Repo interface {
 	// find
+	FindGetAuthorProfile(id int, table string) (*models.AuthorProfile, error)
 	FindGetBanner(id int) (*models.BannerDetailRs, error)
 	FindAllBanner(table string) ([]models.ListBannerThumbRs, error)
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
@@ -65,11 +66,16 @@ type Repo interface {
 	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)
 	FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDetailEpisode, error)
 	FindAllStory(table string) ([]models.ResponseAllStory, error)
+	FindAuthorStory(table string, authorID int) ([]models.ResponseAllStory, error)
 	FindRekomendasiStory(table string) ([]models.ResponseRekomenStory, error)
 	FindFavoriteStory(table string, limit, storyid, userid int) ([]models.ResponseFavoriteStory, error)
 
+	// find comment
+	FindAllComment(table string, storyID, episodeID int) ([]models.CommentView, error)
+
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)
+	FindFollowSt(userID, id int) (*models.UserFollow, error)
 	FindGetCountFollower(id int) (*models.UserCountFollower, error)
 	FindGetCountFollowing(id int) (*models.UserCountFollowing, error)
 	FindListFollower(id int) ([]models.ListFollower, error)
@@ -83,8 +89,11 @@ type Repo interface {
 
 	// Update
 	Update(tableName string, i interface{}, data map[string]interface{}) error
+	UpdateWhere(tableName string, i interface{}, where interface{}, data map[string]interface{}, whereValue ...interface{}) error
+	UpdateData(tableName string, i, where interface{}, data interface{}, whereValue ...interface{}) error
 
 	// delete
+	Delete(table string, i interface{}) error
 	DeleteRedis(key string) (int64, error)
 	DeleteFavorite(storyid, userid int) error
 	DeleteLikes(storyid, episodeid, userid int) error

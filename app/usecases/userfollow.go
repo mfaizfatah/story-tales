@@ -13,22 +13,67 @@ const (
 	tableuserFollow = "user_follow"
 )
 
-func (r *uc) PostFollow(ctx context.Context, id int) (context.Context, string, int, error) {
+func (r *uc) PostRefollow(ctx context.Context, userID, id int) (context.Context, string, int, error) {
+	var (
+		usrFollow = new(models.UserFollow)
+		msg       string
+		err       error
+	)
+	data := make(map[string]interface{})
+	data["deleted"] = 0
+
+	err = r.query.UpdateWhere(tableuserFollow, usrFollow, "userfollow_id = ? AND userfollowing_id = ?", data, userID, id)
+	if err != nil {
+		return ctx, ErrNotFound, http.StatusInternalServerError, err
+	}
+	return ctx, msg, http.StatusCreated, err
+}
+
+func (r *uc) PostUnfollow(ctx context.Context, userID, id int) (context.Context, string, int, error) {
+	var (
+		usrFollow = new(models.UserFollow)
+		msg       string
+		err       error
+	)
+	data := make(map[string]interface{})
+	data["deleted"] = 1
+
+	err = r.query.UpdateWhere(tableuserFollow, usrFollow, "userfollow_id = ? AND userfollowing_id = ?", data, userID, id)
+	if err != nil {
+		return ctx, ErrNotFound, http.StatusInternalServerError, err
+	}
+	return ctx, msg, http.StatusCreated, err
+}
+
+func (r *uc) PostFollow(ctx context.Context, userID, id int) (context.Context, string, int, error) {
 	var (
 		usrFollow = new(models.UserFollow)
 		msg       string
 		err       error
 	)
 
-	usrFollow.UserFollowID = 1
+	usrFollow.UserFollowID = userID
 	usrFollow.UserFollowingID = id
-	err = r.query.InsertFollow(usrFollow)
+	err = r.query.Insert(tableuserFollow, usrFollow)
 
 	if err != nil {
 		return ctx, ErrCreated, http.StatusInternalServerError, err
 	}
 
 	return ctx, msg, http.StatusCreated, err
+}
+
+func (r *uc) GetFollowStatus(ctx context.Context, userID, id int) (*models.UserFollow, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+	follow, err := r.query.FindFollowSt(userID, id)
+	if err != nil {
+		return nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return follow, msg, http.StatusOK, nil
 }
 
 func (r *uc) GetCountFollowing(ctx context.Context, id int) (context.Context, *models.UserCountFollowing, string, int, error) {
@@ -38,7 +83,6 @@ func (r *uc) GetCountFollowing(ctx context.Context, id int) (context.Context, *m
 	)
 
 	data, err := r.query.FindGetCountFollowing(id)
-	log.Printf("msg: %v", data)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
@@ -63,7 +107,7 @@ func (r *uc) GetCountFollower(ctx context.Context, id int) (context.Context, *mo
 
 }
 
-func (r *uc) GetListFollower(ctx context.Context, id int) (context.Context, []models.ListFollower, string, int, error) {
+func (r *uc) GetListFollower(ctx context.Context, userID, id int) (context.Context, []models.ListFollower, string, int, error) {
 	var (
 		msg string
 		err error
@@ -79,7 +123,7 @@ func (r *uc) GetListFollower(ctx context.Context, id int) (context.Context, []mo
 
 }
 
-func (r *uc) GetListFollowing(ctx context.Context, id int) (context.Context, []models.ListFollowing, string, int, error) {
+func (r *uc) GetListFollowing(ctx context.Context, userID, id int) (context.Context, []models.ListFollowing, string, int, error) {
 	var (
 		msg string
 		err error

@@ -2,13 +2,11 @@ package usecases
 
 import (
 	"log"
-	"os"
 
 	"context"
 	"net/http"
 
 	"github.com/go-shadow/moment"
-	"github.com/jlaffaye/ftp"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/repository"
 )
@@ -47,54 +45,6 @@ func (r *uc) CreateBanner(ctx context.Context, req *models.BannerReq) (context.C
 
 	log.Printf("WOOOOOOOYY: %v", banner.Thumb)
 	log.Printf("ANNJAJAAY: %v", banner.Image)
-
-	// Dial FTP
-	conn, err := ftp.Dial(os.Getenv("FTP_ADDR"))
-	if err != nil {
-		log.Print(err)
-		log.Fatal(err.Error())
-	}
-
-	// LOGIN FTP
-	err = conn.Login(os.Getenv("FTP_USERNAME"), os.Getenv("FTP_USERNAME"))
-	if err != nil {
-		log.Print(err)
-		log.Fatal(err.Error())
-	}
-
-	// Upload File to FTP
-	sourceImg := req.ImgFile
-	f, err := os.Open(sourceImg.Filename)
-	if err != nil {
-		log.Print(err)
-		log.Fatal(err.Error())
-	}
-
-	//destinationFile := "./images/story-tales/haniplogo.jpg"
-	destinationFile := "./Attachment/Luckman/" + sourceImg.Filename
-	err = conn.Stor(destinationFile, f)
-	if err != nil {
-		log.Print(err)
-		log.Fatal(err.Error())
-	}
-	f.Close()
-
-	// Upload File to FTP
-	sourceThumb := req.ThumbFile
-	t, err := os.Open(sourceThumb.Filename)
-	if err != nil {
-		log.Print(err)
-		log.Fatal(err.Error())
-	}
-
-	//destinationFile := "./images/story-tales/haniplogo.jpg"
-	destinationThumb := "./Attachment/Luckman/" + sourceThumb.Filename
-	err = conn.Stor(destinationThumb, t)
-	if err != nil {
-		log.Print(err)
-		log.Fatal(err.Error())
-	}
-	t.Close()
 
 	log.Printf("msg: %v", banner)
 	err = r.query.Insert(tableBanner, banner)

@@ -6,6 +6,7 @@ require (
 	github.com/go-chi/chi v1.5.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-shadow/moment v0.0.0-20140422073900-e837f27dad94
+	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/google/uuid v1.1.2
 	github.com/jlaffaye/ftp v0.0.0-20200812143550-39e3779af0db
 	github.com/joho/godotenv v1.3.0
@@ -13,13 +14,14 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/onsi/ginkgo v1.14.2 // indirect
 	github.com/onsi/gomega v1.10.4 // indirect
+	github.com/pkg/sftp v1.13.0
 	github.com/prometheus/client_golang v1.9.0
 	github.com/rs/cors v1.7.0
 	github.com/sirupsen/logrus v1.7.0
 	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/zephinzer/ezpromhttp v0.0.0-20181107155944-35db4d206cee
 	go.mongodb.org/mongo-driver v1.5.0
-	golang.org/x/crypto v0.0.0-20201124201722-c8d3bf9c5392
+	golang.org/x/crypto v0.0.0-20201221181555-eec23a3978ad
 	golang.org/x/net v0.0.0-20210220033124-5f55cee0dc0d // indirect
 	golang.org/x/sys v0.0.0-20210220050731-9a76102bfb43 // indirect
 	golang.org/x/text v0.3.5 // indirect

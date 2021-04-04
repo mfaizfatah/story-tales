@@ -16,6 +16,14 @@ func (r *repo) DeleteRedis(key string) (int64, error) {
 	return result, nil
 }
 
+func (r *repo) Delete(table string, i interface{}) error {
+	query := r.db.Table(table).Delete(i)
+	if query.Error != nil {
+		return query.Error
+	}
+	return nil
+}
+
 func (r *repo) DeleteLikes(storyid, episodeid, userid int) error {
 	var data = new(models.Likes)
 	result := r.db.

@@ -16,6 +16,7 @@ const (
 	ErrNotFound        = "User not found"
 	ErrCreated         = "Error when create a new User. Please try again later. Thank you"
 	ErrAlreadyEmail    = "Email already created. Please use another e-mail. Thank you"
+	ErrAlreadyUserName = "UserName already created. Please use another UserName. Thank you"
 	ErrAlreadyUsername = "Username already created. Please use another username. Thank you"
 	ErrAlreadyPhone    = "Phone number already created. Please use another Phone Number. Thank you"
 	ErrNotVerified     = "Your e-mail is not Verified"
@@ -48,6 +49,7 @@ type Usecases interface {
 	//Story
 	GetOneStory(ctx context.Context, storyID int) (context.Context, *models.ResponseOneStory, string, int, error)
 	GetAllStory(ctx context.Context) (context.Context, []models.ResponseAllStory, string, int, error)
+	GetAuthorStory(ctx context.Context, authorID int) (context.Context, []models.ResponseAllStory, string, int, error)
 	GetDetailEpisode(ctx context.Context, storyID, episodeID int) (context.Context, *models.ResponseDetailEpisode, string, int, error)
 	PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error)
 	GetRekomendasiStory(ctx context.Context) (context.Context, []models.ResponseRekomenStory, string, int, error)
@@ -66,17 +68,29 @@ type Usecases interface {
 	PostRating(ctx context.Context, req *models.Rating, userid int) (context.Context, string, int, error)
 	DeleteRating(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 
+	//Comment
+	GetListComment(ctx context.Context, storyID, episodeID int) (context.Context, []models.CommentView, string, int, error)
+	PostComment(ctx context.Context, req *models.Comment, userID int) (context.Context, string, int, error)
+	DeleteComment(ctx context.Context, commentID, userID int) (context.Context, string, int, error)
+
 	//Banner
 	CreateBanner(ctx context.Context, req *models.BannerReq) (context.Context, string, int, error)
 	GetBannerDtl(ctx context.Context, id int) (context.Context, *models.BannerDetailRs, string, int, error)
 	GetListBannerThumb(ctx context.Context) (context.Context, []models.ListBannerThumbRs, string, int, error)
 
 	//UserFollow
-	PostFollow(ctx context.Context, id int) (context.Context, string, int, error)
+	PostFollow(ctx context.Context, userID, id int) (context.Context, string, int, error)
+	PostUnfollow(ctx context.Context, userID, id int) (context.Context, string, int, error)
+	PostRefollow(ctx context.Context, userID, id int) (context.Context, string, int, error)
+	GetFollowStatus(ctx context.Context, userID, id int) (*models.UserFollow, string, int, error)
 	GetCountFollowing(ctx context.Context, id int) (context.Context, *models.UserCountFollowing, string, int, error)
 	GetCountFollower(ctx context.Context, id int) (context.Context, *models.UserCountFollower, string, int, error)
-	GetListFollower(ctx context.Context, id int) (context.Context, []models.ListFollower, string, int, error)
-	GetListFollowing(ctx context.Context, id int) (context.Context, []models.ListFollowing, string, int, error)
+	GetListFollower(ctx context.Context, userID, id int) (context.Context, []models.ListFollower, string, int, error)
+	GetListFollowing(ctx context.Context, userID, id int) (context.Context, []models.ListFollowing, string, int, error)
+	// User
+	GetExistAuthor(ctx context.Context, req *models.AuthorNickName) (context.Context, *models.AuthorNickName, string, int, error)
+	GetAuthorProfile(ctx context.Context, authorID int) (context.Context, *models.AuthorProfile, string, int, error)
+	UpdateAuthor(ctx context.Context, req *models.AuthorData, authorID int) (context.Context, string, int, error)
 
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)

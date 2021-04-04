@@ -11,6 +11,43 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+func (r *repo) FindGetAuthorProfile(id int, table string) (*models.AuthorProfile, error) {
+	var data models.AuthorProfile
+	err := r.db.Table(table).
+		Where("id = ?", id).
+		Find(&data)
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+	return &data, nil
+}
+func (r *repo) FindAllComment(table string, storyid, episodeid int) ([]models.CommentView, error) {
+	var data []models.CommentView
+	err := r.db.Table(table).
+		Where("id_story = ?", storyid).
+		Where("id_episodes = ?", episodeid).
+		Order("created_at").
+		Find(&data)
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+	return data, nil
+}
+
+func (r *repo) FindFollowSt(userID, id int) (*models.UserFollow, error) {
+	var data models.UserFollow
+	err := r.db.Table("user_follow").
+		Where("userfollow_id = ? AND userfollowing_id = ?", userID, id).
+		Find(&data)
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+	return &data, nil
+}
+
 func (r *repo) FindListFollower(id int) ([]models.ListFollower, error) {
 	var data []models.ListFollower
 
@@ -236,6 +273,18 @@ func (r *repo) FindFavoriteStory(table string, limit, storyid, userid int) ([]mo
 
 	log.Printf("msg: %v", data)
 
+	return data, nil
+}
+
+func (r *repo) FindAuthorStory(table string, authorID int) ([]models.ResponseAllStory, error) {
+	var data []models.ResponseAllStory
+	err := r.db.Table(table).
+		Where("id_author = ?", authorID).
+		Find(&data)
+	log.Printf("msg: %v", data)
+	if err != nil {
+		return data, nil
+	}
 	return data, nil
 }
 

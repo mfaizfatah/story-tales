@@ -6,6 +6,7 @@ import "time"
 type UserFollow struct {
 	UserFollowID    int `json:"userFollowId" gorm:"column:userfollow_id"`
 	UserFollowingID int `json:"userFollowingId" gorm:"column:userfollowing_id"`
+	Deleted         int `json:"deleted" gorm:"column:deleted"`
 }
 
 // UserCountFollowing is model for count user following

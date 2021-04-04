@@ -16,3 +16,18 @@ func (r *repo) Update(tableName string, i interface{}, data map[string]interface
 
 	return nil
 }
+
+func (r *repo) UpdateWhere(tableName string, i, where interface{}, data map[string]interface{}, whereValue ...interface{}) error {
+	query := r.db.Table(tableName).Model(i).Where(where, whereValue...).Updates(data)
+	if query.Error != nil {
+		return query.Error
+	}
+	return nil
+}
+func (r *repo) UpdateData(tableName string, i, where interface{}, data interface{}, whereValue ...interface{}) error {
+	query := r.db.Table(tableName).Model(i).Where(where, whereValue...).Updates(data)
+	if query.Error != nil {
+		return query.Error
+	}
+	return nil
+}

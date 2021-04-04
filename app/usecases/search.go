@@ -10,7 +10,6 @@ import (
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -27,10 +26,14 @@ func (r *uc) Searching(ctx context.Context, query string) (context.Context, inte
 
 	res = make([]models.SearchModel, 0)
 
-	where := bson.M{"$text": bson.M{"$search": query}}
-	opt := options.FindOptions{}
-	opt.SetSort(bson.M{"score": bson.M{"$meta": "textScore"}})
-	cursor, err := r.query.MongoFindAll(where, tableSearch, &opt)
+	/*
+		where := bson.M{"$text": bson.M{"$search": query}}
+		opt := options.FindOptions{}
+		opt.SetSort(bson.M{"score": bson.M{"$meta": "textScore"}})
+	*/
+	char := "^" + query
+	where := bson.M{"$or": []bson.M{{"title": bson.M{"$regex": char, "$options": "i"}}, {"author": bson.M{"$regex": char, "$options": "i"}}}}
+	cursor, err := r.query.MongoFindAll(where, tableSearch, nil)
 	if err != nil {
 		msg = "Terjadi kesalahan pada sisi server. Coba beberapa saat lagi, Terima Kasih!"
 		return ctx, nil, msg, http.StatusInternalServerError, err
@@ -51,11 +54,10 @@ func (r *uc) Searching(ctx context.Context, query string) (context.Context, inte
 
 func (r *uc) GenerateDocument(ctx context.Context) (context.Context, interface{}, string, int, error) {
 	var (
-		res       interface{}
-		msg       string
-		st        = http.StatusOK
-		listStory []models.Story
-		wg        sync.WaitGroup
+		res interface{}
+		msg string
+		st  = http.StatusOK
+		wg  sync.WaitGroup
 	)
 
 	delResult := make(chan *mongo.DeleteResult)
@@ -67,7 +69,7 @@ func (r *uc) GenerateDocument(ctx context.Context) (context.Context, interface{}
 		delErr <- err
 	}()
 
-	err := r.query.DBFindAll(tableStory, &listStory, "deleted = ?", "title, sinopsis", "0")
+	listStory, err := r.query.FindRekomendasiStory(tableStory)
 	if err != nil {
 		msg = "Terjadi kesalahan pada sisi server. Coba beberapa saat lagi, Terima Kasih!"
 		return ctx, nil, msg, http.StatusInternalServerError, err
@@ -80,11 +82,12 @@ func (r *uc) GenerateDocument(ctx context.Context) (context.Context, interface{}
 	docs := make([]interface{}, len(listStory))
 	for i, story := range listStory {
 		wg.Add(i)
-		go func(i int, story models.Story) {
+		go func(i int, story models.ResponseRekomenStory) {
 			defer wg.Done()
 			doc := models.SearchModel{}
+			doc.IDStory = story.ID
 			doc.Title = story.Title
-			doc.Sinopsis = story.Sinopsis
+			doc.Author = story.Author
 			doc.CreatedAt = time.Now()
 			docs[i] = doc
 		}(i, story)

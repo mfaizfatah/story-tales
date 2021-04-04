@@ -233,7 +233,6 @@ func (r *repo) FindRekomendasiStory(table string) ([]models.ResponseRekomenStory
 	var data []models.ResponseRekomenStory
 	err := r.db.Table("rekomendasiView").
 		Scan(&data)
-	log.Printf("msg: %v", data)
 	if err != nil {
 		return data, nil
 	}

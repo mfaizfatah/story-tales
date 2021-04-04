@@ -49,7 +49,7 @@ type Story struct {
 	// min: 1
 	IDAuthor        int               `json:"idAuthor" gorm:"column:id_author"` // Unique identifier for author
 	Episode         []Episode         `json:"episode" gorm:"foreignKey:id_story;references:ID"`
-	Episodes_Detail []Episodes_Detail `json:"episodeDetail"gorm:"foreignKey:id_story;references:ID"`
+	Episodes_Detail []Episodes_Detail `json:"episodeDetail" gorm:"foreignKey:id_story;references:ID"`
 }
 
 type Episode struct {

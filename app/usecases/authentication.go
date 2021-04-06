@@ -108,6 +108,7 @@ func (r *uc) RegistrationSSO(ctx context.Context, req *models.User) (context.Con
 
 	user.Password = fmt.Sprintf("%x", encrypted)*/
 	user.DateOfBirth = req.DateOfBirth
+	user.Avatar = req.Avatar
 	err = r.query.Insert(tableUser, user)
 
 	if err != nil {

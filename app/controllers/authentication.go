@@ -13,7 +13,8 @@ import (
 
 func (u *ctrl) HandlerRegistration(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-
+	keys := r.URL.Query()
+	types := keys.Get("type")
 	// Declare a new Person struct.
 	var p models.User
 
@@ -23,6 +24,16 @@ func (u *ctrl) HandlerRegistration(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.Response(ctx, w, false, http.StatusBadRequest, err)
 		return
+	}
+
+	if types == "google" {
+		ctx, res, msg, st, err := u.uc.RegistrationSSO(ctx, &p)
+		if err != nil {
+			ctx = logger.Logf(ctx, "user registration error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+		utils.Response(ctx, w, true, st, res)
 	}
 
 	ctx, res, msg, st, err := u.uc.Registration(ctx, &p)
@@ -37,7 +48,8 @@ func (u *ctrl) HandlerRegistration(w http.ResponseWriter, r *http.Request) {
 
 func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-
+	keys := r.URL.Query()
+	types := keys.Get("type")
 	// Declare a new Person struct.
 	var p models.User
 
@@ -47,6 +59,16 @@ func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		utils.Response(ctx, w, false, http.StatusBadRequest, err)
 		return
+	}
+
+	if types == "google" {
+		ctx, res, msg, st, err := u.uc.LoginSSO(ctx, &p)
+		if err != nil {
+			ctx = logger.Logf(ctx, "user login error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+		utils.Response(ctx, w, true, st, res)
 	}
 
 	ctx, res, msg, st, err := u.uc.Login(ctx, &p)

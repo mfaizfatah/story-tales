@@ -6,9 +6,7 @@ require (
 	github.com/go-chi/chi v1.5.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-shadow/moment v0.0.0-20140422073900-e837f27dad94
-	github.com/google/go-cmp v0.5.2 // indirect
 	github.com/google/uuid v1.1.2
-	github.com/jlaffaye/ftp v0.0.0-20200812143550-39e3779af0db
 	github.com/joho/godotenv v1.3.0
 	github.com/kr/text v0.2.0 // indirect
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect

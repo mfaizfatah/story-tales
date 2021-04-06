@@ -40,7 +40,9 @@ type uc struct {
 // Usecases represent the Usecases contract
 type Usecases interface {
 	// Authentication for logic auth
+	RegistrationSSO(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	Registration(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
+	LoginSSO(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error)
 	Logout(ctx context.Context, token string) (context.Context, interface{}, string, int, error)
 	CheckSession(ctx context.Context, req *models.User, token string) (context.Context, interface{}, string, int, error)

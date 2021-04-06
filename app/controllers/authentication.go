@@ -34,16 +34,18 @@ func (u *ctrl) HandlerRegistration(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		utils.Response(ctx, w, true, st, res)
+	} else {
+		ctx, res, msg, st, err := u.uc.Registration(ctx, &p)
+		if err != nil {
+			ctx = logger.Logf(ctx, "user registration error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+
+		utils.Response(ctx, w, true, st, res)
+
 	}
 
-	ctx, res, msg, st, err := u.uc.Registration(ctx, &p)
-	if err != nil {
-		ctx = logger.Logf(ctx, "user registration error() => %v", err)
-		utils.Response(ctx, w, false, st, msg)
-		return
-	}
-
-	utils.Response(ctx, w, true, st, res)
 }
 
 func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
@@ -69,16 +71,16 @@ func (u *ctrl) HandlerLogin(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		utils.Response(ctx, w, true, st, res)
+	} else {
+		ctx, res, msg, st, err := u.uc.Login(ctx, &p)
+		if err != nil {
+			ctx = logger.Logf(ctx, "user login error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+		utils.Response(ctx, w, true, st, res)
 	}
 
-	ctx, res, msg, st, err := u.uc.Login(ctx, &p)
-	if err != nil {
-		ctx = logger.Logf(ctx, "user login error() => %v", err)
-		utils.Response(ctx, w, false, st, msg)
-		return
-	}
-
-	utils.Response(ctx, w, true, st, res)
 }
 
 func (u *ctrl) HandlerLogout(w http.ResponseWriter, r *http.Request) {

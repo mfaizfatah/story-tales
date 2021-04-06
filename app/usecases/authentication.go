@@ -137,7 +137,7 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 		req.Username = req.User
 	}
 
-	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password, email_verify", req.Email, req.Username)
+	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password, email_verify, google", req.Email, req.Username)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
@@ -178,7 +178,7 @@ func (r *uc) LoginSSO(ctx context.Context, req *models.User) (context.Context, *
 
 	req.Email = req.User
 
-	err = r.query.FindOne(tableUser, user, "email = ?", "id, email, email_verify", req.Email)
+	err = r.query.FindOne(tableUser, user, "email = ?", "id, email, email_verify, google", req.Email)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

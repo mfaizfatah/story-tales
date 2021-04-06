@@ -10,6 +10,7 @@ type User struct {
 	Telp              string      `json:"telp" gorm:"column:telp"`
 	DateOfBirth       interface{} `json:"dateOfBirth" gorm:"column:date_of_birth"`
 	Google            int         `json:"google" gorm:"column:google"`
+	Avatar            string      `json:"avatar" gorm:"column:avatar"`
 	IDRole            int         `json:"idRole" gorm:"column:id_role"`
 	EmailVerification int         `json:"emailVerify" gorm:"column:email_verify"`
 	User              string      `json:"user" gorm:"-"`

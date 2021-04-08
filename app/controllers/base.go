@@ -40,6 +40,7 @@ type Controllers interface {
 	HandlerGetComment(w http.ResponseWriter, r *http.Request)
 	HandlerPostComment(w http.ResponseWriter, r *http.Request)
 	HandlerDeleteComment(w http.ResponseWriter, r *http.Request)
+	HandlerGetMyComment(w http.ResponseWriter, r *http.Request)
 
 	// Rating
 	HandlerPostRating(w http.ResponseWriter, r *http.Request)

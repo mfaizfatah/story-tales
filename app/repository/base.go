@@ -72,6 +72,7 @@ type Repo interface {
 
 	// find comment
 	FindAllComment(table string, storyID, episodeID int) ([]models.CommentView, error)
+	FindMyComment(table string, authorID int) ([]models.CommentView, error)
 
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)

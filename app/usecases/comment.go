@@ -29,6 +29,22 @@ func (r *uc) GetListComment(ctx context.Context, storyID, episodeID int) (contex
 
 }
 
+func (r *uc) GetMyComment(ctx context.Context, userID int) (context.Context, []models.CommentView, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+
+	data, err := r.query.FindMyComment(viewComment, userID)
+
+	if err != nil {
+		return ctx, nil, ErrBadRequest, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusAccepted, nil
+
+}
+
 func (r *uc) PostComment(ctx context.Context, req *models.Comment, userID int) (context.Context, string, int, error) {
 	var (
 		comment = new(models.Comment)

@@ -287,6 +287,18 @@ func (r *repo) FindAuthorStory(table string, authorID int) ([]models.ResponseAll
 	return data, nil
 }
 
+func (r *repo) FindMyComment(table string, userID int) ([]models.CommentView, error) {
+	var data []models.CommentView
+	err := r.db.Table(table).
+		Where("id_users = ?", userID).
+		Find(&data)
+	log.Printf("msg: %v", data)
+	if err != nil {
+		return data, nil
+	}
+	return data, nil
+}
+
 func (r *repo) GetTTLRedis(key string) (int64, error) {
 	result, err := r.redis.TTL(key).Result()
 	if err != nil {

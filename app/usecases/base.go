@@ -74,6 +74,7 @@ type Usecases interface {
 	GetListComment(ctx context.Context, storyID, episodeID int) (context.Context, []models.CommentView, string, int, error)
 	PostComment(ctx context.Context, req *models.Comment, userID int) (context.Context, string, int, error)
 	DeleteComment(ctx context.Context, commentID, userID int) (context.Context, string, int, error)
+	GetMyComment(ctx context.Context, userID int) (context.Context, []models.CommentView, string, int, error)
 
 	//Banner
 	CreateBanner(ctx context.Context, req *models.BannerReq) (context.Context, string, int, error)

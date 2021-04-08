@@ -98,3 +98,22 @@ func (u *ctrl) HandlerGetComment(w http.ResponseWriter, r *http.Request) {
 
 	utils.Response(ctx, w, true, st, res)
 }
+
+func (u *ctrl) HandlerGetMyComment(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.GetMyComment(ctx, user.ID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Get My Comment error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, res)
+}

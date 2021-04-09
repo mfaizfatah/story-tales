@@ -74,3 +74,22 @@ func (u *ctrl) HandlerDeleteLikes(w http.ResponseWriter, r *http.Request) {
 	}
 	utils.Response(ctx, w, true, st, msg)
 }
+
+func (u *ctrl) HandlerGetMyLike(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.GetMyLikes(ctx, user.ID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Get My Like error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, res)
+}

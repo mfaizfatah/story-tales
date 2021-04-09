@@ -35,6 +35,7 @@ type Controllers interface {
 	// Likes
 	HandlerPostLikes(w http.ResponseWriter, r *http.Request)
 	HandlerDeleteLikes(w http.ResponseWriter, r *http.Request)
+	HandlerGetMyLike(w http.ResponseWriter, r *http.Request)
 
 	// Comment
 	HandlerGetComment(w http.ResponseWriter, r *http.Request)

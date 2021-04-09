@@ -50,3 +50,15 @@ func (r *uc) DeleteLikes(ctx context.Context, storyid, episodeid, userid int) (c
 
 	return ctx, msg, http.StatusOK, err
 }
+
+func (r *uc) GetMyLikes(ctx context.Context, userID int) (context.Context, []models.Likes, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+	data, err := r.query.FindMyLike(tableLikes, userID)
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+	return ctx, data, msg, http.StatusOK, nil
+}

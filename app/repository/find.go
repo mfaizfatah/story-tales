@@ -143,6 +143,18 @@ func (r *repo) FindAllBanner(table string) ([]models.ListBannerThumbRs, error) {
 	return data, nil
 }
 
+func (r *repo) FindMyLike(table string, userID int) ([]models.Likes, error) {
+	var data []models.Likes
+	err := r.db.Table(table).
+		Where("id_users = ?", userID).
+		Find(&data)
+	log.Printf("msg: %v", data)
+	if err != nil {
+		return data, nil
+	}
+	return data, nil
+}
+
 func (r *repo) FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error {
 	err := r.db.Table(table).Where(where, whereValue...).Select(field).First(i).Error
 	if err != nil {

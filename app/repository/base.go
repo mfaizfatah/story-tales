@@ -61,6 +61,7 @@ type Repo interface {
 	FindAllBanner(table string) ([]models.ListBannerThumbRs, error)
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
 	DBFindAll(table string, i, where interface{}, field string, whereValue ...interface{}) error
+	FindMyLike(table string, userID int) ([]models.Likes, error)
 
 	//find Story
 	FindGetOneStory(storyid int) (*models.ResponseOneStory, error)

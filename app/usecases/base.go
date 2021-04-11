@@ -105,7 +105,7 @@ type Usecases interface {
 	GetUserFromToken(req *http.Request) (*models.User, string, int, error)
 
 	// Searching
-	Searching(ctx context.Context, query string) (context.Context, interface{}, string, int, error)
+	Searching(ctx context.Context, query, genre string) (context.Context, interface{}, string, int, error)
 	GenerateDocument(ctx context.Context) (context.Context, interface{}, string, int, error)
 }
 

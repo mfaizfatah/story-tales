@@ -115,7 +115,7 @@ func (r *uc) GetStoryGenre(ctx context.Context) (context.Context, []models.Respo
 		storyGenre []models.StoryGenreView
 	)
 
-	err := r.query.DBFindAll(StoryGenreView, &storyGenre, "deleted = ?", "id_story, genre, title, images", 0)
+	err := r.query.DBFindAll(StoryGenreView, &storyGenre, "deleted = ?", "id_story, genre, title, images, sinopsis, nickname", 0)
 	if err != nil {
 		return ctx, nil, "data_not_found", http.StatusNotFound, repository.ErrRecordNotFound
 	}
@@ -123,10 +123,14 @@ func (r *uc) GetStoryGenre(ctx context.Context) (context.Context, []models.Respo
 	idStory := make(map[string][]int)
 	title := make(map[string][]string)
 	image := make(map[string][]string)
+	sinopsis := make(map[string][]string)
+	nickname := make(map[string][]string)
 	for _, vals := range storyGenre {
 		idStory[vals.Genre] = append(idStory[vals.Genre], vals.IDStory)
 		title[vals.Genre] = append(title[vals.Genre], vals.Title)
 		image[vals.Genre] = append(image[vals.Genre], vals.Images)
+		sinopsis[vals.Genre] = append(sinopsis[vals.Genre], vals.Sinopsis)
+		nickname[vals.Genre] = append(nickname[vals.Genre], vals.AuthorNickName)
 	}
 
 	for i, j := range idStory {
@@ -138,6 +142,8 @@ func (r *uc) GetStoryGenre(ctx context.Context) (context.Context, []models.Respo
 			storyView.IDStory = l
 			storyView.Title = title[i][k]
 			storyView.Images = image[i][k]
+			storyView.Sinopsis = sinopsis[i][k]
+			storyView.AuthorNickName = nickname[i][k]
 
 			result.Story = append(result.Story, storyView)
 		}

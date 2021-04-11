@@ -17,11 +17,12 @@ const (
 	tableSearch = "search"
 )
 
-func (r *uc) Searching(ctx context.Context, query string) (context.Context, interface{}, string, int, error) {
+func (r *uc) Searching(ctx context.Context, query, genre string) (context.Context, interface{}, string, int, error) {
 	var (
-		res []models.SearchModel
-		msg string
-		st  = http.StatusOK
+		res   []models.SearchModel
+		msg   string
+		st    = http.StatusOK
+		where interface{}
 	)
 
 	res = make([]models.SearchModel, 0)
@@ -32,7 +33,12 @@ func (r *uc) Searching(ctx context.Context, query string) (context.Context, inte
 		opt.SetSort(bson.M{"score": bson.M{"$meta": "textScore"}})
 	*/
 	char := "^" + query
-	where := bson.M{"$or": []bson.M{{"title": bson.M{"$regex": char, "$options": "i"}}, {"author": bson.M{"$regex": char, "$options": "i"}}}}
+	if genre != "" {
+		where = bson.M{"$and": []bson.M{{"genre": genre}, {"$or": []bson.M{{"title": bson.M{"$regex": char, "$options": "i"}}, {"author": bson.M{"$regex": char, "$options": "i"}}}}}}
+	} else {
+		where = bson.M{"$or": []bson.M{{"title": bson.M{"$regex": char, "$options": "i"}}, {"author": bson.M{"$regex": char, "$options": "i"}}}}
+	}
+
 	cursor, err := r.query.MongoFindAll(where, tableSearch, nil)
 	if err != nil {
 		msg = "Terjadi kesalahan pada sisi server. Coba beberapa saat lagi, Terima Kasih!"
@@ -88,6 +94,7 @@ func (r *uc) GenerateDocument(ctx context.Context) (context.Context, interface{}
 			doc.IDStory = story.ID
 			doc.Title = story.Title
 			doc.Author = story.Author
+			doc.Genre = story.Genre
 			doc.CreatedAt = time.Now()
 			docs[i] = doc
 		}(i, story)

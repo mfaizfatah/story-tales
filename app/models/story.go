@@ -177,10 +177,12 @@ type Detail struct {
 }
 
 type StoryGenreView struct {
-	IDStory int    `json:"id_story"`
-	Genre   string `json:"genre,omitempty"`
-	Title   string `json:"title"`
-	Images  string `json:"images"`
+	IDStory        int    `json:"id_story"`
+	Genre          string `json:"genre,omitempty"`
+	Title          string `json:"title"`
+	Images         string `json:"images"`
+	Sinopsis       string `json:"sinopsis"`
+	AuthorNickName string `json:"nickname" gorm:"column:nickname"`
 }
 
 type ResponseStoryGenre struct {

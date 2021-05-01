@@ -166,6 +166,7 @@ type ResponseDetailEpisode struct {
 	ID         int      `json:"id"`
 	Eps_Number int      `json:"eps_number"`
 	Eps_Title  string   `json:"eps_title"`
+	ID_Story   int      `json:"id_story"`
 	Detail     []Detail `json:"detail"`
 }
 

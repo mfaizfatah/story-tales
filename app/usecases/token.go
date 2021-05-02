@@ -12,6 +12,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
+	"gopkg.in/mgo.v2/bson"
+)
+
+const (
+	TableSession = "sessions"
 )
 
 func (r *uc) GenerateToken(ctx context.Context, user *models.User) (context.Context, string, int64, error) {
@@ -23,6 +28,7 @@ func (r *uc) GenerateToken(ctx context.Context, user *models.User) (context.Cont
 	)
 
 	tokenValue.IDUser = user.ID
+	tokenValue.FCMToken = user.FCMToken
 
 	plaintext, err := json.Marshal(tokenValue)
 	if err != nil {
@@ -43,6 +49,8 @@ func (r *uc) GenerateToken(ctx context.Context, user *models.User) (context.Cont
 	if err != nil {
 		return ctx, "", 0, err
 	}
+
+	go r.SetSession(strconv.Itoa(user.ID), user.FCMToken, token)
 
 	duration, err := r.query.GetTTLRedis(token)
 	if err != nil {
@@ -69,4 +77,45 @@ func (r *uc) GetToken(key string) (*models.TokenResponse, error) {
 	tokenReponse.ExpiredIn = fmt.Sprintf("%v", duration)
 
 	return tokenReponse, nil
+}
+
+func (r *uc) SetSession(userID, fcmtoken, token string) error {
+	var (
+		sess  models.Session
+		st    models.SessionToken
+		where interface{}
+		err   error
+	)
+
+	_, err = time.LoadLocation("Asia/Jakarta")
+	if err != nil {
+		return err
+	}
+	where = bson.M{"user_id": userID}
+	err = r.query.MongoFindOne(&sess, where, TableSession)
+	if err != nil {
+		st.Token = token
+		st.FcmToken = fcmtoken
+		st.CreatedAt = time.Now()
+
+		sess.IDUser = userID
+		sess.Session = append(sess.Session, st)
+		_, err := r.query.MongoInsert(TableSession, &sess, nil)
+		if err != nil {
+			return err
+		}
+		return nil
+	}
+
+	st.Token = token
+	st.FcmToken = fcmtoken
+	st.CreatedAt = time.Now()
+	sess.Session = append(sess.Session, st)
+
+	err = r.query.MongoUpdateOne(bson.M{"$set": bson.M{"session": sess.Session}}, bson.M{"user_id": sess.IDUser}, TableSession)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

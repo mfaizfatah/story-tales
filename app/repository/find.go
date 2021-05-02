@@ -346,3 +346,13 @@ func (r *repo) DBFindAll(table string, i, where interface{}, field string, where
 
 	return nil
 }
+
+func (r *repo) MongoFindOne(i, where interface{}, TableName string) error {
+	result := r.mongo.Collection(TableName).FindOne(context.TODO(), where)
+	if result.Err() != nil {
+		return result.Err()
+	}
+
+	result.Decode(i)
+	return nil
+}

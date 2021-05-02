@@ -4,3 +4,4 @@ configmap.yaml
 *.exe
 story-tales
 deployment/
+/uploads

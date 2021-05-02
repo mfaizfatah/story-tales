@@ -8,6 +8,7 @@ import (
 	"net/http/httputil"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -17,7 +18,7 @@ import (
 func StartRecord(req *http.Request, start time.Time) *http.Request {
 	var body string
 
-	if req.Method != http.MethodGet {
+	if req.Method != http.MethodGet && !strings.Contains(req.Header.Get("Content-Type"), "form-data") {
 		reqBody, err := ioutil.ReadAll(req.Body)
 		if err != nil {
 			body = ""

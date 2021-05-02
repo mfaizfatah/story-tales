@@ -2,6 +2,7 @@ package usecases
 
 import (
 	"context"
+	"mime/multipart"
 	"net/http"
 
 	"github.com/mfaizfatah/story-tales/app/adapter"
@@ -107,6 +108,9 @@ type Usecases interface {
 	// Searching
 	Searching(ctx context.Context, query, genre string) (context.Context, interface{}, string, int, error)
 	GenerateDocument(ctx context.Context) (context.Context, interface{}, string, int, error)
+
+	// upload images
+	UploadImages(ctx context.Context, req *models.Story, userid int, file multipart.File, fileHeader *multipart.FileHeader) (context.Context, int, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)

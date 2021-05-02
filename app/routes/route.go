@@ -46,8 +46,6 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler)
 		r.Get("/verify/{token}", c.ctrl.HandlerEmailVerification)
 		r.Get("/test-jenkins", c.ctrl.HandlerTestJenkins)
-
-		r.Post("/upload", c.ctrl.HandlerUpload)
 	})
 
 	router.Group(func(r chi.Router) {
@@ -107,6 +105,7 @@ func (c *route) Router(port string) {
 		r.Post("/story/comment", c.ctrl.HandlerPostComment)
 		r.Delete("/story/comment/{commentID}", c.ctrl.HandlerDeleteComment)
 
+		r.Post("/upload", c.ctrl.HandlerUpload)
 	})
 
 	router.MethodNotAllowed(middleware.NotAllowed)

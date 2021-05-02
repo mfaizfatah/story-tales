@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/repository"
 )
@@ -44,6 +45,7 @@ func (r *uc) UploadImages(ctx context.Context, story *models.Story, userid int, 
 	if _, err := io.Copy(targetFile, file); err != nil {
 		return ctx, http.StatusInternalServerError, err
 	}
+	ctx = logger.Logf(ctx, "file() => %v", fileLocation)
 	story.Images = fmt.Sprintf("%v/%v/%v/%v", baseUriImages, strconv.Itoa(userid), title, fileHeader.Filename)
 
 	return ctx, http.StatusOK, err

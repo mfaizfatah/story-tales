@@ -1,5 +1,7 @@
 package repository
 
+import "context"
+
 /*Update to database
  * @paremeter
  * i - struct to saving into database
@@ -30,4 +32,13 @@ func (r *repo) UpdateData(tableName string, i, where interface{}, data interface
 		return query.Error
 	}
 	return nil
+}
+
+func (r *repo) MongoUpdateOne(data, where interface{}, TableName string) error {
+	_, err := r.mongo.Collection(TableName).UpdateOne(context.TODO(), where, data)
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

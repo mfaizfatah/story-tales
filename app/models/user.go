@@ -14,6 +14,7 @@ type User struct {
 	IDRole            int         `json:"idRole" gorm:"column:id_role"`
 	EmailVerification int         `json:"emailVerify" gorm:"column:email_verify"`
 	User              string      `json:"user" gorm:"-"`
+	FCMToken          string      `json:"fcm_token" gorm:"-"`
 }
 
 // ForgotPass is mode for request forgot pass

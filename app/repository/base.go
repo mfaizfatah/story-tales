@@ -103,12 +103,17 @@ type Repo interface {
 
 	// mongo find
 	MongoFindAll(where interface{}, tablename string, opt *options.FindOptions) (*mongo.Cursor, error)
+	MongoFindOne(i, where interface{}, TableName string) error
 
 	// mongo insert
 	MongoBulkInsert(tablename string, doc []interface{}, opt *options.InsertManyOptions) (*mongo.InsertManyResult, error)
+	MongoInsert(tablename string, doc interface{}, opt *options.InsertOneOptions) (*mongo.InsertOneResult, error)
 
 	// mongo delete
 	MongoDeleteAll(tablename string, where interface{}, opt *options.DeleteOptions) (*mongo.DeleteResult, error)
+
+	// mongo update
+	MongoUpdateOne(data, where interface{}, TableName string) error
 }
 
 /*NewRepo will create an object that represent the Repository interface (Repo)

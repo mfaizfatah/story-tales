@@ -87,3 +87,11 @@ func (r *repo) MongoBulkInsert(tablename string, doc []interface{}, opt *options
 	}
 	return result, nil
 }
+
+func (r *repo) MongoInsert(tablename string, doc interface{}, opt *options.InsertOneOptions) (*mongo.InsertOneResult, error) {
+	result, err := r.mongo.Collection(tablename).InsertOne(context.Background(), doc, opt)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}

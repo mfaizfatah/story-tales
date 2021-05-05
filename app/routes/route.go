@@ -66,8 +66,6 @@ func (c *route) Router(port string) {
 		r.Get("/author/story", c.ctrl.HandlerGetListBannerThumb)
 		r.Get("/follower/count/{id}", c.ctrl.HandlerGetCountFollower)
 		r.Get("/following/count/{id}", c.ctrl.HandlerGetCountFollowing)
-		r.Get("/story/likes", c.ctrl.HandlerGetLikes)
-
 		r.Get("/story/comment/{storyID}/{episodeID}", c.ctrl.HandlerGetComment)
 
 		r.Get("/author/checkuser", c.ctrl.HandlerGetExistAuthor)
@@ -96,6 +94,7 @@ func (c *route) Router(port string) {
 		r.Post("/story/rating", c.ctrl.HandlerPostRating)
 		r.Delete("/story/rating/{storyID}", c.ctrl.HandlerDeleteRating)
 		r.Post("/story/likes", c.ctrl.HandlerPostLikes)
+		r.Get("/story/likes", c.ctrl.HandlerGetLikes)
 		r.Delete("/story/likes/{storyID}/{episodeID}", c.ctrl.HandlerDeleteLikes)
 
 		r.Post("/follow/{id}", c.ctrl.HandlerPostFollow)

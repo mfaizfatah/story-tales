@@ -29,3 +29,7 @@ type Likes struct {
 	// min: 1
 	IDUser int `json:"id_users" gorm:"column:id_users"`
 }
+
+type ResponseCheckLikes struct {
+	CheckLikes bool `json:"checkLikes"`
+}

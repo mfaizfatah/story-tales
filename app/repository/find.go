@@ -207,7 +207,7 @@ func (r *repo) FindGetDetailEpisode(storyid, episodeid int) (*models.ResponseDet
 	defer rows.Close()
 	for rows.Next() {
 		var detail models.Detail
-		err = rows.Scan(&data.ID, &data.ID_Story, &data.Eps_Number, &data.Eps_Title, &detail.ID, &detail.Page, &detail.Schedule, &detail.Images)
+		err = rows.Scan(&data.ID, &data.ID_Story, &data.Eps_Number, &data.Eps_Title, &detail.ID, &data.Likes, &detail.Page, &detail.Schedule, &detail.Images)
 		if err != nil {
 			log.Panic(err)
 		}

@@ -81,13 +81,13 @@ func (u *ctrl) HandlerGetLikes(w http.ResponseWriter, r *http.Request) {
 	storyID, _ := strconv.Atoi(keys.Get("storyid"))
 	episodeID, _ := strconv.Atoi(keys.Get("episodeid"))
 
-	/* 	user, msg, st, err := u.uc.GetUserFromToken(r)
-	   	if err != nil {
-	   		utils.Response(ctx, w, false, st, msg)
-	   		return
-	   	} */
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
 
-	ctx, res, msg, st, err := u.uc.GetLikes(ctx, storyID, episodeID, 21)
+	ctx, res, msg, st, err := u.uc.GetLikes(ctx, storyID, episodeID, user.ID)
 
 	if err != nil {
 		ctx = logger.Logf(ctx, "Likes error() => %v", err)

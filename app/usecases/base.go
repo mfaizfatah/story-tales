@@ -67,6 +67,7 @@ type Usecases interface {
 	PostLikes(ctx context.Context, req *models.Likes, userid int) (context.Context, string, int, error)
 	DeleteLikes(ctx context.Context, storyid, episodeid, userid int) (context.Context, string, int, error)
 	GetMyLikes(ctx context.Context, userID int) (context.Context, []models.Likes, string, int, error)
+	GetLikes(ctx context.Context, storyID, episodeID, userID int) (context.Context, *models.ResponseCheckLikes, string, int, error)
 
 	//Rating
 	PostRating(ctx context.Context, req *models.Rating, userid int) (context.Context, string, int, error)

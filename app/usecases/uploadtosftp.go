@@ -1,11 +1,15 @@
 package usecases
 
 import (
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
-	"os"
+	"mime/multipart"
+	"path/filepath"
+	"strconv"
 
+	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
@@ -24,7 +28,7 @@ func PublicKeyFile(file string) ssh.AuthMethod {
 	return ssh.PublicKeys(key)
 }
 
-func UploadToFtpProccess() {
+func UploadToFtpProccess(userid int, story *models.Story, file multipart.File, fileHeader *multipart.FileHeader) {
 	const SSH_ADDRESS = "178.128.53.127:22"
 	const SSH_USERNAME = "sftpdigi"
 	const SSH_KEY = ""
@@ -40,31 +44,36 @@ func UploadToFtpProccess() {
 	}
 
 	client, err := ssh.Dial("tcp", SSH_ADDRESS, sshConfig)
-	if client != nil {
-		defer client.Close()
-	}
 	if err != nil {
 		log.Fatal("Failed to dial. " + err.Error())
 	}
+	defer client.Close()
 
 	sftpClient, err := sftp.NewClient(client)
 	if err != nil {
 		log.Fatal("Failed create client sftp client. " + err.Error())
 	}
+	defer sftpClient.Close()
 
-	fDestination, err := sftpClient.Create("/upload/filegua/kaguree.jpg")
+	// /data/sftpdigi/upload/<idUser>/<title>/filename
+	dirpath := filepath.Join(strconv.Itoa(userid))
+	log.Print(dirpath)
+	_, err = sftpClient.Lstat(dirpath)
+	if err != nil {
+		sftpClient.MkdirAll(dirpath)
+	}
+	fileLocation := fmt.Sprintf("%v/%v_%v_%v", userid, story.Title, story.Season, fileHeader.Filename)
+	// fileLocation := filepath.Join(strconv.Itoa(userid), fileHeader.Filename)
+	log.Print(fileLocation)
+
+	fDestination, err := sftpClient.Create(fileLocation)
 	if err != nil {
 		log.Fatal("Failed to create destination file. " + err.Error())
 	}
+	defer fDestination.Close()
 
-	fSource, err := os.Open("/Users/hanif/Desktop/img/Kagura.jpg")
-	if err != nil {
-		log.Fatal("Failed to read source file. " + err.Error())
-	}
-
-	_, err = io.Copy(fDestination, fSource)
-	if err != nil {
-		log.Fatal("Failed copy source file into destination file. " + err.Error())
+	if _, err := io.Copy(fDestination, file); err != nil {
+		log.Fatal("Failed to create destination file. " + err.Error())
 	}
 
 }

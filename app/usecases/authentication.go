@@ -16,7 +16,8 @@ import (
 
 const (
 	// TableUser is table for user
-	tableUser = "users"
+	tableUser  = "users"
+	tableLogin = "loginView"
 )
 
 var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
@@ -125,10 +126,11 @@ func (r *uc) RegistrationSSO(ctx context.Context, req *models.User) (context.Con
 func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *models.ResponseLogin, string, int, error) {
 	var (
 		// sha  = sha1.New()
-		res  = new(models.ResponseLogin)
-		user = new(models.User)
-		msg  string
-		err  error
+		res   = new(models.ResponseLogin)
+		login = new(models.Login)
+		user  = new(models.User)
+		msg   string
+		err   error
 	)
 
 	isEmail := isEmailValid(req.User)
@@ -138,10 +140,16 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 		req.Username = req.User
 	}
 
-	err = r.query.FindOne(tableUser, user, "email = ? OR username = ?", "id, email, password, email_verify, google", req.Email, req.Username)
+	err = r.query.FindOne(tableLogin, login, "email = ? OR username = ?", "id, username, email, password, email_verify, google, role, id_author", req.Email, req.Username)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
+	user.ID = login.ID
+	user.Username = login.Username
+	user.Email = login.Email
+	user.Password = login.Password
+	user.Google = login.Google
+	user.EmailVerification = login.EmailVerification
 
 	if user.Google == 1 {
 		return ctx, nil, "You must login with google", http.StatusNotAcceptable, errors.New("not_google")
@@ -165,6 +173,8 @@ func (r *uc) Login(ctx context.Context, req *models.User) (context.Context, *mod
 	res.Token.Value = token
 	res.Token.ExpiredIn = fmt.Sprintf("%v", duration)
 	res.Message = "Login Success"
+	res.Roles = login.Role
+	res.IDAuthor = login.IDAuthor
 
 	return ctx, res, msg, http.StatusAccepted, nil
 }

@@ -17,6 +17,18 @@ type User struct {
 	FCMToken          string      `json:"fcm_token" gorm:"-"`
 }
 
+// Login is model for user data
+type Login struct {
+	ID                int    `json:"id_user" gorm:"column:id"`
+	Username          string `json:"username" gorm:"column:username"`
+	Email             string `json:"email" gorm:"column:email"`
+	Password          string `json:"password" gorm:"column:password"`
+	Google            int    `json:"google" gorm:"column:google"`
+	EmailVerification int    `json:"emailVerify" gorm:"column:email_verify"`
+	Role              string `json:"role" gorm:"column:role"`
+	IDAuthor          int    `json:"id_author" gorm:"column:id_author"`
+}
+
 // ForgotPass is mode for request forgot pass
 type ForgotPass struct {
 	Email          string `json:"email"`

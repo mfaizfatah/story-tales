@@ -27,24 +27,7 @@ func (r *uc) UploadImages(ctx context.Context, story *models.Story, userid int, 
 	// image segment
 	title := strings.ToLower(strings.ReplaceAll(story.Title, " ", "_"))
 
-	// // /data/sftpdigi/upload/<idUser>/<title>/filename
-	// dirpath := filepath.Join(dir, strconv.Itoa(userid), title)
-	// if _, err = os.Stat(dirpath); os.IsNotExist(err) {
-	// 	err = os.MkdirAll(dirpath, 0755)
-	// }
-
-	// fileLocation := filepath.Join(dirpath, fileHeader.Filename)
-	// targetFile, err := os.OpenFile(fileLocation, os.O_WRONLY|os.O_CREATE, 0666)
-	// if err != nil {
-	// 	return ctx, http.StatusInternalServerError, err
-	// }
-	// defer targetFile.Close()
-	// if _, err := io.Copy(targetFile, file); err != nil {
-	// 	return ctx, http.StatusInternalServerError, err
-	// }
-	// ctx = logger.Logf(ctx, "file() => %v", fileLocation)
-
-	UploadToFtpProccess(userid, story, file, fileHeader)
+	// ctx, fileLoc, err := UploadToFtpProccess(userid, story, file, fileHeader)
 
 	story.Images = fmt.Sprintf("%v/%v/%v/%v", baseUriImages, strconv.Itoa(userid), title, fileHeader.Filename)
 

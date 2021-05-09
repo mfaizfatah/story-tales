@@ -111,6 +111,7 @@ type Usecases interface {
 
 	// upload images
 	UploadImages(ctx context.Context, req *models.Story, userid int, file multipart.File, fileHeader *multipart.FileHeader) (context.Context, int, error)
+	UploadToFtpProccess(ctx context.Context, userid int, path string, file multipart.File, fileHeader *multipart.FileHeader) (context.Context, string, error)
 }
 
 /*NewUC will create an object that represent the Usecases interface (Usecases)

@@ -2,17 +2,16 @@ package controllers
 
 import (
 	"net/http"
+	"strings"
 
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
-	"github.com/mfaizfatah/story-tales/app/models"
 	"github.com/mfaizfatah/story-tales/app/utils"
 )
 
 func (u *ctrl) HandlerUpload(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	var s models.Story
 
-	s.Title = r.FormValue("title")
+	path := r.FormValue("path")
 
 	user, msg, st, err := u.uc.GetUserFromToken(r)
 	if err != nil {
@@ -22,22 +21,25 @@ func (u *ctrl) HandlerUpload(w http.ResponseWriter, r *http.Request) {
 
 	// image segment
 	if err := r.ParseMultipartForm(1024); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		ctx = logger.Logf(ctx, "upload error() => %v", err)
+		utils.Response(ctx, w, false, http.StatusInternalServerError, err.Error())
 		return
 	}
 	uploadedFile, handler, err := r.FormFile("file")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		ctx = logger.Logf(ctx, "upload error() => %v", err)
+		utils.Response(ctx, w, false, http.StatusInternalServerError, err.Error())
 		return
 	}
 	defer uploadedFile.Close()
 
-	ctx, st, err = u.uc.UploadImages(ctx, &s, user.ID, uploadedFile, handler)
+	path = strings.ToLower(strings.ReplaceAll(path, " ", "_"))
+	ctx, res, err := u.uc.UploadToFtpProccess(ctx, user.ID, path, uploadedFile, handler)
 	if err != nil {
-		ctx = logger.Logf(ctx, "Story error() => %v", err)
-		utils.Response(ctx, w, false, st, err.Error())
+		ctx = logger.Logf(ctx, "upload error() => %v", err)
+		utils.Response(ctx, w, false, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	utils.Response(ctx, w, true, st, s.Images)
+	utils.Response(ctx, w, true, st, res)
 }

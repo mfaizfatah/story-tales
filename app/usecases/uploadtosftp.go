@@ -1,11 +1,14 @@
 package usecases
 
 import (
+	"context"
+	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
+	"mime/multipart"
 	"os"
 
+	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/pkg/sftp"
 	"golang.org/x/crypto/ssh"
 )
@@ -24,47 +27,51 @@ func PublicKeyFile(file string) ssh.AuthMethod {
 	return ssh.PublicKeys(key)
 }
 
-func UploadToFtpProccess() {
-	const SSH_ADDRESS = "178.128.53.127:22"
-	const SSH_USERNAME = "sftpdigi"
-	const SSH_KEY = ""
-	const SSH_PASSWORD = "v8McfYATv2LUZqB9"
+func (r *uc) UploadToFtpProccess(ctx context.Context, userid int, path string, file multipart.File, fileHeader *multipart.FileHeader) (context.Context, string, error) {
+	var (
+		dir           string
+		baseUriImages = os.Getenv("IMAGES_URI")
+	)
 
 	sshConfig := &ssh.ClientConfig{
-		User:            SSH_USERNAME,
+		User:            os.Getenv("SFTP_USERNAME"),
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		Auth: []ssh.AuthMethod{
-			ssh.Password(SSH_PASSWORD),
-			PublicKeyFile(SSH_KEY),
+			ssh.Password(os.Getenv("SFTP_PASSWORD")),
 		},
 	}
 
-	client, err := ssh.Dial("tcp", SSH_ADDRESS, sshConfig)
-	if client != nil {
-		defer client.Close()
-	}
+	client, err := ssh.Dial("tcp", os.Getenv("SFTP_ADDRESS"), sshConfig)
 	if err != nil {
-		log.Fatal("Failed to dial. " + err.Error())
+		return ctx, dir, err
 	}
+	defer client.Close()
 
 	sftpClient, err := sftp.NewClient(client)
 	if err != nil {
-		log.Fatal("Failed create client sftp client. " + err.Error())
+		return ctx, dir, err
 	}
+	defer sftpClient.Close()
 
-	fDestination, err := sftpClient.Create("/upload/filegua/kaguree.jpg")
+	// /data/sftpdigi/upload/<idUser>/<title>/filename
+	dirpath := fmt.Sprintf("%v/%v", userid, path)
+	_, err = sftpClient.Lstat(dirpath)
 	if err != nil {
-		log.Fatal("Failed to create destination file. " + err.Error())
+		sftpClient.MkdirAll(dirpath)
 	}
+	fileLocation := fmt.Sprintf("%v/%v/%v", userid, path, fileHeader.Filename)
+	ctx = logger.Logf(ctx, "file location() => %v", fileLocation)
 
-	fSource, err := os.Open("/Users/hanif/Desktop/img/Kagura.jpg")
+	fDestination, err := sftpClient.Create(fileLocation)
 	if err != nil {
-		log.Fatal("Failed to read source file. " + err.Error())
+		return ctx, dir, err
+	}
+	defer fDestination.Close()
+
+	if _, err := io.Copy(fDestination, file); err != nil {
+		return ctx, dir, err
 	}
 
-	_, err = io.Copy(fDestination, fSource)
-	if err != nil {
-		log.Fatal("Failed copy source file into destination file. " + err.Error())
-	}
-
+	res := fmt.Sprintf("%v/%v", baseUriImages, fileLocation)
+	return ctx, res, nil
 }

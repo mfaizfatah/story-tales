@@ -11,14 +11,86 @@ import (
 const (
 	tableComment = "story_comment"
 	viewComment  = "commentView"
+	likeComment  = "story_comment_like"
 )
+
+func (r *uc) GetLikeCommentStatus(ctx context.Context, userID, commentID int) (context.Context, *models.CommentLike, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+	data, err := r.query.FindCommentLikeSt(commentID, userID)
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, data, msg, http.StatusOK, nil
+}
+
+func (r *uc) PostReLikeComment(ctx context.Context, userID, commentID int) (context.Context, string, int, error) {
+	var (
+		commentLike = new(models.CommentLike)
+		msg         string
+		err         error
+	)
+	data := make(map[string]interface{})
+	data["deleted"] = 0
+
+	err = r.query.UpdateWhere(likeComment, commentLike, "id_users = ? AND id_comment = ?", data, userID, commentID)
+	if err != nil {
+		return ctx, ErrNotFound, http.StatusInternalServerError, err
+	}
+	return ctx, msg, http.StatusCreated, err
+}
+
+func (r *uc) PostUnLikeComment(ctx context.Context, userID, commentID int) (context.Context, string, int, error) {
+	var (
+		commentLike = new(models.CommentLike)
+		msg         string
+		err         error
+	)
+	data := make(map[string]interface{})
+	data["deleted"] = 1
+
+	err = r.query.UpdateWhere(likeComment, commentLike, "id_users = ? AND id_comment = ?", data, userID, commentID)
+	if err != nil {
+		return ctx, ErrNotFound, http.StatusInternalServerError, err
+	}
+	return ctx, msg, http.StatusCreated, err
+}
+
+func (r *uc) PostLikeComment(ctx context.Context, userID, commentID int) (context.Context, string, int, error) {
+	var (
+		commentLike = new(models.CommentLike)
+		msg         string
+		err         error
+	)
+	commentLike.IDUser = userID
+	commentLike.IDComment = commentID
+	err = r.query.Insert(likeComment, commentLike)
+	if err != nil {
+		return ctx, ErrCreated, http.StatusInternalServerError, err
+	}
+	return ctx, msg, http.StatusCreated, err
+}
+
+func (r *uc) GetListTopComment(ctx context.Context, storyID, episodeID int) (context.Context, []models.CommentView, string, int, error) {
+	var (
+		msg string
+		err error
+	)
+	data, err := r.query.FindTopComment(viewComment, storyID, episodeID)
+	if err != nil {
+		return ctx, nil, ErrBadRequest, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+	return ctx, data, msg, http.StatusAccepted, nil
+}
 
 func (r *uc) GetListComment(ctx context.Context, storyID, episodeID int) (context.Context, []models.CommentView, string, int, error) {
 	var (
 		msg string
 		err error
 	)
-
 	data, err := r.query.FindAllComment(viewComment, storyID, episodeID)
 
 	if err != nil {

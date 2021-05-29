@@ -2,6 +2,11 @@ package models
 
 import "time"
 
+// StatusFollow is model for user statusfollow
+type StatusFollow struct {
+	StatusFollow bool `json:"statusfollow"`
+}
+
 // UserFollow is model for get user follow status
 type UserFollow struct {
 	UserFollowID    int `json:"userFollowId" gorm:"column:userfollow_id"`

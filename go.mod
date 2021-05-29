@@ -3,6 +3,7 @@ module github.com/mfaizfatah/story-tales
 go 1.15
 
 require (
+	github.com/gin-gonic/gin v1.7.1
 	github.com/go-chi/chi v1.5.1
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-shadow/moment v0.0.0-20140422073900-e837f27dad94

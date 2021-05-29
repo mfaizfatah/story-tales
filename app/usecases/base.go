@@ -72,10 +72,15 @@ type Usecases interface {
 	DeleteRating(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 
 	//Comment
+	GetListTopComment(ctx context.Context, storyID, episodeID int) (context.Context, []models.CommentView, string, int, error)
 	GetListComment(ctx context.Context, storyID, episodeID int) (context.Context, []models.CommentView, string, int, error)
 	PostComment(ctx context.Context, req *models.Comment, userID int) (context.Context, string, int, error)
 	DeleteComment(ctx context.Context, commentID, userID int) (context.Context, string, int, error)
 	GetMyComment(ctx context.Context, userID int) (context.Context, []models.CommentView, string, int, error)
+	GetLikeCommentStatus(ctx context.Context, userID, commentID int) (context.Context, *models.CommentLike, string, int, error)
+	PostLikeComment(ctx context.Context, userID, commentID int) (context.Context, string, int, error)
+	PostReLikeComment(ctx context.Context, userID, commentID int) (context.Context, string, int, error)
+	PostUnLikeComment(ctx context.Context, userID, commentID int) (context.Context, string, int, error)
 
 	//Banner
 	CreateBanner(ctx context.Context, req *models.BannerReq) (context.Context, string, int, error)
@@ -86,15 +91,18 @@ type Usecases interface {
 	PostFollow(ctx context.Context, userID, id int) (context.Context, string, int, error)
 	PostUnfollow(ctx context.Context, userID, id int) (context.Context, string, int, error)
 	PostRefollow(ctx context.Context, userID, id int) (context.Context, string, int, error)
-	GetFollowStatus(ctx context.Context, userID, id int) (*models.UserFollow, string, int, error)
+	GetFollowStatus(ctx context.Context, userID, id int) (context.Context, *models.UserFollow, string, int, error)
 	GetCountFollowing(ctx context.Context, id int) (context.Context, *models.UserCountFollowing, string, int, error)
 	GetCountFollower(ctx context.Context, id int) (context.Context, *models.UserCountFollower, string, int, error)
 	GetListFollower(ctx context.Context, userID, id int) (context.Context, []models.ListFollower, string, int, error)
 	GetListFollowing(ctx context.Context, userID, id int) (context.Context, []models.ListFollowing, string, int, error)
 	// User
 	GetExistAuthor(ctx context.Context, req *models.AuthorNickName) (context.Context, *models.AuthorNickName, string, int, error)
+	GetExistUser(ctx context.Context, req *models.UserName) (context.Context, *models.UserName, string, int, error)
 	GetAuthorProfile(ctx context.Context, authorID int) (context.Context, *models.AuthorProfile, string, int, error)
+	GetUserProfile(ctx context.Context, userID int) (context.Context, *models.UserEdit, string, int, error)
 	UpdateAuthor(ctx context.Context, req *models.AuthorData, authorID int) (context.Context, string, int, error)
+	UpdateUser(ctx context.Context, req *models.UserEdit, userID int) (context.Context, string, int, error)
 
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)

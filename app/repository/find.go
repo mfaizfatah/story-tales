@@ -22,12 +22,36 @@ func (r *repo) FindGetAuthorProfile(id int, table string) (*models.AuthorProfile
 	}
 	return &data, nil
 }
+
+func (r *repo) FindGetUserProfile(id int, table string) (*models.UserEdit, error) {
+	var data models.UserEdit
+	err := r.db.Table(table).
+		Where("id = ?", id).
+		Find(&data)
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+	return &data, nil
+}
 func (r *repo) FindAllComment(table string, storyid, episodeid int) ([]models.CommentView, error) {
 	var data []models.CommentView
 	err := r.db.Table(table).
-		Where("id_story = ?", storyid).
-		Where("id_episodes = ?", episodeid).
-		Order("created_at").
+		Where("id_story = ? AND id_episodes = ?", storyid, episodeid).
+		Order("count_like desc, created_at desc").
+		Find(&data)
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+	return data, nil
+}
+
+func (r *repo) FindTopComment(table string, storyid, episodeid int) ([]models.CommentView, error) {
+	var data []models.CommentView
+	err := r.db.Table(table).
+		Where("id_story = ? AND id_episodes = ?", storyid, episodeid).
+		Order("count_like desc, created_at desc").
 		Find(&data)
 	if err.Error != nil {
 		log.Printf("error: %v", err.Error)
@@ -48,11 +72,23 @@ func (r *repo) FindFollowSt(userID, id int) (*models.UserFollow, error) {
 	return &data, nil
 }
 
+func (r *repo) FindCommentLikeSt(commentID, userID int) (*models.CommentLike, error) {
+	var data models.CommentLike
+	err := r.db.Table("story_comment_like").
+		Where("id_comment = ? AND id_users = ?", commentID, userID).
+		Find(&data)
+	if err.Error != nil {
+		log.Printf("error: %v", err.Error)
+		return nil, err.Error
+	}
+	return &data, nil
+}
+
 func (r *repo) FindListFollower(id int) ([]models.ListFollower, error) {
 	var data []models.ListFollower
 
 	err := r.db.Table("followerView").
-		Where("followerView.userfollowing_id = ?", id).
+		Where("userfollowing_id = ?", id).
 		Order("date_updated desc").
 		Find(&data)
 
@@ -68,7 +104,7 @@ func (r *repo) FindListFollowing(id int) ([]models.ListFollowing, error) {
 	var data []models.ListFollowing
 
 	err := r.db.Table("followingView").
-		Where("followingView.userfollow_id = ?", id).
+		Where("userfollow_id = ?", id).
 		Order("date_updated desc").
 		Find(&data)
 
@@ -83,8 +119,8 @@ func (r *repo) FindListFollowing(id int) ([]models.ListFollowing, error) {
 func (r *repo) FindGetCountFollower(id int) (*models.UserCountFollower, error) {
 	var data models.UserCountFollower
 
-	err := r.db.Table("user_follow").
-		Where("user_follow.userfollowing_id = ?", id).
+	err := r.db.Table("followerView").
+		Where("userfollowing_id = ?", id).
 		Count(&data.Count)
 
 	if err.Error != nil {
@@ -98,8 +134,8 @@ func (r *repo) FindGetCountFollower(id int) (*models.UserCountFollower, error) {
 func (r *repo) FindGetCountFollowing(id int) (*models.UserCountFollowing, error) {
 	var data models.UserCountFollowing
 
-	err := r.db.Table("user_follow").
-		Where("user_follow.userfollow_id = ?", id).
+	err := r.db.Table("followingView").
+		Where("userfollow_id = ?", id).
 		Count(&data.Count)
 
 	if err.Error != nil {
@@ -114,7 +150,7 @@ func (r *repo) FindGetBanner(id int) (*models.BannerDetailRs, error) {
 	var data models.BannerDetailRs
 
 	err := r.db.Table("banner").
-		Where("banner.id = ?", id).
+		Where("id = ?", id).
 		Find(&data)
 
 	if err.Error != nil {

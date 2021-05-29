@@ -63,17 +63,17 @@ func (r *uc) PostFollow(ctx context.Context, userID, id int) (context.Context, s
 	return ctx, msg, http.StatusCreated, err
 }
 
-func (r *uc) GetFollowStatus(ctx context.Context, userID, id int) (*models.UserFollow, string, int, error) {
+func (r *uc) GetFollowStatus(ctx context.Context, userID, id int) (context.Context, *models.UserFollow, string, int, error) {
 	var (
 		msg string
 		err error
 	)
-	follow, err := r.query.FindFollowSt(userID, id)
+	data, err := r.query.FindFollowSt(userID, id)
 	if err != nil {
-		return nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 
-	return follow, msg, http.StatusOK, nil
+	return ctx, data, msg, http.StatusOK, nil
 }
 
 func (r *uc) GetCountFollowing(ctx context.Context, id int) (context.Context, *models.UserCountFollowing, string, int, error) {

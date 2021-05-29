@@ -21,6 +21,15 @@ type BannerReq struct {
 	ThumbFile    *multipart.FileHeader `form:"thumbFile" binding:"required"`
 }
 
+type BannerRequ struct {
+	Id        int                   `uri:"id"`
+	Category  string                `form:"category"`
+	Title     string                `form:"title"`
+	URL       string                `form:"url"`
+	ImgFile   *multipart.FileHeader `form:"imgFile" binding:"required"`
+	ThumbFile *multipart.FileHeader `form:"thumbFile" binding:"required"`
+}
+
 type Banner struct {
 	ID           int       `json:"id"`
 	Category     string    `json:"category"`

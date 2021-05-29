@@ -117,3 +117,62 @@ func (u *ctrl) HandlerGetMyComment(w http.ResponseWriter, r *http.Request) {
 
 	utils.Response(ctx, w, true, st, res)
 }
+
+func (u *ctrl) HandlerGetTopComment(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	storyID, err := strconv.Atoi(chi.URLParam(r, "storyID"))
+	episodeID, err := strconv.Atoi(chi.URLParam(r, "episodeID"))
+
+	ctx, res, msg, st, err := u.uc.GetListTopComment(ctx, storyID, episodeID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "List TopComment error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, res)
+}
+
+func (u *ctrl) HandlerPostLikeComment(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	commentID, err := strconv.Atoi(chi.URLParam(r, "id"))
+
+	user, msg, code, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Error on get request() => %v", err)
+		utils.Response(ctx, w, false, code, msg)
+		return
+	}
+
+	ctx, likeCommentSt, msg, st, err := u.uc.GetLikeCommentStatus(ctx, user.ID, commentID)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	if (likeCommentSt != nil) && (likeCommentSt.IDUser == 0) {
+		ctx, msg, st, err = u.uc.PostLikeComment(ctx, user.ID, commentID)
+		if err != nil {
+			ctx = logger.Logf(ctx, "Do LikeComment error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+	} else if likeCommentSt.Deleted == 1 {
+		ctx, msg, st, err = u.uc.PostReLikeComment(ctx, user.ID, commentID)
+		if err != nil {
+			ctx = logger.Logf(ctx, "Do ReLikeComment error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+	} else {
+		ctx, msg, st, err = u.uc.PostUnLikeComment(ctx, user.ID, commentID)
+		if err != nil {
+			ctx = logger.Logf(ctx, "Do UnLikeComment error() => %v", err)
+			utils.Response(ctx, w, false, st, msg)
+			return
+		}
+	}
+
+	utils.Response(ctx, w, true, st, msg)
+}

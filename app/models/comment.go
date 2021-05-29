@@ -64,4 +64,12 @@ type CommentView struct {
 	Name      string    `json:"name" gorm:"column:name"`
 	Avatar    string    `json:"avatar" gorm:"column:avatar"`
 	CreatedAt time.Time `json:"created_at" gorm:"column:created_at"`
+	CountLike int       `json:"count_like" gorm:"column:count_like"`
+}
+
+type CommentLike struct {
+	ID        int `json:"id" gorm:"column:id"`
+	IDUser    int `json:"id_users" gorm:"column:id_users"`
+	IDComment int `json:"id_comment" gorm:"column:id_comment"`
+	Deleted   int `json:"deleted" gorm:"column:deleted"`
 }

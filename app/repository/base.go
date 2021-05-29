@@ -57,6 +57,7 @@ type repo struct {
 type Repo interface {
 	// find
 	FindGetAuthorProfile(id int, table string) (*models.AuthorProfile, error)
+	FindGetUserProfile(id int, table string) (*models.UserEdit, error)
 	FindGetBanner(id int) (*models.BannerDetailRs, error)
 	FindAllBanner(table string) ([]models.ListBannerThumbRs, error)
 	FindOne(table string, i, where interface{}, field string, whereValue ...interface{}) error
@@ -72,8 +73,10 @@ type Repo interface {
 	FindFavoriteStory(table string, limit, storyid, userid int) ([]models.ResponseFavoriteStory, error)
 
 	// find comment
+	FindTopComment(table string, storyID, episodeID int) ([]models.CommentView, error)
 	FindAllComment(table string, storyID, episodeID int) ([]models.CommentView, error)
 	FindMyComment(table string, authorID int) ([]models.CommentView, error)
+	FindCommentLikeSt(commentID, userID int) (*models.CommentLike, error)
 
 	GetTTLRedis(key string) (int64, error)
 	FindToken(key string) (string, error)

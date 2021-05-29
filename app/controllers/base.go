@@ -39,10 +39,12 @@ type Controllers interface {
 	HandlerGetLikes(w http.ResponseWriter, r *http.Request)
 
 	// Comment
+	HandlerGetTopComment(w http.ResponseWriter, r *http.Request)
 	HandlerGetComment(w http.ResponseWriter, r *http.Request)
 	HandlerPostComment(w http.ResponseWriter, r *http.Request)
 	HandlerDeleteComment(w http.ResponseWriter, r *http.Request)
 	HandlerGetMyComment(w http.ResponseWriter, r *http.Request)
+	HandlerPostLikeComment(w http.ResponseWriter, r *http.Request)
 
 	// Rating
 	HandlerPostRating(w http.ResponseWriter, r *http.Request)
@@ -57,8 +59,10 @@ type Controllers interface {
 	HandlerCreateBanner(w http.ResponseWriter, r *http.Request)
 	HandlerGetBannerDetail(w http.ResponseWriter, r *http.Request)
 	HandlerGetListBannerThumb(w http.ResponseWriter, r *http.Request)
+	HandlerBannerPostPic(w http.ResponseWriter, r *http.Request)
 
 	// UserFollow
+	HandlerGetFollow(w http.ResponseWriter, r *http.Request)
 	HandlerPostFollow(w http.ResponseWriter, r *http.Request)
 	HandlerGetCountFollower(w http.ResponseWriter, r *http.Request)
 	HandlerGetCountFollowing(w http.ResponseWriter, r *http.Request)
@@ -67,8 +71,12 @@ type Controllers interface {
 
 	// User
 	HandlerGetExistAuthor(w http.ResponseWriter, r *http.Request)
+	HandlerGetExistUser(w http.ResponseWriter, r *http.Request)
 	HandlerGetAuthorProfile(w http.ResponseWriter, r *http.Request)
+	HandlerGetUserProfile(w http.ResponseWriter, r *http.Request)
 	HandlerUpdateAuthor(w http.ResponseWriter, r *http.Request)
+	HandlerUpdateUser(w http.ResponseWriter, r *http.Request)
+	HandlerGetUserInfo(w http.ResponseWriter, r *http.Request)
 
 	// test jenkins
 	HandlerTestJenkins(w http.ResponseWriter, r *http.Request)

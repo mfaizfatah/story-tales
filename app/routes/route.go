@@ -52,6 +52,7 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckAPIKey)
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
+		r.Post("/banner/pic", c.ctrl.HandlerBannerPostPic)
 
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
 		r.Get("/story/rekomendasi", c.ctrl.HandlerGetRekomenStory)
@@ -67,9 +68,12 @@ func (c *route) Router(port string) {
 		r.Get("/follower/count/{id}", c.ctrl.HandlerGetCountFollower)
 		r.Get("/following/count/{id}", c.ctrl.HandlerGetCountFollowing)
 		r.Get("/story/comment/{storyID}/{episodeID}", c.ctrl.HandlerGetComment)
+		r.Get("/story/topcomment/{storyID}/{episodeID}", c.ctrl.HandlerGetTopComment)
 
-		r.Get("/author/checkuser", c.ctrl.HandlerGetExistAuthor)
+		r.Get("/author/check", c.ctrl.HandlerGetExistAuthor)
+		r.Get("/user/check", c.ctrl.HandlerGetExistUser)
 		r.Get("/author/{authorID}", c.ctrl.HandlerGetAuthorProfile)
+		r.Get("/user/{userID}", c.ctrl.HandlerGetUserProfile)
 
 		r.Get("/logout", c.ctrl.HandlerLogout)
 
@@ -84,9 +88,12 @@ func (c *route) Router(port string) {
 	router.Group(func(r chi.Router) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckSession)
 		r.Get("/user/check", c.ctrl.HandlerCheckSession)
+		r.Get("/user/info", c.ctrl.HandlerGetUserInfo)
+
 		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)
 
 		r.Post("/author/update", c.ctrl.HandlerUpdateAuthor)
+		r.Post("/user/update", c.ctrl.HandlerUpdateUser)
 		r.Post("/story", c.ctrl.HandlerPostStory)
 		r.Get("/story/favorite", c.ctrl.HandlerGetFavoriteStory)
 		r.Post("/story/favorite", c.ctrl.HandlerPostFavoriteStory)
@@ -97,6 +104,7 @@ func (c *route) Router(port string) {
 		r.Get("/story/likes", c.ctrl.HandlerGetLikes)
 		r.Delete("/story/likes/{storyID}/{episodeID}", c.ctrl.HandlerDeleteLikes)
 
+		r.Get("/follow/{id}", c.ctrl.HandlerGetFollow)
 		r.Post("/follow/{id}", c.ctrl.HandlerPostFollow)
 		r.Get("/following/list/{id}", c.ctrl.HandlerGetListFollowing)
 		r.Get("/follower/list/{id}", c.ctrl.HandlerGetListFollower)
@@ -104,6 +112,7 @@ func (c *route) Router(port string) {
 		r.Get("/story/likes/me", c.ctrl.HandlerGetMyLike)
 		r.Post("/story/comment", c.ctrl.HandlerPostComment)
 		r.Delete("/story/comment/{commentID}", c.ctrl.HandlerDeleteComment)
+		r.Post("/story/comment/likes/{id}", c.ctrl.HandlerPostLikeComment)
 
 		r.Post("/upload", c.ctrl.HandlerUpload)
 	})

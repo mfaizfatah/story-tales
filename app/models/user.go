@@ -29,6 +29,17 @@ type Login struct {
 	IDAuthor          int    `json:"id_author" gorm:"column:id_author"`
 }
 
+type UserEdit struct {
+	Username    string      `json:"username" gorm:"column:username"`
+	Email       string      `json:"email" gorm:"column:email"`
+	Name        string      `json:"name" gorm:"column:name"`
+	Telp        string      `json:"telp" gorm:"column:telp"`
+	DateOfBirth interface{} `json:"dateOfBirth" gorm:"column:date_of_birth"`
+}
+type UserName struct {
+	Username string `json:"username" gorm:"column:username"`
+}
+
 // ForgotPass is mode for request forgot pass
 type ForgotPass struct {
 	Email          string `json:"email"`

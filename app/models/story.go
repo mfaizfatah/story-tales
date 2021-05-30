@@ -47,9 +47,8 @@ type Story struct {
 	// readOnly: true
 	// required: false
 	// min: 1
-	IDAuthor        int               `json:"idAuthor" gorm:"column:id_author"` // Unique identifier for author
-	Episode         []Episode         `json:"episode" gorm:"foreignKey:id_story;references:ID"`
-	Episodes_Detail []Episodes_Detail `json:"episodeDetail" gorm:"foreignKey:id_story;references:ID"`
+	IDAuthor int       `json:"idAuthor" gorm:"column:id_author"` // Unique identifier for author
+	Episode  []Episode `json:"episode" gorm:"foreignKey:id_story;references:ID"`
 }
 
 type Episode struct {
@@ -74,7 +73,8 @@ type Episode struct {
 	//
 	// required: true
 	// max length: 255
-	Eps_Title string `json:"epsTitle" gorm:"column:eps_title"`
+	Eps_Title       string            `json:"epsTitle" gorm:"column:eps_title"`
+	Episodes_Detail []Episodes_Detail `json:"episodeDetail" gorm:"foreignKey:id_episodes;references:ID"`
 }
 
 type Episodes_Detail struct {
@@ -84,18 +84,12 @@ type Episodes_Detail struct {
 	// required: false
 	// min: 1
 	ID int `json:"id" gorm:"column:id"`
-	// the id for story
-	//
-	// readOnly: true
-	// required: false
-	// min: 1
-	ID_Story int `json:"idStory" gorm:"column:id_story"`
-	// the id for story
+	// the id for episode
 	//
 	// required: true
 	// min: 1
 	ID_Episode int `json:"idEpisode" gorm:"column:id_episodes"`
-	// page nubmer episode
+	// page number episode
 	//
 	// required: true
 	// min: 1

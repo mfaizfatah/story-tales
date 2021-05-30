@@ -27,7 +27,7 @@ func (r *uc) GetExistAuthor(ctx context.Context, req *models.AuthorNickName) (co
 		return ctx, nil, ErrAlreadyUserName, http.StatusConflict, repository.ErrConflict
 	}
 	res.AuthorNickName = req.AuthorNickName
-	return ctx, res, msg, http.StatusCreated, nil
+	return ctx, res, msg, http.StatusOK, nil
 }
 
 func (r *uc) GetExistUser(ctx context.Context, req *models.UserName) (context.Context, *models.UserName, string, int, error) {
@@ -43,7 +43,7 @@ func (r *uc) GetExistUser(ctx context.Context, req *models.UserName) (context.Co
 		return ctx, nil, ErrAlreadyUserName, http.StatusConflict, repository.ErrConflict
 	}
 	res.Username = req.Username
-	return ctx, res, msg, http.StatusCreated, nil
+	return ctx, res, msg, http.StatusOK, nil
 }
 
 func (r *uc) GetAuthorProfile(ctx context.Context, authorID int) (context.Context, *models.AuthorProfile, string, int, error) {
@@ -89,7 +89,7 @@ func (r *uc) UpdateAuthor(ctx context.Context, req *models.AuthorData, authorID 
 	if err != nil {
 		return ctx, ErrNotFound, http.StatusInternalServerError, err
 	}
-	return ctx, msg, http.StatusCreated, err
+	return ctx, msg, http.StatusOK, err
 }
 
 func (r *uc) UpdateUser(ctx context.Context, req *models.UserEdit, userID int) (context.Context, string, int, error) {
@@ -103,5 +103,5 @@ func (r *uc) UpdateUser(ctx context.Context, req *models.UserEdit, userID int) (
 	if err != nil {
 		return ctx, ErrNotFound, http.StatusInternalServerError, err
 	}
-	return ctx, msg, http.StatusCreated, err
+	return ctx, msg, http.StatusOK, err
 }

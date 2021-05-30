@@ -2,7 +2,8 @@ package models
 
 // AuthorProfile is model for view author profile
 type AuthorProfile struct {
-	AuthorID       string `json:"authorId" gorm:"column:id"`
+	IDUser         int    `json:"id_user" gorm:"column:id"`
+	IDAuthor       int    `json:"id_author" gorm:"column:id_author"`
 	AuthorNickName string `json:"authorNickName" gorm:"column:author_nickname"`
 	AuthorName     string `json:"authorName" gorm:"column:author_name"`
 	AuthorAvatar   string `json:"authorAvatar" gorm:"column:author_avatar"`

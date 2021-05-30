@@ -36,26 +36,14 @@ func (u *ctrl) HandlerPostStory(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// image segment
-	if err := r.ParseMultipartForm(1024); err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	uploadedFile, handler, err := r.FormFile("file")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer uploadedFile.Close()
-
-	ctx, st, err = u.uc.UploadImages(ctx, &s, user.ID, uploadedFile, handler)
+	ctx, author, msg, st, err := u.uc.GetAuthorProfile(ctx, user.ID)
 	if err != nil {
 		ctx = logger.Logf(ctx, "Story error() => %v", err)
-		utils.Response(ctx, w, false, st, err)
+		utils.Response(ctx, w, false, st, msg)
 		return
 	}
 
-	ctx, msg, st, err = u.uc.PostStory(ctx, &s, user.ID)
+	ctx, msg, st, err = u.uc.PostStory(ctx, &s, author.IDAuthor)
 	if err != nil {
 		ctx = logger.Logf(ctx, "Story error() => %v", err)
 		utils.Response(ctx, w, false, st, msg)

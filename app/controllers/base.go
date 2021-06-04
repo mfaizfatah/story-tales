@@ -59,7 +59,6 @@ type Controllers interface {
 	HandlerCreateBanner(w http.ResponseWriter, r *http.Request)
 	HandlerGetBannerDetail(w http.ResponseWriter, r *http.Request)
 	HandlerGetListBannerThumb(w http.ResponseWriter, r *http.Request)
-	HandlerBannerPostPic(w http.ResponseWriter, r *http.Request)
 
 	// UserFollow
 	HandlerGetFollow(w http.ResponseWriter, r *http.Request)
@@ -77,6 +76,7 @@ type Controllers interface {
 	HandlerUpdateAuthor(w http.ResponseWriter, r *http.Request)
 	HandlerUpdateUser(w http.ResponseWriter, r *http.Request)
 	HandlerGetUserInfo(w http.ResponseWriter, r *http.Request)
+	HandlerUpdateProfilePic(w http.ResponseWriter, r *http.Request)
 
 	// test jenkins
 	HandlerTestJenkins(w http.ResponseWriter, r *http.Request)

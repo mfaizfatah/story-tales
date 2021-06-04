@@ -105,6 +105,7 @@ type Usecases interface {
 	GetUserProfile(ctx context.Context, userID int) (context.Context, *models.UserEdit, string, int, error)
 	UpdateAuthor(ctx context.Context, req *models.AuthorData, authorID int) (context.Context, string, int, error)
 	UpdateUser(ctx context.Context, req *models.UserEdit, userID int) (context.Context, string, int, error)
+	UpdateProfilePic(ctx context.Context, req *models.ProfilepicReq, userID int) (context.Context, string, int, error)
 
 	// forgot pass
 	SendLinkForgotPass(ctx context.Context, req *models.User) (context.Context, interface{}, string, int, error)

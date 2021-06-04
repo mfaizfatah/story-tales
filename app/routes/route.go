@@ -52,7 +52,6 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckAPIKey)
 		r.Post("/user/signup", c.ctrl.HandlerRegistration)
 		r.Post("/user/login", c.ctrl.HandlerLogin)
-		r.Post("/banner/pic", c.ctrl.HandlerBannerPostPic)
 
 		r.Get("/story", c.ctrl.HandlerGetAllStory)
 		r.Get("/story/rekomendasi", c.ctrl.HandlerGetRekomenStory)
@@ -113,6 +112,7 @@ func (c *route) Router(port string) {
 		r.Post("/story/comment", c.ctrl.HandlerPostComment)
 		r.Delete("/story/comment/{commentID}", c.ctrl.HandlerDeleteComment)
 		r.Post("/story/comment/likes/{id}", c.ctrl.HandlerPostLikeComment)
+		r.Post("/updateProfilePic", c.ctrl.HandlerUpdateProfilePic)
 
 		r.Post("/upload", c.ctrl.HandlerUpload)
 	})

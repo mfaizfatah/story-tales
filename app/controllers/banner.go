@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gin-gonic/gin"
 	"github.com/go-chi/chi"
 	"github.com/mfaizfatah/story-tales/app/helpers/logger"
 	"github.com/mfaizfatah/story-tales/app/models"
@@ -22,12 +21,6 @@ func (u *ctrl) HandlerCreateBanner(w http.ResponseWriter, r *http.Request) {
 		utils.Response(ctx, w, false, http.StatusBadRequest, err)
 		return
 	}
-	// file, msg, st, err := u.uc.UploadFileSftp(r)
-	// if err != nil {
-	// 	ctx = logger.Logf(ctx, "Error on get request() => %v", err)
-	// 	utils.Response(ctx, w, false, st, msg)
-	// 	return
-	// }
 
 	ctx, msg, st, err := u.uc.CreateBanner(ctx, &s)
 	if err != nil {
@@ -64,32 +57,4 @@ func (u *ctrl) HandlerGetListBannerThumb(w http.ResponseWriter, r *http.Request)
 	}
 
 	utils.Response(ctx, w, true, st, res)
-}
-
-func (u *ctrl) HandlerBannerPostPic(w http.ResponseWriter, r *http.Request) {
-	var userObj models.BannerRequ
-	err := json.NewDecoder(r.Body).Decode(&userObj)
-	var y *gin.Context
-	if err := y.ShouldBind(&userObj); err != nil {
-		y.String(http.StatusBadRequest, "bad request")
-	}
-
-	if err := y.ShouldBindUri(&userObj); err != nil {
-		y.String(http.StatusBadRequest, "bad request")
-	}
-
-	err = y.SaveUploadedFile(userObj.ImgFile, userObj.ImgFile.Filename)
-	if err != nil {
-		y.String(http.StatusInternalServerError, "unknown error")
-	}
-
-	err = y.SaveUploadedFile(userObj.ThumbFile, "assets/"+userObj.ThumbFile.Filename)
-	if err != nil {
-		y.String(http.StatusInternalServerError, "unknown error")
-	}
-
-	y.JSON(http.StatusOK, gin.H{
-		"status": "Anjay",
-		"data":   userObj,
-	})
 }

@@ -7,18 +7,18 @@ import (
 
 // Story model data
 type BannerReq struct {
-	Category     string                `json:"category"`
-	Title        string                `json:"title"`
-	Content      string                `json:"content"`
-	URL          string                `json:"url"`
-	Status       int                   `json:"status"`
-	DaysValid    int                   `json:"daysValid"`
-	Sequence     int                   `json:"sequence"`
-	DeepLink     bool                  `json:"deepLink"`
-	DetailStatus bool                  `json:"detailStatus"`
-	ServiceID    string                `json:"serviceId"`
-	ImgFile      *multipart.FileHeader `form:"imgFile" binding:"required"`
-	ThumbFile    *multipart.FileHeader `form:"thumbFile" binding:"required"`
+	Category     string `json:"category"`
+	Title        string `json:"title"`
+	Content      string `json:"content"`
+	URL          string `json:"url"`
+	Image        string `json:"image"`
+	Thumb        string `json:"thumb"`
+	Status       int    `json:"status"`
+	DaysValid    int    `json:"daysValid"`
+	Sequence     int    `json:"sequence"`
+	DeepLink     bool   `json:"deepLink"`
+	DetailStatus bool   `json:"detailStatus"`
+	ServiceID    string `json:"serviceId"`
 }
 
 type BannerRequ struct {

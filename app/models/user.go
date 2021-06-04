@@ -37,6 +37,14 @@ type UserEdit struct {
 	Telp        string      `json:"telp" gorm:"column:telp"`
 	DateOfBirth interface{} `json:"dateOfBirth" gorm:"column:date_of_birth"`
 }
+type ProfilepicReq struct {
+	Avatar string `json:"avatar" gorm:"column:avatar"`
+	Role   string `json:"role"`
+}
+type Profilepic struct {
+	Avatar string `json:"avatar" gorm:"column:avatar"`
+}
+
 type UserName struct {
 	Username string `json:"username" gorm:"column:username"`
 }

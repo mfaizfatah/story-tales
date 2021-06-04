@@ -147,3 +147,31 @@ func (u *ctrl) HandlerUpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	utils.Response(ctx, w, true, st, msg)
 }
+
+func (u *ctrl) HandlerUpdateProfilePic(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var pic models.ProfilepicReq
+
+	err := json.NewDecoder(r.Body).Decode(&pic)
+
+	if err != nil {
+		utils.Response(ctx, w, false, http.StatusBadRequest, err)
+		return
+	}
+
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, msg, st, err = u.uc.UpdateProfilePic(ctx, &pic, user.ID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Update profilePic Error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, msg)
+}

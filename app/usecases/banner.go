@@ -38,15 +38,9 @@ func (r *uc) CreateBanner(ctx context.Context, req *models.BannerReq) (context.C
 	banner.ServiceID = req.ServiceID
 	banner.Status = req.Status
 	banner.ValidUntil = validUntil
+	banner.Thumb = req.Thumb
+	banner.Image = req.Image
 
-	var imgLoc = "http://digisoul.id/images/"
-	banner.Thumb = imgLoc + req.ThumbFile.Filename
-	banner.Image = imgLoc + req.ImgFile.Filename
-
-	log.Printf("WOOOOOOOYY: %v", banner.Thumb)
-	log.Printf("ANNJAJAAY: %v", banner.Image)
-
-	log.Printf("msg: %v", banner)
 	err = r.query.Insert(tableBanner, banner)
 
 	if err != nil {

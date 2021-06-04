@@ -105,3 +105,25 @@ func (r *uc) UpdateUser(ctx context.Context, req *models.UserEdit, userID int) (
 	}
 	return ctx, msg, http.StatusOK, err
 }
+
+func (r *uc) UpdateProfilePic(ctx context.Context, req *models.ProfilepicReq, userID int) (context.Context, string, int, error) {
+	var (
+		userData = new(models.Profilepic)
+		msg      string
+		err      error
+	)
+
+	userData.Avatar = req.Avatar
+	if req.Role == "Author" {
+		err = r.query.UpdateData(tableAuthor, userData, "id_user = ?", req, userID)
+		if err != nil {
+			return ctx, ErrNotFound, http.StatusInternalServerError, err
+		}
+	} else {
+		err = r.query.UpdateData(tableUser, userData, "id = ?", req, userID)
+		if err != nil {
+			return ctx, ErrNotFound, http.StatusInternalServerError, err
+		}
+	}
+	return ctx, msg, http.StatusOK, err
+}

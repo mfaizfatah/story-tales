@@ -69,8 +69,8 @@ func (c *route) Router(port string) {
 		r.Get("/story/comment/{storyID}/{episodeID}", c.ctrl.HandlerGetComment)
 		r.Get("/story/topcomment/{storyID}/{episodeID}", c.ctrl.HandlerGetTopComment)
 
-		r.Get("/author/check", c.ctrl.HandlerGetExistAuthor)
-		r.Get("/user/check", c.ctrl.HandlerGetExistUser)
+		r.Post("/author/avail", c.ctrl.HandlerGetExistAuthor)
+		r.Post("/user/avail", c.ctrl.HandlerGetExistUser)
 		r.Get("/author/{authorID}", c.ctrl.HandlerGetAuthorProfile)
 		r.Get("/user/{userID}", c.ctrl.HandlerGetUserProfile)
 

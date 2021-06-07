@@ -52,6 +52,7 @@ func (r *repo) FindTopComment(table string, storyid, episodeid int) ([]models.Co
 	err := r.db.Table(table).
 		Where("id_story = ? AND id_episodes = ?", storyid, episodeid).
 		Order("count_like desc, created_at desc").
+		Limit(3).
 		Find(&data)
 	if err.Error != nil {
 		log.Printf("error: %v", err.Error)

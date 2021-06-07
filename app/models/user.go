@@ -36,6 +36,7 @@ type UserEdit struct {
 	Name        string      `json:"name" gorm:"column:name"`
 	Telp        string      `json:"telp" gorm:"column:telp"`
 	DateOfBirth interface{} `json:"dateOfBirth" gorm:"column:date_of_birth"`
+	Avatar      string      `json:"avatar" gorm:"column:avatar"`
 }
 type ProfilepicReq struct {
 	Avatar string `json:"avatar" gorm:"column:avatar"`

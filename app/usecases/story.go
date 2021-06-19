@@ -3,7 +3,6 @@ package usecases
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/mfaizfatah/story-tales/app/models"
@@ -50,8 +49,6 @@ func (r *uc) GetOneStory(ctx context.Context, storyID int) (context.Context, *mo
 		totalLike += data.ListEpisode[i].Like
 	}
 	data.TotalLike = totalLike
-
-	log.Printf("msg: %v", data)
 
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
@@ -164,4 +161,20 @@ func (r *uc) GetAuthorStory(ctx context.Context, authorID int) (context.Context,
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
 	return ctx, data, msg, http.StatusOK, nil
+}
+
+func (r *uc) GetAllGenre(ctx context.Context) (context.Context, []models.Genre, string, int, error) {
+	var (
+		msg string
+		err error
+		i   []models.Genre
+	)
+
+	err = r.query.DBFindAll("genre", i, "", "id, genre")
+	if err != nil {
+		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
+	}
+
+	return ctx, i, msg, http.StatusOK, nil
+
 }

@@ -73,7 +73,12 @@ type Episode struct {
 	//
 	// required: true
 	// max length: 255
-	Eps_Title       string            `json:"epsTitle" gorm:"column:eps_title"`
+	Eps_Title string `json:"epsTitle" gorm:"column:eps_title"`
+	// images episode
+	//
+	// required: true
+	// max length: 255
+	Images_Eps      string            `json:"imagesEps" gorm:"column:images_eps"`
 	Episodes_Detail []Episodes_Detail `json:"episodeDetail" gorm:"foreignKey:id_episodes;references:ID"`
 }
 
@@ -184,4 +189,9 @@ type StoryGenreView struct {
 type ResponseStoryGenre struct {
 	Genre string           `json:"Genre"`
 	Story []StoryGenreView `json:"story"`
+}
+
+type Genre struct {
+	ID    int    `json:"id" gorm:"column:id"`
+	Genre string `json:"Genre" gorm:"column:genre"`
 }

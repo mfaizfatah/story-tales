@@ -28,10 +28,21 @@ func (r *uc) PostStory(ctx context.Context, req *models.Story, userid int) (cont
 	story = req
 	story.IDAuthor = userid
 	err = r.query.Insert(tableStory, story)
-
 	if err != nil {
 		return ctx, ErrCreated, http.StatusInternalServerError, err
 	}
+
+	// for _, vals := range req.Genre {
+	// 	StoryGenre := new(models.Story_Genre)
+	// 	StoryGenre.IDStory = story.ID
+	// 	StoryGenre.IDGenre = vals.IDGenre
+	// 	log.Println(StoryGenre)
+	// 	err = r.query.Insert("story_genres", StoryGenre)
+	// 	if err != nil {
+	// 		return ctx, ErrCreated, http.StatusInternalServerError, err
+	// 	}
+	// }
+
 	msg = fmt.Sprintf("Successfull insert story with id %v", story.ID)
 	return ctx, msg, http.StatusCreated, err
 }
@@ -170,7 +181,7 @@ func (r *uc) GetAllGenre(ctx context.Context) (context.Context, []models.Genre, 
 		i   []models.Genre
 	)
 
-	err = r.query.DBFindAll("genre", i, "", "id, genre")
+	err = r.query.DBFindAll("genre", &i, "", "id, genre")
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

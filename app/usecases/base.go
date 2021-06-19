@@ -62,6 +62,7 @@ type Usecases interface {
 	PostFavoriteStory(ctx context.Context, req *models.PostFavoriteStory, userid int) (context.Context, string, int, error)
 	DeleteFavoriteStory(ctx context.Context, storyid, userid int) (context.Context, string, int, error)
 	GetStoryGenre(ctx context.Context) (context.Context, []models.ResponseStoryGenre, string, int, error)
+	GetAllGenre(ctx context.Context) (context.Context, []models.Genre, string, int, error)
 
 	//Likes
 	PostLikes(ctx context.Context, req *models.Likes, userid int) (context.Context, string, int, error)

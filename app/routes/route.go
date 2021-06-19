@@ -115,6 +115,7 @@ func (c *route) Router(port string) {
 		r.Post("/updateProfilePic", c.ctrl.HandlerUpdateProfilePic)
 
 		r.Post("/upload", c.ctrl.HandlerUpload)
+		r.Get("/genre", c.ctrl.HandlerGetAllGenre)
 	})
 
 	router.MethodNotAllowed(middleware.NotAllowed)

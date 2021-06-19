@@ -47,8 +47,9 @@ type Story struct {
 	// readOnly: true
 	// required: false
 	// min: 1
-	IDAuthor int       `json:"idAuthor" gorm:"column:id_author"` // Unique identifier for author
-	Episode  []Episode `json:"episode" gorm:"foreignKey:id_story;references:ID"`
+	IDAuthor int           `json:"idAuthor" gorm:"column:id_author"` // Unique identifier for author
+	Episode  []Episode     `json:"episode" gorm:"foreignKey:id_story;references:ID"`
+	Genre    []Story_Genre `json:"genre" gorm:"foreignKey:id_story;references:ID"`
 }
 
 type Episode struct {
@@ -73,7 +74,12 @@ type Episode struct {
 	//
 	// required: true
 	// max length: 255
-	Eps_Title       string            `json:"epsTitle" gorm:"column:eps_title"`
+	Eps_Title string `json:"epsTitle" gorm:"column:eps_title"`
+	// images episode
+	//
+	// required: true
+	// max length: 255
+	Images_Eps      string            `json:"imagesEps" gorm:"column:images_eps"`
 	Episodes_Detail []Episodes_Detail `json:"episodeDetail" gorm:"foreignKey:id_episodes;references:ID"`
 }
 
@@ -184,4 +190,15 @@ type StoryGenreView struct {
 type ResponseStoryGenre struct {
 	Genre string           `json:"Genre"`
 	Story []StoryGenreView `json:"story"`
+}
+
+type Genre struct {
+	ID    int    `json:"id" gorm:"column:id"`
+	Genre string `json:"Genre" gorm:"column:genre"`
+}
+
+type Story_Genre struct {
+	ID      int `json:"id" gorm:"column:id"`
+	IDStory int `json:"idStory" gorm:"column:id_story"`
+	IDGenre int `json:"idGenre" gorm:"column:id_genre"`
 }

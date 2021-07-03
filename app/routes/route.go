@@ -102,7 +102,7 @@ func (c *route) Router(port string) {
 		r.Post("/story/likes", c.ctrl.HandlerPostLikes)
 		r.Get("/story/likes", c.ctrl.HandlerGetLikes)
 		r.Delete("/story/likes/{storyID}/{episodeID}", c.ctrl.HandlerDeleteLikes)
-
+		r.Get("/story/auth", c.ctrl.HandlerGetStoryAuth)
 		r.Get("/follow/{id}", c.ctrl.HandlerGetFollow)
 		r.Post("/follow/{id}", c.ctrl.HandlerPostFollow)
 		r.Get("/following/list/{id}", c.ctrl.HandlerGetListFollowing)

@@ -130,6 +130,7 @@ type ResponseAllStory struct {
 	FlagOnGoing  int    `json:"flagOnGoing"`
 	FlagCommment int    `json:"flagComment"`
 	IDAuthor     int    `json:"idAuthor"`
+	Genre        string `json:"genre"`
 }
 
 // Response Get One..

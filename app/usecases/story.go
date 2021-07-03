@@ -12,6 +12,7 @@ import (
 const (
 	tableStory     = "story"
 	StoryGenreView = "storyGenreView"
+	detailStory    = "detailStoryOneView"
 )
 
 func (r *uc) PostStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error) {
@@ -91,7 +92,7 @@ func (r *uc) GetAllStory(ctx context.Context) (context.Context, []models.Respons
 		err error
 	)
 
-	data, err := r.query.FindAllStory(tableStory)
+	data, err := r.query.FindAllStory(detailStory)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}
@@ -167,7 +168,7 @@ func (r *uc) GetAuthorStory(ctx context.Context, authorID int) (context.Context,
 		msg string
 		err error
 	)
-	data, err := r.query.FindAuthorStory(tableStory, authorID)
+	data, err := r.query.FindAuthorStory(detailStory, authorID)
 	if err != nil {
 		return ctx, nil, ErrNotFound, http.StatusNotFound, repository.ErrRecordNotFound
 	}

@@ -25,6 +25,7 @@ type Controllers interface {
 	HandlerGetOneStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetAllStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetAuthorStory(w http.ResponseWriter, r *http.Request)
+	HandlerGetStoryAuth(w http.ResponseWriter, r *http.Request)
 	HandlerGetDetailEpisode(w http.ResponseWriter, r *http.Request)
 	HandlerGetRekomenStory(w http.ResponseWriter, r *http.Request)
 	HandlerGetFavoriteStory(w http.ResponseWriter, r *http.Request)

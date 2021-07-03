@@ -88,6 +88,8 @@ func (c *route) Router(port string) {
 		r.Use(ezpromhttp.InstrumentHandler, middleware.CheckSession)
 		r.Get("/user/check", c.ctrl.HandlerCheckSession)
 		r.Get("/user/info", c.ctrl.HandlerGetUserInfo)
+		r.Get("/author/profile", c.ctrl.HandlerGetAuthAuthorProfile)
+		r.Get("/user/profile", c.ctrl.HandlerGetAuthUserProfile)
 
 		r.Patch("/forgot-pass", c.ctrl.HandlerChangePassword)
 

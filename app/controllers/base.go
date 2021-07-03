@@ -75,6 +75,8 @@ type Controllers interface {
 	HandlerGetExistUser(w http.ResponseWriter, r *http.Request)
 	HandlerGetAuthorProfile(w http.ResponseWriter, r *http.Request)
 	HandlerGetUserProfile(w http.ResponseWriter, r *http.Request)
+	HandlerGetAuthAuthorProfile(w http.ResponseWriter, r *http.Request)
+	HandlerGetAuthUserProfile(w http.ResponseWriter, r *http.Request)
 	HandlerUpdateAuthor(w http.ResponseWriter, r *http.Request)
 	HandlerUpdateUser(w http.ResponseWriter, r *http.Request)
 	HandlerGetUserInfo(w http.ResponseWriter, r *http.Request)

@@ -80,6 +80,43 @@ func (u *ctrl) HandlerGetUserProfile(w http.ResponseWriter, r *http.Request) {
 	utils.Response(ctx, w, true, st, res)
 }
 
+func (u *ctrl) HandlerGetAuthAuthorProfile(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.GetAuthorProfile(ctx, user.ID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Get Author Profile error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, res)
+}
+
+func (u *ctrl) HandlerGetAuthUserProfile(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, res, msg, st, err := u.uc.GetUserProfile(ctx, user.ID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Get User Profile error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+	utils.Response(ctx, w, true, st, res)
+}
+
 func (u *ctrl) HandlerGetUserInfo(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 

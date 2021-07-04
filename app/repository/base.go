@@ -96,6 +96,7 @@ type Repo interface {
 	Update(tableName string, i interface{}, data map[string]interface{}) error
 	UpdateWhere(tableName string, i interface{}, where interface{}, data map[string]interface{}, whereValue ...interface{}) error
 	UpdateData(tableName string, i, where interface{}, data interface{}, whereValue ...interface{}) error
+	UpdateStory(story *models.Story) error
 
 	// delete
 	Delete(table string, i interface{}) error

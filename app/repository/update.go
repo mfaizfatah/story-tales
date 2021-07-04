@@ -1,6 +1,10 @@
 package repository
 
-import "context"
+import (
+	"context"
+
+	"github.com/mfaizfatah/story-tales/app/models"
+)
 
 /*Update to database
  * @paremeter
@@ -40,5 +44,15 @@ func (r *repo) MongoUpdateOne(data, where interface{}, TableName string) error {
 		return err
 	}
 	return nil
+
+}
+
+func (r *repo) UpdateStory(story *models.Story) error {
+	err := r.db.Table("story").Where("id = ?", story.ID).Save(story).Error
+	if err != nil {
+		return err
+	}
+
+	return err
 
 }

@@ -190,3 +190,25 @@ func (r *uc) GetAllGenre(ctx context.Context) (context.Context, []models.Genre, 
 	return ctx, i, msg, http.StatusOK, nil
 
 }
+
+func (r *uc) UpdateStory(ctx context.Context, req *models.Story, userid int) (context.Context, string, int, error) {
+	var (
+		story = new(models.Story)
+		msg   string
+		err   error
+	)
+
+	if req == nil {
+		return ctx, ErrBadRequest, http.StatusBadRequest, repository.ErrBadRequest
+	}
+
+	story = req
+	story.IDAuthor = userid
+	err = r.query.UpdateStory(story)
+	if err != nil {
+		return ctx, ErrCreated, http.StatusInternalServerError, err
+	}
+
+	msg = fmt.Sprintf("Successfull insert story with id %v", story.ID)
+	return ctx, msg, http.StatusCreated, err
+}

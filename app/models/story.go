@@ -195,7 +195,7 @@ type ResponseStoryGenre struct {
 
 type Genre struct {
 	ID    int    `json:"id" gorm:"column:id"`
-	Genre string `json:"Genre" gorm:"column:genre"`
+	Genre string `json:"name" gorm:"column:genre"`
 }
 
 type Story_Genre struct {

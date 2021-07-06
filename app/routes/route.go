@@ -115,6 +115,7 @@ func (c *route) Router(port string) {
 		r.Delete("/story/comment/{commentID}", c.ctrl.HandlerDeleteComment)
 		r.Post("/story/comment/likes/{id}", c.ctrl.HandlerPostLikeComment)
 		r.Post("/updateProfilePic", c.ctrl.HandlerUpdateProfilePic)
+		r.Put("/story", c.ctrl.HandlerUpdateStory)
 
 		r.Post("/upload", c.ctrl.HandlerUpload)
 		r.Get("/genre", c.ctrl.HandlerGetAllGenre)

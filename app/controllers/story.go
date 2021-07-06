@@ -192,3 +192,38 @@ func (u *ctrl) HandlerGetAllGenre(w http.ResponseWriter, r *http.Request) {
 
 	utils.Response(ctx, w, true, st, res)
 }
+
+func (u *ctrl) HandlerUpdateStory(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	var s models.Story
+
+	err := json.NewDecoder(r.Body).Decode(&s)
+
+	if err != nil {
+		utils.Response(ctx, w, false, http.StatusBadRequest, err)
+		return
+	}
+
+	user, msg, st, err := u.uc.GetUserFromToken(r)
+	if err != nil {
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, author, msg, st, err := u.uc.GetAuthorProfile(ctx, user.ID)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	ctx, msg, st, err = u.uc.UpdateStory(ctx, &s, author.IDAuthor)
+	if err != nil {
+		ctx = logger.Logf(ctx, "Story error() => %v", err)
+		utils.Response(ctx, w, false, st, msg)
+		return
+	}
+
+	utils.Response(ctx, w, true, st, msg)
+}
